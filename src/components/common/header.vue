@@ -57,11 +57,12 @@
         >.logo {
             width: 250px;
             height: 100%;
-            border-right: 1px solid $border;
+            border-right: .5px solid $border;
             font-size: 20px;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
+            padding-left: 20px;
             flex-shrink: 0;
             >.logo-text {
                 margin-left: 10px;
@@ -103,6 +104,7 @@
                     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
                     >li {
                         padding: 5px 0 5px 10px;
+                        font-size: 12px;
                         &:hover {
                             background: $bg;
                         }

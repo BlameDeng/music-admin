@@ -8,5 +8,8 @@ export default new Router({
     routes: [{
         path: '/',
         component: Index
+    }, {
+        path: '/song',
+        component: ()=>import('@/views/song.vue')
     }]
 })
