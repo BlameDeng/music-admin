@@ -55,11 +55,6 @@
         data() {
             return {
                 columns: [{
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
-                    },
-                    {
                         type: 'index',
                         width: 60,
                         align: 'center'
@@ -131,7 +126,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.remove(params.index)
+                                            this.onRemove(params.index)
                                         }
                                     }
                                 }, '删除')
@@ -153,14 +148,26 @@
             })
         },
         methods: {
-            ...mapActions(['fetchAllSongs', 'updateSong']),
+            ...mapActions(['fetchAllSongs', 'updateSong', 'destroySong']),
             ...mapMutations(['setEditingSong']),
             onEdit(index) {
                 this.setEditingSong(index);
             },
-            remove(index) {
-                console.log(index);
-
+            onRemove(index) {
+                this.$Modal.confirm({
+                    title: '警告',
+                    content: '<p>该操作将永久删除该条歌曲信息，是否继续？</p>',
+                    okText: '继续删除',
+                    cancelText: '取消删除',
+                    onOk: () => {
+                        this.destroySong(this.allSongs[index].id).then(res => {
+                            this.$Message.info('删除成功');
+                        })
+                    },
+                    onCancel: () => {
+                        this.$Message.info('已取消删除');
+                    }
+                })
             },
             exportData(type) {
                 if (type === 1) {
@@ -176,8 +183,8 @@
             },
             onSave() {
                 this.updateSong(this.editingSong).then(res => {
-                    console.log(res);
-
+                    this.$Message.success('保存成功！');
+                    this.setEditingSong(-1);
                 })
             },
             onCancleSave() {
@@ -234,7 +241,7 @@
                     right: 5px;
                     color: $disabled;
                     cursor: pointer;
-                    &:hover{
+                    &:hover {
                         color: $p;
                     }
                 }

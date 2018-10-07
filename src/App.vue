@@ -18,7 +18,13 @@
     import xNav from '@/components/common/nav.vue'
     export default {
         name: 'App',
-        components: { xHeader, xNav }
+        components: { xHeader, xNav },
+        created() {
+            this.$Message.config({
+                top: 75,
+                duration: 2
+            });
+        }
     }
 </script>
 <style lang="scss">

@@ -22,6 +22,9 @@ const mutations = {
                 break;
             }
         }
+    },
+    deleteSong(state, payload) {
+        state.allSongs = state.allSongs.filter(song => song.id !== payload);
     }
 }
 
@@ -51,6 +54,12 @@ const actions = {
         let { updatedAt } = res;
         let payload = { name, singer, url, cover, lrc, id, createdAt, updatedAt };
         commit('patchSong', payload);
+        return res;
+    },
+
+    async destroySong({ commit }, id) {
+        let res = await Song.destroySong(id);
+        commit('deleteSong', id);
         return res;
     }
 }

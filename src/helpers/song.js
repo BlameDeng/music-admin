@@ -4,7 +4,6 @@ const APP_KEY = 'zMJKJISLtf61iaTTtz5eAl8R';
 AV.init({ appId: APP_ID, appKey: APP_KEY });
 
 const Song = AV.Object.extend('Song');
-
 //新建一个对象
 Song.createSong = function(obj) {
     if (typeof obj !== 'object') {
@@ -20,14 +19,11 @@ Song.createSong = function(obj) {
     });
     return song.save();
 };
-
-//查找所有歌曲
+//获取所有歌曲
 Song.fetchAllSongs = function() {
     let query = new AV.Query('Song');
     return query.find();
 }
-
-
 //根据条件查找对象
 Song.querySong = function(obj) {
     if (typeof obj !== 'object') {
@@ -62,5 +58,19 @@ Song.updateSong = function(obj, id) {
     // 保存到云端
     return song.save();
 }
+//删除对象
+Song.destroySong = function(id) {
+    let song = AV.Object.createWithoutData('Song', id);
+    return song.destroy();
+}
 
+
+
+
+// var todo = AV.Object.createWithoutData('Todo', '57328ca079bc44005c2472d0');
+// todo.destroy().then(function (success) {
+//   // 删除成功
+// }, function (error) {
+//   // 删除失败
+// });
 export default Song
