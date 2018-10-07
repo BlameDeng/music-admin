@@ -82,6 +82,7 @@
 
                     BeforeUpload: function(up, file) {
                         set_upload_param(up, file.name, true);
+                        _self.$emit('before-upload', file);
                     },
 
                     UploadProgress: function(up, file) {

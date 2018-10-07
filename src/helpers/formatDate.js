@@ -12,6 +12,6 @@ function formatDate(val) {
 function formatNum(num) {
     num = '' + num;
     if (num.length === 1) { num = '0' + num; }
-    return num
+    return num;
 }
 export default formatDate

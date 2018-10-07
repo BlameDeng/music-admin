@@ -7,7 +7,7 @@
         <div class="user-bar">
             <Icon type="md-menu" size="25" style="cursor:pointer;" />
             <div class="user-info" @click="onUserInfo">
-                <span class="user-name">张某某</span>
+                <span class="user-name">张三</span>
                 <img src="../../assets/avatar.jpg" alt="avatar" class="user-avatar">
                 <transition name="fade">
                     <ul class="popover" v-show="popoverVisible">
@@ -94,6 +94,8 @@
                     position: absolute;
                     top: 100%;
                     left: 0;
+                    z-index: 5;
+                    background: #fff;
                     margin-top: 15px;
                     width: calc(100% + 10px);
                     margin-left: -10px;
