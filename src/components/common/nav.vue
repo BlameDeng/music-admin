@@ -15,9 +15,8 @@
                     <Icon type="md-musical-notes" />
                     歌曲
                 </template>
-                <MenuItem name="2-1">查看歌曲</MenuItem>
+                <MenuItem name="songList">歌曲列表</MenuItem>
                 <MenuItem name="addSong">新增歌曲</MenuItem>
-                <MenuItem name="editSong">编辑歌曲</MenuItem>
             </Submenu>
             <Submenu name="3">
                 <template slot="title">

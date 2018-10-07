@@ -1,6 +1,6 @@
 <template>
     <div class="song">
-        <div class="add-song">
+        <!-- <div class="add-song">
             <x-upload container-id="song-upload-container" browse-id="song-picker" post-id="song-uploader" bucket-name="songsbucket" @files-added="songAdded($event)" @uploading="uploading($event)" @uploaded="uploaded($event)"></x-upload>
             <div class="steps">
                 <Steps :current="current">
@@ -56,7 +56,8 @@
                     <p @click="scanNewSong">查看刚刚添加的歌曲</p>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <router-view></router-view>
     </div>
 </template>
 <script>

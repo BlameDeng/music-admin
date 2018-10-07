@@ -20,6 +20,14 @@ Song.createSong = function(obj) {
     });
     return song.save();
 };
+
+//查找所有歌曲
+Song.fetchAllSongs = function() {
+    let query = new AV.Query('Song');
+    return query.find();
+}
+
+
 //根据条件查找对象
 Song.querySong = function(obj) {
     if (typeof obj !== 'object') {

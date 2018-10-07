@@ -10,6 +10,18 @@ export default new Router({
         component: Index
     }, {
         path: '/song',
-        component: ()=>import('@/views/song.vue')
+        component: () =>
+            import('@/views/song.vue'),
+        children: [{
+                path: 'create',
+                component: () =>
+                    import('@/views/song/create.vue')
+            },
+            {
+                path: 'list',
+                component: () =>
+                    import('@/views/song/list.vue')
+            }
+        ]
     }]
 })
