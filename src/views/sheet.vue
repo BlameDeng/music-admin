@@ -1,18 +1,21 @@
 <template>
-    <div class="song">
+    <div class="sheet">
         <router-view></router-view>
     </div>
 </template>
 <script>
     export default {
-        name: "Song",
-        data() { return {}; },
-        methods: {}
-    };
+        name: 'Sheet',
+        components: {},
+        data() {
+            return {
+
+            }
+        },
+    }
 </script>
 <style scoped lang="scss">
-    @import "@/assets/base.scss";
-    .song {
+    .sheet {
         width: 100%;
         height: 100%;
     }

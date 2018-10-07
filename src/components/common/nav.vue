@@ -41,11 +41,8 @@
                     <Icon type="ios-list-box" />
                     歌单
                 </template>
-                <MenuGroup title="使用">
-                    <MenuItem name="5-1">新增和启动</MenuItem>
-                    <MenuItem name="5-2">活跃分析</MenuItem>
-                    <MenuItem name="5-3">时段分析</MenuItem>
-                </MenuGroup>
+                    <MenuItem name="sheet-list">歌单列表</MenuItem>
+                    <MenuItem name="sheet-create">新建歌单</MenuItem>
             </Submenu>
         </Menu>
     </div>

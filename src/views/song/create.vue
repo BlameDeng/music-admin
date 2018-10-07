@@ -126,7 +126,6 @@
                 this.$router.push('/song/list');
             },
             beforeUpload(file) {
-                console.log(file)
                 this.uploadUsable=false;
             }
         }

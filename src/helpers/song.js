@@ -3,7 +3,7 @@ const APP_ID = 'GXqgHEfcB1PWvg0xx4FBnrAC-gzGzoHsz';
 const APP_KEY = 'zMJKJISLtf61iaTTtz5eAl8R';
 AV.init({ appId: APP_ID, appKey: APP_KEY });
 
-const Song = AV.Object.extend('Song');
+const Song = {}
 //新建一个对象
 Song.createSong = function(obj) {
     if (typeof obj !== 'object') {
@@ -13,7 +13,7 @@ Song.createSong = function(obj) {
     if (entries.length === 0) {
         return Promise.reject('create方法必须传一个非空对象作为参数！');
     }
-    const song = new Song();
+    let song = new AV.Object('Song');
     entries.forEach(array => {
         song.set(array[0], array[1]);
     });
@@ -25,19 +25,19 @@ Song.fetchAllSongs = function() {
     return query.find();
 }
 //根据条件查找对象
-Song.querySong = function(obj) {
-    if (typeof obj !== 'object') {
-        return Promise.reject('query方法必须传一个非空对象作为参数！');
-    }
-    let entries = Object.entries(obj);
-    if (entries.length === 0) {
-        return Promise.reject('query方法必须传一个非空对象作为参数！');
-    }
-    let query = new AV.Query('Song');
-    let array = entries[0];
-    query.equalTo(array[0], array[1]);
-    return query.find();
-};
+// Song.querySong = function(obj) {
+//     if (typeof obj !== 'object') {
+//         return Promise.reject('query方法必须传一个非空对象作为参数！');
+//     }
+//     let entries = Object.entries(obj);
+//     if (entries.length === 0) {
+//         return Promise.reject('query方法必须传一个非空对象作为参数！');
+//     }
+//     let query = new AV.Query('Song');
+//     let array = entries[0];
+//     query.equalTo(array[0], array[1]);
+//     return query.find();
+// };
 //更新对象
 Song.updateSong = function(obj, id) {
     if (typeof obj !== 'object') {
@@ -64,13 +64,4 @@ Song.destroySong = function(id) {
     return song.destroy();
 }
 
-
-
-
-// var todo = AV.Object.createWithoutData('Todo', '57328ca079bc44005c2472d0');
-// todo.destroy().then(function (success) {
-//   // 删除成功
-// }, function (error) {
-//   // 删除失败
-// });
 export default Song

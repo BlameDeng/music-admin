@@ -19,7 +19,7 @@ const mutations = {
         let array = state.allSongs;
         for (let i = 0; i < array.length; i++) {
             if (array[i].id === payload.id) {
-                Vue.set(array,i,payload);
+                Vue.set(array, i, payload);
                 break;
             }
         }
@@ -31,9 +31,9 @@ const mutations = {
         let array = state.allSongs;
         for (let i = 0; i < array.length; i++) {
             if (array[i].id === payload.song.id) {
-                let obj=JSON.parse(JSON.stringify(array[i]));
-                obj.cover=payload.cover;
-                Vue.set(array,i,obj);
+                let obj = JSON.parse(JSON.stringify(array[i]));
+                obj.cover = payload.cover;
+                Vue.set(array, i, obj);
                 break;
             }
         }
@@ -48,14 +48,13 @@ const actions = {
 
     async fetchAllSongs({ commit }) {
         let array = [];
-        let res = await Song.fetchAllSongs().then(songs => {
-            songs.forEach(song => {
-                let { id, createdAt, updatedAt, attributes } = song;
-                createdAt = formatDate(createdAt);
-                updatedAt = formatDate(updatedAt);
-                array.push({ id, createdAt, updatedAt, ...attributes });
-            });
-        })
+        let res = await Song.fetchAllSongs()
+        res.forEach(song => {
+            let { id, createdAt, updatedAt, attributes } = song;
+            createdAt = formatDate(createdAt);
+            updatedAt = formatDate(updatedAt);
+            array.push({ id, createdAt, updatedAt, ...attributes });
+        });
         commit('setAllSongs', array);
         return Promise.resolve(array);
     },

@@ -23,5 +23,20 @@ export default new Router({
                     import('@/views/song/list.vue')
             }
         ]
+    }, {
+        path: '/sheet',
+        component: () =>
+            import('@/views/sheet.vue'),
+        children: [{
+                path: 'create',
+                component: () =>
+                    import('@/views/sheet/create.vue')
+            },
+            // {
+            //     path: 'list',
+            //     component: () =>
+            //         import('@/views/sheet/list.vue')
+            // }
+        ]
     }]
 })

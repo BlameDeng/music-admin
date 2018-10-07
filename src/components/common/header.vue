@@ -55,7 +55,7 @@
         color: #fff;
         display: flex;
         >.logo {
-            width: 250px;
+            width: 200px;
             height: 100%;
             border-right: .5px solid $border;
             font-size: 20px;
