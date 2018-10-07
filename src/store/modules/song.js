@@ -25,6 +25,15 @@ const mutations = {
     },
     deleteSong(state, payload) {
         state.allSongs = state.allSongs.filter(song => song.id !== payload);
+    },
+    updateCover(state, payload) {
+        let array = state.allSongs;
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].id === payload.song.id) {
+                array[i].cover = payload.cover;
+                break;
+            }
+        }
     }
 }
 

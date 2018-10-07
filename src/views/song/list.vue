@@ -27,9 +27,17 @@
                         </FormItem>
                         <FormItem label="歌曲链接">
                             <Input v-model.trim="editingSong.url"></Input>
+                            <div style="text-align:end;">
+                                <Button size="small" type="default">试听歌曲</Button>
+                            </div>
                         </FormItem>
                         <FormItem label="封面链接">
-                            <Input v-model.trim="editingSong.cover"></Input>
+                            <Input v-model.trim="editingSong.cover" ref="cover"></Input>
+                            <div style="text-align:end;" id="avatar-upload-container">
+                                <Button size="small" type="default" @click="preview">预览封面</Button>
+                                <Button size="small" type="default" id="avatar-picker">上传新封面</Button>
+                            </div>
+                            <x-upload container-id="avatar-upload-container" browse-id="avatar-picker" bucket-name="coversbucket" @uploaded="coverUploaded($event)"></x-upload>
                         </FormItem>
                         <FormItem label="歌词">
                             <Input type="textarea" v-model.trim="editingSong.lrc" :rows="3"></Input>
@@ -101,7 +109,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 150,
+                        width: 200,
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
@@ -111,7 +119,21 @@
                                         size: 'small'
                                     },
                                     style: {
-                                        marginRight: '5px'
+                                        marginRight: '2px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.onDetail(params.index)
+                                        }
+                                    }
+                                }, '详情'),
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '2px'
                                     },
                                     on: {
                                         click: () => {
@@ -149,7 +171,7 @@
         },
         methods: {
             ...mapActions(['fetchAllSongs', 'updateSong', 'destroySong']),
-            ...mapMutations(['setEditingSong']),
+            ...mapMutations(['setEditingSong', 'updateCover']),
             onEdit(index) {
                 this.setEditingSong(index);
             },
@@ -168,6 +190,9 @@
                         this.$Message.info('已取消删除');
                     }
                 })
+            },
+            onDetail(index) {
+
             },
             exportData(type) {
                 if (type === 1) {
@@ -189,6 +214,12 @@
             },
             onCancleSave() {
                 this.setEditingSong(-1);
+            },
+            preview() {
+                window.open(this.editingSong.cover, '_blank');
+            },
+            coverUploaded(obj) {
+                this.updateCover({cover:obj.url+'?x-oss-process=style/avatar',song:this.editingSong});
             }
         }
     }
@@ -228,7 +259,7 @@
             >.edit {
                 background: #fff;
                 width: 60%;
-                height: 75%;
+                height: 80%;
                 padding: 20px;
                 border-radius: 4px;
                 display: flex;
@@ -249,6 +280,7 @@
                 >h3 {
                     text-align: center;
                     font-size: 20px;
+                    margin-top: 10px;
                     margin-bottom: 20px;
                 }
                 >.edit-form {
