@@ -1,6 +1,6 @@
 <template>
     <div class="create-song">
-        <x-upload container-id="song-upload-container" browse-id="song-picker" post-id="song-uploader" bucket-name="songsbucket" @files-added="songAdded($event)" @uploading="uploading($event)" @uploaded="uploaded($event)"></x-upload>
+        <x-upload container-id="song-upload-container" browse-id="song-picker" post-id="song-uploader" bucket-name="songsbucket" @files-added="songAdded($event)" @uploading="uploading($event)" @uploaded="uploaded($event)" @before-upload="beforeUpload($event)"></x-upload>
         <div class="steps">
             <Steps :current="current" direction="vertical">
                 <Step title="选择文件" content="选择上传的歌曲文件"></Step>
@@ -20,8 +20,8 @@
                     <p class="slider" ref="slider"></p>
                 </div>
                 <div class="song-upload-container" id="song-upload-container">
-                    <Button type="primary" icon="md-add-circle" id="song-picker" class="button" :disabled="!usable" @click="onClickPick">选择文件</Button>
-                    <Button type="primary" icon="md-cloud-upload" id="song-uploader" class="button" :disabled="usable">开始上传</Button>
+                    <Button type="primary" icon="md-add-circle" id="song-picker" class="button" :disabled="!pickerUsable" @click="onClickPick">选择文件</Button>
+                    <Button type="primary" icon="md-cloud-upload" id="song-uploader" class="button" :disabled="!uploadUsable">开始上传</Button>
                 </div>
             </div>
             <div class="edit-step" v-show="current===2||current===3">
@@ -71,7 +71,8 @@
             return {
                 songFile: null,
                 current: 0,
-                usable: true,
+                pickerUsable: true,
+                uploadUsable:true,
                 formData: { name: '', singer: '', url: '', cover: '', lrc: '' },
                 infoVisible: false
             };
@@ -87,7 +88,7 @@
                 }
                 this.songFile = file;
                 this.current = 1;
-                this.usable = false;
+                this.pickerUsable = false;
                 this.$refs.slider.style.transform = `translateX(-100%)`;
             },
             uploading(file) {
@@ -95,7 +96,8 @@
                 this.$refs.slider.style.transform = `translateX(${percent-100}%)`;
             },
             uploaded(obj) {
-                this.usable = true;
+                this.pickerUsable = true;
+                this.uploadUsable=true;
                 this.current = 2;
                 this.formData.url = obj.url;
                 this.formData.name = this.formatSongName(obj.file.name);
@@ -122,6 +124,10 @@
             },
             scanSongList() {
                 this.$router.push('/song/list');
+            },
+            beforeUpload(file) {
+                console.log(file)
+                this.uploadUsable=false;
             }
         }
     };

@@ -1,5 +1,6 @@
 import Song from '@/helpers/song.js'
 import formatDate from '@/helpers/formatDate.js'
+import Vue from 'vue'
 const state = {
     allSongs: null,
     editingSong: null
@@ -18,7 +19,7 @@ const mutations = {
         let array = state.allSongs;
         for (let i = 0; i < array.length; i++) {
             if (array[i].id === payload.id) {
-                array[i] = payload;
+                Vue.set(array,i,payload);
                 break;
             }
         }
@@ -30,7 +31,9 @@ const mutations = {
         let array = state.allSongs;
         for (let i = 0; i < array.length; i++) {
             if (array[i].id === payload.song.id) {
-                array[i].cover = payload.cover;
+                let obj=JSON.parse(JSON.stringify(array[i]));
+                obj.cover=payload.cover;
+                Vue.set(array,i,obj);
                 break;
             }
         }
