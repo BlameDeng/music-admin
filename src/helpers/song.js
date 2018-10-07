@@ -43,7 +43,7 @@ Song.querySong = function(obj) {
     return query.find();
 };
 //更新对象
-Song.updateSong = function(obj, objectId) {
+Song.updateSong = function(obj, id) {
     if (typeof obj !== 'object') {
         return Promise.reject('update方法必须传一个非空对象作为参数！');
     }
@@ -51,10 +51,10 @@ Song.updateSong = function(obj, objectId) {
     if (entries.length === 0) {
         return Promise.reject('提交参数为空，未做更改');
     }
-    if (!objectId) {
-        return Promise.reject('必须提供objectId');
+    if (!id) {
+        return Promise.reject('必须提供id');
     }
-    let song = AV.Object.createWithoutData('Song', objectId);
+    let song = AV.Object.createWithoutData('Song', id);
     // 修改属性
     entries.forEach(array => {
         song.set(array[0], array[1]);

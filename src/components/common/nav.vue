@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <Menu style="width:100%;height:100%;font-size:14px;" accordion>
+        <Menu style="width:100%;height:100%;font-size:14px;" accordion @on-select="onSelectItem($event)">
             <Submenu name="1">
                 <template slot="title">
                     <Icon type="md-qr-scanner" />
@@ -15,8 +15,8 @@
                     <Icon type="md-musical-notes" />
                     歌曲
                 </template>
-                <MenuItem name="songList">歌曲列表</MenuItem>
-                <MenuItem name="addSong">新增歌曲</MenuItem>
+                <MenuItem name="song-list">歌曲列表</MenuItem>
+                <MenuItem name="song-create">新增歌曲</MenuItem>
             </Submenu>
             <Submenu name="3">
                 <template slot="title">
@@ -59,6 +59,11 @@
 
             }
         },
+        methods: {
+            onSelectItem(name) {
+                this.$router.push('/'+name.replace('-', '/'));
+            }
+        }
     }
 </script>
 <style scoped lang="scss">

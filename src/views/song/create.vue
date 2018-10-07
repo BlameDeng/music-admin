@@ -10,7 +10,7 @@
             </Steps>
         </div>
         <div class="upload-area">
-            <div class="upload-step" v-show="current<-2">
+            <div class="upload-step" v-show="current<2">
                 <h3>上传歌曲</h3>
                 <div class="file-info">
                     <p>文件名称：{{songFile&&songFile.name}}</p>
@@ -73,7 +73,7 @@
                 current: 0,
                 usable: true,
                 formData: { name: '', singer: '', url: '', cover: '', lrc: '' },
-                infoVisible: true
+                infoVisible: false
             };
         },
         methods: {
@@ -153,7 +153,6 @@
                 flex-direction: column;
                 justify-content: space-around;
                 align-items: center;
-                border: 1px solid red;
                 >h3 {
                     font-size: 20px;
                 }
