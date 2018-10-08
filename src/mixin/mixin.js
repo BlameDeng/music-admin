@@ -13,6 +13,7 @@ const mixin = {
             }
             let m = Math.floor(val / 60);
             let s = Math.floor(val % 60);
+            s===0?s='00':'';
             return `${m}:${s}`;
         }
     },

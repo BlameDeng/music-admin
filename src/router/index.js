@@ -32,11 +32,16 @@ export default new Router({
                 component: () =>
                     import('@/views/sheet/create.vue')
             },
-            // {
-            //     path: 'list',
-            //     component: () =>
-            //         import('@/views/sheet/list.vue')
-            // }
+            {
+                path: 'list',
+                component: () =>
+                    import('@/views/sheet/list.vue')
+            },
+            {
+                path: 'list/edit',
+                component: () =>
+                    import('@/views/sheet/sheet-edit.vue')
+            }
         ]
     }]
 })

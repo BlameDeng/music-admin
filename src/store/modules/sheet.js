@@ -2,7 +2,8 @@ import Sheet from '@/helpers/sheet.js'
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
 const state = {
-    allSheets: null
+    allSheets: null,
+    editingSheet: null
 }
 
 const getters = {}
@@ -10,7 +11,10 @@ const getters = {}
 const mutations = {
     setAllSheets(state, payload) {
         state.allSheets = payload;
-    }
+    },
+    setEditingSheet(state, payload) {
+        payload > -1 ? state.editingSheet = state.allSheets[payload] : state.editingSheet = null;
+    },
 }
 
 const actions = {

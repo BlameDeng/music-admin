@@ -24,7 +24,7 @@
         methods: {
             ...mapActions(['createSheet','fetchAllSheets']),
             onClick() {
-                this.createSheet({ name: '123', tag1: 'xxx', tag2: 'xxx', tag3: 'xxx', summary: 'yyy' }).then(res=>{
+                this.createSheet({ name: '123', tag1: 'xxx', tag2: 'xxx', tag3: 'xxx', summary: 'yyy',songs:[{xxx:'xxx'}] }).then(res=>{
                     console.log(res)
                 })
             }

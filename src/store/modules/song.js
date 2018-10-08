@@ -28,15 +28,7 @@ const mutations = {
         state.allSongs = state.allSongs.filter(song => song.id !== payload);
     },
     updateCover(state, payload) {
-        let array = state.allSongs;
-        for (let i = 0; i < array.length; i++) {
-            if (array[i].id === payload.song.id) {
-                let obj = JSON.parse(JSON.stringify(array[i]));
-                obj.cover = payload.cover;
-                Vue.set(array, i, obj);
-                break;
-            }
-        }
+        state.editingSong = payload;
     }
 }
 

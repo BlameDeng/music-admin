@@ -267,7 +267,9 @@
                 window.open(this.editingSong.cover, '_blank');
             },
             coverUploaded(obj) {
-                this.updateCover({ cover: obj.url + '?x-oss-process=style/avatar', song: this.editingSong });
+                let payload = JSON.parse(JSON.stringify(this.editingSong));
+                payload.cover = obj.url + '?x-oss-process=style/avatar';
+                this.updateCover(payload);
             },
             onClickController(type) {
                 let audio = this.$refs.audio;
@@ -288,6 +290,7 @@
             },
             onCloseDetail() {
                 this.detailVisible = false;
+                this.duration = 0;
                 this.setEditingSong(-1);
             }
         }
