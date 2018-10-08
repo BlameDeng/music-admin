@@ -14,10 +14,20 @@ Sheet.createSheet = function(data) {
     });
     return sheet.save();
 }
-
+//获取所有歌单
 Sheet.fetchAllSheets = function() {
     let query = new AV.Query('Sheet');
     return query.find();
 }
-
+//更新歌单信息
+Sheet.updateSheet = function(obj, id) {
+    let sheet = AV.Object.createWithoutData('Sheet', id);
+    // 修改属性
+    let entries = Object.entries(obj);
+    entries.forEach(array => {
+        sheet.set(array[0], array[1]);
+    });
+    // 保存到云端
+    return sheet.save();
+}
 export default Sheet

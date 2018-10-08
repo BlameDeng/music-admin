@@ -13,7 +13,20 @@ const mutations = {
         state.allSheets = payload;
     },
     setEditingSheet(state, payload) {
-        payload > -1 ? state.editingSheet = state.allSheets[payload] : state.editingSheet = null;
+        if (typeof payload === 'object') {
+            state.editingSheet = payload;
+        } else {
+            payload > -1 ? state.editingSheet = state.allSheets[payload] : state.editingSheet = null;
+        }
+    },
+    patchSheet(state, payload) {
+        let array = state.allSheets;
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].id === payload.id) {
+                Vue.set(array, i, payload);
+                break;
+            }
+        }
     },
 }
 
@@ -34,7 +47,17 @@ const actions = {
         });
         commit('setAllSheets', array);
         return Promise.resolve(array);
-    }
+    },
+
+    async updateSheet({ commit }, data) {
+        let { name, tag1, tag2, tag3, cover, id, createdAt, summary, songs } = data;
+        let res = await Sheet.updateSheet({ name, tag1, tag2, tag3, cover, summary, songs }, id);
+        let { updatedAt } = res;
+        let payload = { name, tag1, tag2, tag3, cover, id, createdAt, summary, songs, updatedAt };
+        commit('patchSheet', payload);
+        commit('setEditingSheet',payload);
+        return res;
+    },
 }
 
 export default { state, getters, mutations, actions }
