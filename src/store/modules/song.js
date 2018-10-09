@@ -8,8 +8,6 @@ const state = {
 
 const getters = {
     getSheetSongs: state => (queryArray) => {
-        console.log(queryArray);
-
         let array = [];
         state.allSongs = state.allSongs || [];
         state.allSongs.forEach(song => {

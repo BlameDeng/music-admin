@@ -28,6 +28,9 @@ const mutations = {
             }
         }
     },
+    updateCover(state, payload) {
+        state.editingSheet = payload;
+    }
 }
 
 const actions = {
