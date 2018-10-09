@@ -1,15 +1,16 @@
 <template>
     <div class="song-play">
         <div class="controller">
-            <Icon type="md-play" size="25" class="icon" @click="onClickController('play')" />
-            <Icon type="md-pause" size="25" class="icon" @click="onClickController('pause')" />
-            <Icon type="md-square" size="25" class="icon" @click="onClickController('stop')" />
-            <audio :src="source" ref="audio" @timeupdate="timeupdate"></audio>
+            <Icon type="md-play" size="20" class="icon play" :class="{ready}" @click="onClickController('play')" />
+            <Icon type="md-pause" size="20" class="icon" @click="onClickController('pause')" />
+            <Icon type="md-square" size="20" class="icon" @click="onClickController('stop')" />
+            <audio @canplay="canplay" :src="source" ref="audio" @timeupdate="timeupdate" @loadstart="loadstart"></audio>
         </div>
+        <span class="current">{{current|formatSongTime}}</span>
         <div class="full">
             <div class="pro" ref="pro"></div>
         </div>
-        <span>{{duration|formatSongTime}}</span>
+        <span class="duration">{{duration|formatSongTime}}</span>
     </div>
 </template>
 
@@ -18,38 +19,66 @@
         name: "SongPlay",
         props: { source: { type: String, required: true } },
         data() {
-            return { duration: 0 }
+            return {
+                duration: 0,
+                current: 0,
+                ready: false,
+                audio: null
+            }
         },
         filters: {
             formatSongTime(val) {
                 if (!val) {
-                    return `0:00`;
+                    return `00:00`;
                 }
                 let m = Math.floor(val / 60);
+                m < 10 ? m = `0${m}` : '';
                 let s = Math.floor(val % 60);
-                s === 0 ? s = '00' : '';
+                s < 10 ? s = `0${s}` : '';
                 return `${m}:${s}`;
             }
         },
+        mounted() {
+            this.audio = this.$refs.audio;
+        },
         methods: {
             onClickController(type) {
-                let audio = this.$refs.audio;
-                type === 'play' ? audio.play() : '';
-                type === 'pause' ? audio.pause() : '';
+                if (type === 'play') {
+                    this.ready ? this.audio.play() : '';
+                }
+                type === 'pause' ? this.audio.pause() : '';
                 if (type === 'stop') {
-                    audio.currentTime = 0;
-                    audio.pause();
+                    this.audio.currentTime = 0;
+                    this.audio.pause();
                 }
             },
+            play() {
+ 
+                    this.audio.addEventListener('canplay', this.startToPlay);
+              
+            },
+            startToPlay() {
+                this.audio.play();
+                this.audio.removeEventListener('canplay', this.startToPlay);
+            },
+            loadstart() {
+                this.ready = false;
+            },
+            canplay() {
+                this.ready = true;
+                this.duration = this.audio.duration;
+                this.$refs.pro.style.transform = `translateX(-100%)`;
+            },
             timeupdate() {
-                let audio = this.$refs.audio;
-                if (!audio) { return }
-                let current = audio.currentTime;
-                let percent = (current / audio.duration) * 100;
-                this.duration ? '' : this.duration = audio.duration;
+                if (!this.audio) { return }
+                this.current = this.audio.currentTime;
+                let percent = (this.current / this.audio.duration) * 100;
                 this.$refs.pro.style.transform = `translateX(${percent-100}%)`;
             },
-        }
+        },
+        beforeDestroy() {
+            this.audio.removeEventListener('canplay', this.startToPlay);
+        },
     }
 </script>
 
@@ -67,13 +96,20 @@
         margin: 0 auto;
         color: $sub;
         >.controller {
-            margin-right: 20px;
+            margin-right: 10px;
             cursor: pointer;
+            color: $lp;
             >.icon {
-                &:hover {
-                    color: $p;
+                &.play {
+                    color: $disabled;
+                    &.ready {
+                        color: $lp;
+                    }
                 }
             }
+        }
+        >.current {
+            margin-right: 5px;
         }
         >.full {
             height: 10px;
@@ -90,7 +126,7 @@
                 transform: translateX(-100%);
             }
         }
-        >span {
+        >.duration {
             margin-left: 5px;
         }
     }

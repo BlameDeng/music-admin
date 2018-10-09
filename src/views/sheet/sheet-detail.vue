@@ -29,13 +29,13 @@
                     <div class="name">{{song.name}}</div>
                     <div class="singer">{{song.singer}}</div>
                     <div class="play">
-                        <Icon type="md-play" size="12" class="icon" style="cursor:pointer;" />
+                        <Icon type="md-play" size="12" class="icon" style="cursor:pointer;" @click="onClickPlay(song)" />
                     </div>
                 </div>
             </template>
         </div>
         <div class="play">
-            <x-play source="http://songsbucket.oss-cn-shenzhen.aliyuncs.com/Pianoboy%E9%AB%98%E8%87%B3%E8%B1%AA%20-%20The%C2%A0truth%C2%A0that%C2%A0you%C2%A0leave.mp3"></x-play>
+            <x-play :source="source" ref="play"></x-play>
         </div>
     </div>
 </template>
@@ -47,7 +47,7 @@
         name: "SheetDetail",
         components: { xPlay },
         data() {
-            return { songs: null }
+            return { songs: null, source: '' }
         },
         computed: {
             ...mapState({
@@ -55,11 +55,15 @@
             })
         },
         created() {
-            if (!this.editingSheet) return;
-            this.songs = this.$store.getters.getSheetSongs(this.editingSheet.songs);
+            if (this.editingSheet && this.editingSheet.songs && this.editingSheet.songs.length) {
+                this.songs = this.$store.getters.getSheetSongs(this.editingSheet.songs);
+            }
         },
         methods: {
-
+            onClickPlay(song) {
+                this.source = song.url;
+                this.$refs.play.play();
+            }
         }
     }
 </script>
@@ -159,8 +163,7 @@
                     border: 1px solid $border;
                     padding: 2px 0 2px 20px;
                     border-right: none;
-                    border-top-left-radius: 3px;
-                    border-bottom-left-radius: 3px;
+                    border-left-color: transparent;
                 }
                 >.name {
                     width: 40%;
@@ -178,8 +181,7 @@
                     width: 10%;
                     border: 1px solid $border;
                     padding: 2px 0 2px 10px;
-                    border-top-right-radius: 3px;
-                    border-bottom-right-radius: 3px;
+                    border-right-color: transparent;
                 }
             }
             >.song {
@@ -188,7 +190,7 @@
                 align-items: center;
                 color: $content;
                 font-size: 12px;
-                &:nth-child(2n) {
+                &:nth-child(2n-1) {
                     background: $bg;
                 }
                 &:hover {
@@ -215,7 +217,7 @@
                 >.play {
                     width: 10%;
                     padding: 3px 0 2px 20px;
-                    color: $sub;
+                    color: lighten($sub, 20%);
                     border: 1px solid transparent;
                     &:hover {
                         color: $p;
