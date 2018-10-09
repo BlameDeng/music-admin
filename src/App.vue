@@ -68,6 +68,7 @@
         height: 100%;
         line-height: 1.4em;
         min-width: 1000px;
+        min-height: 600px;
     }
     ul, ol {
         list-style: none;

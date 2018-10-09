@@ -65,6 +65,7 @@
         user-select: none;
         border-radius: 4px;
         margin: 0 auto;
+        color: $sub;
         >.controller {
             margin-right: 20px;
             cursor: pointer;
