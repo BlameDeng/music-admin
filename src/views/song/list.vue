@@ -157,7 +157,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.onDetail(params.index)
+                                            this.onDetail(params.index + (this.current - 1) * this.pageSize)
                                         }
                                     }
                                 }, '详情'),
@@ -171,7 +171,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.onEdit(params.index)
+                                            this.onEdit(params.index + (this.current - 1) * this.pageSize)
                                         }
                                     }
                                 }, '编辑'),
@@ -182,7 +182,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.onRemove(params.index)
+                                            this.onRemove(params.index + (this.current - 1) * this.pageSize)
                                         }
                                     }
                                 }, '删除')
