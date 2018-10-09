@@ -16,14 +16,26 @@
 <script>
     import xHeader from '@/components/common/header.vue'
     import xNav from '@/components/common/nav.vue'
+    import { mapState, mapActions } from 'vuex'
     export default {
         name: 'App',
         components: { xHeader, xNav },
+        computed: {
+            ...mapState({
+                allSongs: state => state.song.allSongs,
+                allSheets: state => state.sheet.allSheets
+            })
+        },
+        methods: {
+            ...mapActions(['fetchAllSongs', 'fetchAllSheets'])
+        },
         created() {
             this.$Message.config({
                 top: 75,
                 duration: 2
             });
+            this.allSongs ? '' : this.fetchAllSongs();
+            this.allSheets ? '' : this.fetchAllSheets().then(res => {});
         }
     }
 </script>

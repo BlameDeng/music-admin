@@ -64,6 +64,7 @@ const actions = {
         let { name, singer, url, cover, lrc, id, createdAt } = data;
         let res = await Song.updateSong({ name, singer, url, cover, lrc }, id);
         let { updatedAt } = res;
+        updatedAt=formatDate(updatedAt);
         let payload = { name, singer, url, cover, lrc, id, createdAt, updatedAt };
         commit('patchSong', payload);
         return res;

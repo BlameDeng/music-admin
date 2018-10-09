@@ -35,7 +35,7 @@
             </template>
         </div>
         <div class="play">
-            <x-play :source="source" ref="play"></x-play>
+            <x-play :source="source" :name="songname" ref="play"></x-play>
         </div>
     </div>
 </template>
@@ -47,7 +47,7 @@
         name: "SheetDetail",
         components: { xPlay },
         data() {
-            return { songs: null, source: '' }
+            return { songs: null, source: '', songname: '' }
         },
         computed: {
             ...mapState({
@@ -62,6 +62,7 @@
         methods: {
             onClickPlay(song) {
                 this.source = song.url;
+                this.songname = song.name;
                 this.$refs.play.play();
             }
         }
@@ -207,12 +208,18 @@
                     padding: 3px 0 2px 10px;
                     border: 1px solid transparent;
                     border-right: none;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 >.singer {
                     width: 40%;
                     padding: 3px 0 2px 10px;
                     border: 1px solid transparent;
                     border-right: none;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 >.play {
                     width: 10%;

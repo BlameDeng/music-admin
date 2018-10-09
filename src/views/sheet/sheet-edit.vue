@@ -99,6 +99,7 @@
             },
             onSave() {
                 this.updateSheet(this.editingSheet).then(res => {
+                    this.$Message.success('保存成功');
                     // this.allId = null;
                     // this.sheetSongs = this.getSheetSongs();
                 });

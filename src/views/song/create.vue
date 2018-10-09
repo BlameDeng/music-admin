@@ -78,7 +78,7 @@
             };
         },
         methods: {
-            ...mapActions(['createSong']),
+            ...mapActions(['createSong','fetchAllSongs']),
             onClickPick() {
                 this.current = 0;
             },
@@ -106,6 +106,7 @@
             onSave() {
                 this.current = 3;
                 this.createSong(this.formData).then(res => {
+                    this.fetchAllSongs();
                     this.current = 4;
                     this.formData = { name: '', singer: '', url: '', cover: '', lrc: '' };
                     this.infoVisible = true;

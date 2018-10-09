@@ -56,9 +56,10 @@ const actions = {
         let { name, tag1, tag2, tag3, cover, id, createdAt, summary, songs } = data;
         let res = await Sheet.updateSheet({ name, tag1, tag2, tag3, cover, summary, songs }, id);
         let { updatedAt } = res;
+        updatedAt = formatDate(updatedAt);
         let payload = { name, tag1, tag2, tag3, cover, id, createdAt, summary, songs, updatedAt };
         commit('patchSheet', payload);
-        commit('setEditingSheet',payload);
+        commit('setEditingSheet', payload);
         return res;
     },
 }

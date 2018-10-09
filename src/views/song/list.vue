@@ -200,7 +200,7 @@
             })
         },
         created() {
-            this.fetchAllSongs();
+            this.allSongs ? '' : this.fetchAllSongs();
         },
         methods: {
             ...mapActions(['fetchAllSongs', 'updateSong', 'destroySong']),
@@ -233,11 +233,11 @@
                 let str = this.formatDate(now);
                 if (type === 1) {
                     this.$refs.table.exportCsv({
-                        filename: `原始数据${str}`
+                        filename: `歌曲列表-原始数据${str}`
                     });
                 } else if (type === 2) {
                     this.$refs.table.exportCsv({
-                        filename: `排序后数据${str}`,
+                        filename: `歌曲列表-排序后数据${str}`,
                         original: false
                     });
                 }
@@ -375,6 +375,9 @@
                             font-size: 25px;
                             color: $title;
                             margin-bottom: 20px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
                         }
                         >.singer {
                             font-size: 14px;

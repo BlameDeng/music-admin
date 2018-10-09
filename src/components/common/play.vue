@@ -1,5 +1,6 @@
 <template>
     <div class="song-play">
+        <p class="songname" :title="name">{{name}}</p>
         <div class="controller">
             <Icon type="md-play" size="20" class="icon play" :class="{ready}" @click="onClickController('play')" />
             <Icon type="md-pause" size="20" class="icon" @click="onClickController('pause')" />
@@ -17,7 +18,10 @@
 <script>
     export default {
         name: "SongPlay",
-        props: { source: { type: String, required: true } },
+        props: {
+            source: { type: String, required: true },
+            name: { type: String, default: '' }
+        },
         data() {
             return {
                 duration: 0,
@@ -53,9 +57,9 @@
                 }
             },
             play() {
- 
-                    this.audio.addEventListener('canplay', this.startToPlay);
-              
+
+                this.audio.addEventListener('canplay', this.startToPlay);
+
             },
             startToPlay() {
                 this.audio.play();
@@ -89,12 +93,21 @@
         width: 80%;
         height: 30px;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         user-select: none;
         border-radius: 4px;
         margin: 0 auto;
         color: $sub;
+        >.songname {
+            font-size: 12px;
+            margin-left: 20px;
+            width: 60px;
+            margin-right: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         >.controller {
             margin-right: 10px;
             cursor: pointer;
@@ -113,7 +126,7 @@
         }
         >.full {
             height: 10px;
-            width: 60%;
+            width: 40%;
             border-radius: 1px;
             border: 1px solid $border;
             overflow: hidden;
