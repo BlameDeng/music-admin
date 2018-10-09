@@ -1,8 +1,9 @@
 <template>
     <div class="sheet-detail">
+        <Icon type="md-arrow-round-back" size="25" class="icon" @click="onBack" />
         <div class="sheet-info">
             <div class="cover">
-                <img src="@/assets/avatar.jpg" alt="cover">
+                <img :src="editingSheet.cover" alt="cover">
             </div>
             <div class="info" v-if="editingSheet">
                 <div class="title">
@@ -64,7 +65,8 @@
                 this.source = song.url;
                 this.songname = song.name;
                 this.$refs.play.play();
-            }
+            },
+            onBack(){this.$router.go(-1);},
         }
     }
 </script>
@@ -79,6 +81,17 @@
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
+        position: relative;
+        >.icon{
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: lighten($sub,20%);
+            cursor: pointer;
+            &:hover{
+                color: $p;
+            }
+        }
         >.sheet-info {
             width: 80%;
             margin: 0 auto;

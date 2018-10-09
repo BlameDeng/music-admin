@@ -34,7 +34,7 @@
                                 <Button size="small" type="default" @click="preview">预览封面</Button>
                                 <Button size="small" type="default" id="avatar-picker">上传新封面</Button>
                             </div>
-                            <x-upload container-id="avatar-upload-container" browse-id="avatar-picker" bucket-name="coversbucket" @uploaded="coverUploaded($event)"></x-upload>
+                            <x-upload container-id="avatar-upload-container" browse-id="avatar-picker" bucket-name="songcovers" @uploaded="coverUploaded($event)"></x-upload>
                         </FormItem>
                         <FormItem label="歌词">
                             <Input type="textarea" v-model.trim="editingSong.lrc" :rows="3"></Input>
@@ -53,7 +53,7 @@
                     <div class="title">
                         <Icon type="md-close" class="icon" size="25" @click="onCloseDetail" />
                         <div class="title-inner">
-                            <h3 class="name">{{editingSong.name}}</h3>
+                            <h4 class="name">{{editingSong.name}}</h4>
                             <p class="singer">
                                 <Icon type="md-microphone" class="icon" />
                                 {{editingSong.singer}}
@@ -72,7 +72,7 @@
                         <div class="lrc">
                             <span>歌词：</span>
                             <br>
-                            <div class="lrc-content">{{editingSong.lrc}}</div>
+                            <pre class="lrc-content">{{editingSong.lrc}}</pre>
                         </div>
                     </div>
                     <div class="play">
@@ -315,8 +315,8 @@
                     position: absolute;
                     top: 5px;
                     right: 5px;
-                    color: $disabled;
                     cursor: pointer;
+                    color: lighten($sub,20%);
                     &:hover {
                         color: $p;
                     }
@@ -364,6 +364,7 @@
                         top: 5px;
                         right: 5px;
                         cursor: pointer;
+                        color: lighten($sub,20%);
                         &:hover {
                             color: $p;
                         }
@@ -372,7 +373,7 @@
                         width: 50%;
                         text-align: center;
                         >.name {
-                            font-size: 25px;
+                            font-size: 20px;
                             color: $title;
                             margin-bottom: 20px;
                             white-space: nowrap;

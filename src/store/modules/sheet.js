@@ -30,7 +30,10 @@ const mutations = {
     },
     updateCover(state, payload) {
         state.editingSheet = payload;
-    }
+    },
+    deleteSheet(state, payload) {
+        state.allSheets = state.allSheets.filter(sheet => sheet.id !== payload);
+    },
 }
 
 const actions = {
@@ -62,6 +65,12 @@ const actions = {
         commit('setEditingSheet', payload);
         return res;
     },
+
+    async destroySheet({ commit }, id) {
+        let res = await Sheet.destroySheet(id);
+        commit('deleteSheet', id);
+        return res;
+    }
 }
 
 export default { state, getters, mutations, actions }

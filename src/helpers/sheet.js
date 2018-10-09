@@ -30,4 +30,9 @@ Sheet.updateSheet = function(obj, id) {
     // 保存到云端
     return sheet.save();
 }
+//删除歌单
+Sheet.destroySheet = function(id) {
+    let sheet = AV.Object.createWithoutData('Sheet', id);
+    return sheet.destroy();
+}
 export default Sheet

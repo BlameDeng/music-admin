@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <Menu style="width:100%;height:100%;font-size:14px;" accordion @on-select="onSelectItem($event)">
+        <Menu style="width:100%;height:100%;font-size:14px;" accordion @on-select="onSelectItem($event)" class="menu">
             <Submenu name="1">
                 <template slot="title">
                     <Icon type="md-qr-scanner" />
@@ -41,8 +41,8 @@
                     <Icon type="ios-list-box" />
                     歌单
                 </template>
-                    <MenuItem name="sheet-list">歌单列表</MenuItem>
-                    <MenuItem name="sheet-create">新建歌单</MenuItem>
+                <MenuItem name="sheet-list">歌单列表</MenuItem>
+                <MenuItem name="sheet-create">新建歌单</MenuItem>
             </Submenu>
         </Menu>
     </div>
@@ -51,21 +51,17 @@
     export default {
         name: 'Nav',
         components: {},
-        data() {
-            return {
-
-            }
-        },
+        data() { return {} },
         methods: {
             onSelectItem(name) {
-                this.$router.push('/'+name.replace('-', '/'));
+                this.$router.push('/' + name.replace('-', '/'));
             }
         }
     }
 </script>
 <style scoped lang="scss">
     .nav {
-        width: 100%;
+        width: 200px;
         height: 100%;
     }
 </style>

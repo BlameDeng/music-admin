@@ -125,14 +125,15 @@
         },
         computed: {
             ...mapState({
-                allSheets: state => state.sheet.allSheets
+                allSheets: state => state.sheet.allSheets,
+                editingSheet: state => state.sheet.editingSheet
             })
         },
         created() {
             this.allSheets ? '' : this.fetchAllSheets();
         },
         methods: {
-            ...mapActions(['fetchAllSheets']),
+            ...mapActions(['fetchAllSheets', 'destroySheet']),
             ...mapMutations(['setEditingSheet']),
             onDetail(index) {
                 this.setEditingSheet(index);
@@ -142,7 +143,23 @@
                 this.setEditingSheet(index);
                 this.$router.push({ path: './list/edit' });
             },
-            onRemove(index) {},
+            onRemove(index) {
+                this.setEditingSheet(index);
+                this.$Modal.confirm({
+                    title: '警告',
+                    content: '<p>该操作将永久删除该歌单，是否继续？</p>',
+                    okText: '继续删除',
+                    cancelText: '取消删除',
+                    onOk: () => {
+                        this.destroySheet(this.editingSheet.id).then(res => {
+                            this.$Message.info('成功删除歌单');
+                        });
+                    },
+                    onCancel: () => {
+                        this.$Message.info('已取消删除');
+                    }
+                })
+            },
             exportData(type) {
                 let now = new Date();
                 let str = this.formatDate(now);

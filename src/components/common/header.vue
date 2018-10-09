@@ -64,6 +64,7 @@
             align-items: center;
             padding-left: 20px;
             flex-shrink: 0;
+            transition: all .3s;
             >.logo-text {
                 margin-left: 10px;
             }
