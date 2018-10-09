@@ -64,7 +64,6 @@
     }
 </script>
 <style scoped lang="scss">
-    @import '@/assets/base.scss';
     .nav {
         width: 100%;
         height: 100%;

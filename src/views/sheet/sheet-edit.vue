@@ -248,6 +248,7 @@
                 height: 70%;
                 padding: 5px 20px;
                 overflow: auto;
+                border-top: 1px solid $border;
                 >.title {
                     color: $p;
                 }

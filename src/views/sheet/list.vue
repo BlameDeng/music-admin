@@ -119,16 +119,19 @@
         },
         created() {
             this.fetchAllSheets().then(res => {
-                
+
             })
         },
         methods: {
             ...mapActions(['fetchAllSheets']),
             ...mapMutations(['setEditingSheet']),
-            onDetail(index) {},
+            onDetail(index) {
+                this.setEditingSheet(index);
+                this.$router.push({ path: './list/detail' });
+            },
             onEdit(index) {
                 this.setEditingSheet(index);
-                this.$router.push({path:'./list/edit'});
+                this.$router.push({ path: './list/edit' });
             },
             onRemove(index) {},
         }

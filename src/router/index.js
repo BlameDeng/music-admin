@@ -41,6 +41,11 @@ export default new Router({
                 path: 'list/edit',
                 component: () =>
                     import('@/views/sheet/sheet-edit.vue')
+            },
+            {
+                path: 'list/detail',
+                component: () =>
+                    import('@/views/sheet/sheet-detail.vue')
             }
         ]
     }]
