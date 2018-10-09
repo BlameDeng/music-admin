@@ -1,17 +1,20 @@
 <template>
     <div class="song-list">
         <div class="list" v-if="allSongs&&allSongs.length">
-            <Table size="small" stripe border :columns="columns" :data="allSongs" ref="table"></Table>
+            <Table size="small" stripe border :columns="columns" :data="currentArray" ref="table"></Table>
         </div>
         <div class="button-bar" v-if="allSongs&&allSongs.length">
-            <Button type="primary" size="large" @click="exportData(1)">
-                <Icon type="ios-download-outline"></Icon>
-                导出原始数据
-            </Button>
-            <Button type="primary" size="large" @click="exportData(2)">
-                <Icon type="ios-download-outline"></Icon>
-                导出排序后的数据
-            </Button>
+            <Page :total="total" :current.sync="current" :page-size="pageSize" style="margin-left:40px;" />
+            <div style="margin-right:40px;">
+                <Button type="primary" size="large" @click="exportData(1)">
+                    <Icon type="ios-download-outline"></Icon>
+                    导出原始数据
+                </Button>
+                <Button type="primary" size="large" @click="exportData(2)">
+                    <Icon type="ios-download-outline"></Icon>
+                    导出排序后的数据
+                </Button>
+            </div>
         </div>
         <transition name="fade">
             <div class="edit-layer" v-if="editingSong&&!detailVisible">
@@ -96,9 +99,12 @@
         data() {
             return {
                 columns: [{
-                        type: 'index',
+                        type: 'index2',
                         width: 60,
-                        align: 'center'
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', params.index + (this.current - 1) * this.pageSize + 1);
+                        }
                     },
                     {
                         title: '歌名',
@@ -110,11 +116,6 @@
                         title: '歌手',
                         key: 'singer',
                         sortable: true,
-                        ellipsis: true
-                    },
-                    {
-                        title: '歌词',
-                        key: 'lrc',
                         ellipsis: true
                     },
                     {
@@ -190,14 +191,22 @@
                     }
                 ],
                 detailVisible: false,
-                duration: 0
+                duration: 0,
+                current: 1,
+                pageSize: 10
             };
         },
         computed: {
             ...mapState({
                 allSongs: state => state.song.allSongs,
                 editingSong: state => state.song.editingSong
-            })
+            }),
+            total() {
+                return this.allSongs.length;
+            },
+            currentArray() {
+                return this.allSongs.slice(this.pageSize * (this.current - 1), this.pageSize * this.current);
+            }
         },
         created() {
             this.allSongs ? '' : this.fetchAllSongs();
@@ -286,9 +295,11 @@
             overflow: auto;
         }
         >.button-bar {
-            text-align: end;
             height: 42px;
-            padding: 2px 35px 4px 0;
+            padding: 2px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         >.edit-layer {
             background: rgba(0, 0, 0, 0.2);
@@ -316,7 +327,7 @@
                     top: 5px;
                     right: 5px;
                     cursor: pointer;
-                    color: lighten($sub,20%);
+                    color: lighten($sub, 20%);
                     &:hover {
                         color: $p;
                     }
@@ -364,7 +375,7 @@
                         top: 5px;
                         right: 5px;
                         cursor: pointer;
-                        color: lighten($sub,20%);
+                        color: lighten($sub, 20%);
                         &:hover {
                             color: $p;
                         }
