@@ -2,7 +2,7 @@
     <div class="sheet-edit">
         <div class="sheet-info">
             <h3>编辑歌单</h3>
-            <Form label-position="left" class="form">
+            <Form label-position="left" class="form" v-if="editingSheet">
                 <FormItem label="歌单名">
                     <Input v-model.trim="editingSheet.name"></Input>
                 </FormItem>
@@ -33,15 +33,15 @@
         </div>
         <div class="songs">
             <div class="sheet-songs">
-                <Button type="error" class="button">从歌单移除</Button>
+                <Button type="error" class="button" @click="pathSheet('removeSong')">从歌单移除</Button>
                 <div class="title">
                     已有歌曲列表
                 </div>
-                <div class="song" v-if="editingSheet&&editingSheet.songs&&editingSheet.songs.length" v-for="(song,index) in editingSheet.songs" :key="song.id">
+                <div class="song" v-if="sheetSongs&&sheetSongs.length" v-for="(song,index) in sheetSongs" :key="song.id">
                     <p class="index">{{index+1}}</p>
                     <p class="song-name">{{song.name}}</p>
                     <p class="singer">{{song.singer}}</p>
-                    <p :class="{}">
+                    <p :class="{selected:sheetSongId&&sheetSongId.indexOf(song.id)>-1}" @click="onClickSong('sheetSong',song.id)">
                         <Icon type="md-checkmark" class="icon" />
                     </p>
                 </div>
@@ -55,7 +55,7 @@
                     <p class="index">{{index+1}}</p>
                     <p class="song-name">{{song.name}}</p>
                     <p class="singer">{{song.singer}}</p>
-                    <p :class="{selected:selectedAllSongs&&selectedAllSongs.indexOf(song)>-1}" @click="onClickSong('all',song)">
+                    <p :class="{selected:allId&&allId.indexOf(song.id)>-1}" @click="onClickSong('all',song.id)">
                         <Icon type="md-checkmark" class="icon" />
                     </p>
                 </div>
@@ -71,7 +71,9 @@
         data() {
             return {
                 selectedSheetSongs: null,
-                selectedAllSongs: null
+                sheetSongs: null,
+                allId: null,
+                sheetSongId: null
             };
         },
         computed: {
@@ -79,30 +81,52 @@
                 editingSheet: state => state.sheet.editingSheet,
                 allSongs: state => state.song.allSongs
             }),
-            sheetSongs() {
-                return editingSheet.songs;
-            }
+            // sheetSongs() {
+            //   return editingSheet.songs;
+            // }
         },
         created() {
             this.allSongs ? "" : this.fetchAllSongs();
+            if (this.editingSheet && this.editingSheet.songs && this.editingSheet.songs.length) {
+                this.sheetSongs = this.getSheetSongs();
+            }
         },
         methods: {
-            ...mapActions(['fetchAllSongs', 'updateSheet']),
-            onClickSong(type, song) {
+            ...mapActions(["fetchAllSongs", "updateSheet"]),
+            getSheetSongs() {
+                return this.$store.getters.getSheetSongs(this.editingSheet.songs);
+            },
+            onClickSong(type, id) {
                 if (type === "all") {
-                    this.selectedAllSongs = this.selectedAllSongs || [];
-                    let index = this.selectedAllSongs.indexOf(song);
-                    index === -1 ? this.selectedAllSongs.push(song) : this.selectedAllSongs.splice(index, 1);
+                    this.allId = this.allId || [];
+                    let index = this.allId.indexOf(id);
+                    index === -1 ? this.allId.push(id) : this.allId.splice(index, 1);
+                }
+                if (type === 'sheetSong') {
+                    this.sheetSongId = this.sheetSongId || [];
+                    let index = this.sheetSongId.indexOf(id);
+                    index === -1 ? this.sheetSongId.push(id) : this.sheetSongId.splice(index, 1);
                 }
             },
             pathSheet(type) {
-                if (type === 'addSong') {
-                    let copy = JSON.parse(JSON.stringify(this.editingSheet));
-                    copy.songs = copy.songs || [];
-                    copy.songs = copy.songs.concat(this.selectedAllSongs);
+                let copy = JSON.parse(JSON.stringify(this.editingSheet));
+                copy.songs = copy.songs || [];
+                if (type === "addSong") {
+                    this.allId.forEach(id => {
+                        copy.songs.indexOf(id) === -1 ? copy.songs.push(id) : "";
+                    });
                     this.updateSheet(copy).then(res => {
-                        console.log(res)
-                    })
+                        this.sheetSongs = this.getSheetSongs();
+                    });
+                }
+                if (type === 'removeSong') {
+                    this.sheetSongId.forEach(id => {
+                        let index = copy.songs.indexOf(id);
+                        copy.songs.splice(index, 1);
+                    });
+                    this.updateSheet(copy).then(res => {
+                        this.sheetSongs = this.getSheetSongs();
+                    });
                 }
             }
         }

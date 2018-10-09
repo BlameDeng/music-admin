@@ -6,7 +6,18 @@ const state = {
     editingSong: null
 }
 
-const getters = {}
+const getters = {
+    getSheetSongs: state => (queryArray) => {
+        console.log(queryArray);
+
+        let array = [];
+        state.allSongs = state.allSongs || [];
+        state.allSongs.forEach(song => {
+            queryArray.indexOf(song.id) > -1 ? array.push(song) : '';
+        });
+        return array;
+    }
+}
 
 const mutations = {
     setAllSongs(state, payload) {

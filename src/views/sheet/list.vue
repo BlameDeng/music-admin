@@ -119,7 +119,7 @@
         },
         created() {
             this.fetchAllSheets().then(res => {
-                console.log(res)
+                
             })
         },
         methods: {
