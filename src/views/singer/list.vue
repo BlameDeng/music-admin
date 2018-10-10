@@ -25,17 +25,18 @@
         </div>
         <div class="singers">
             <template v-if="singerList&&singerList.length">
-                <div class="singer" v-for="singer in singerList" :key="singer.id">
+                <div class="singer" v-for="singer in singerList" :key="singer.id" @click="onClickSinger(singer)">
                     <div class="avatar">
                         <img :src="singer.avatar" alt="avatar">
                     </div>
                     <p class="name">
-                        <span>{{singer.name||singer.ename}}</span>
+                        <span>{{singer.name||singer.othernames}}</span>
                         <img src="@/assets/person.png">
                     </p>
                 </div>
             </template>
         </div>
+        <router-view></router-view>
     </div>
 </template>
 <script>
@@ -58,8 +59,8 @@
             }),
             singerList() {
                 let copy = JSON.parse(JSON.stringify(this.allSingers));
-                this.filterArray[0] === 'all' ? '' : copy =copy.filter(song=>song.lang===this.filterArray[0]);
-                this.filterArray[1] === 'all' ? '' : copy =copy.filter(song=>song.type===this.filterArray[1]);
+                this.filterArray[0] === 'all' ? '' : copy = copy.filter(song => song.lang === this.filterArray[0]);
+                this.filterArray[1] === 'all' ? '' : copy = copy.filter(song => song.type === this.filterArray[1]);
                 return copy;
             }
         },
@@ -67,6 +68,12 @@
             onClickFilter(tab, name) {
                 tab === 'lang' ? this.$set(this.filterArray, 0, name) : '';
                 tab === 'type' ? this.$set(this.filterArray, 1, name) : '';
+            },
+            onClickSinger(singer) {
+                this.$router.push({
+                    path: './list/detail',
+                    query: { singer }
+                })
             }
         }
     };
@@ -155,6 +162,7 @@
                 color: $content;
                 flex-shrink: 0;
                 margin-right: 10px;
+                cursor: pointer;
                 >.avatar {
                     width: 100px;
                     height: 100px;

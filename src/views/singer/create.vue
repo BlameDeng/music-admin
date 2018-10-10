@@ -4,11 +4,11 @@
         <div class="form-wrapper">
             <h3>新增歌手</h3>
             <Form :label-width="80" style="width:100%;">
-                <FormItem label="中文名">
+                <FormItem label="名字">
                     <Input v-model.trim="name"></Input>
                 </FormItem>
-                <FormItem label="英文名">
-                    <Input v-model.trim="ename"></Input>
+                <FormItem label="其他名字">
+                    <Input v-model.trim="othernames"></Input>
                 </FormItem>
                 <FormItem label="语种">
                     <Select v-model="lang">
@@ -53,7 +53,7 @@
         name: "SingerCreate",
         components: { xUpload },
         data() {
-            return { name: '', ename: '', lang: '', type: '', avatar: '', summary: '' }
+            return { name: '', othernames: '', lang: '', type: '', avatar: '', summary: '' }
         },
         methods: {
             ...mapActions(['createSinger', 'fetchAllSingers']),
@@ -61,11 +61,11 @@
                 this.$router.go(-1);
             },
             onSave() {
-                if (!this.name && !this.ename) {
+                if (!this.name && !this.othernames) {
                     this.$Message.warning('歌手名字不能为空！');
                     return
                 }
-                let data = { name: this.name, ename: this.ename, lang: this.lang, type: this.type, avatar: this.avatar, summary: this.summary };
+                let data = { name: this.name, othernames: this.othernames, lang: this.lang, type: this.type, avatar: this.avatar, summary: this.summary };
                 this.createSinger(data).then(res => {
                     this.$Message.success('创建成功');
                     this.fetchAllSingers().then(res => {

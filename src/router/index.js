@@ -35,6 +35,10 @@ export default new Router({
                 path: 'create',
                 component: () =>
                     import('@/views/singer/create.vue')
+            }, {
+                path: 'list/detail',
+                component: () =>
+                    import('@/views/singer/singer-detail.vue')
             }]
         },
         {

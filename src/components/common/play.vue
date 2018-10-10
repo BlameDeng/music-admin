@@ -5,13 +5,13 @@
             <Icon type="md-play" size="20" class="icon play" :class="{ready}" @click="onClickController('play')" />
             <Icon type="md-pause" size="20" class="icon" @click="onClickController('pause')" />
             <Icon type="md-square" size="20" class="icon" @click="onClickController('stop')" />
-            <audio @canplay="canplay" :src="source" ref="audio" @timeupdate="timeupdate" @loadstart="loadstart"></audio>
         </div>
         <span class="current">{{current|formatSongTime}}</span>
         <div class="full">
             <div class="pro" ref="pro"></div>
         </div>
         <span class="duration">{{duration|formatSongTime}}</span>
+         <audio @canplay="canplay" :src="source" ref="audio" @timeupdate="timeupdate" @loadstart="loadstart"></audio>
     </div>
 </template>
 
@@ -128,7 +128,7 @@
             height: 10px;
             width: 40%;
             border-radius: 1px;
-            border: 1px solid $border;
+            outline: 1px solid $border;
             overflow: hidden;
             >.pro {
                 width: 100%;

@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="play">
-                        <x-play :source="editingSong.url"></x-play>
+                        <x-play :source="editingSong.url" :name="editingSong.name"></x-play>
                     </div>
                 </div>
             </div>

@@ -39,9 +39,7 @@
         mounted() {
             this.allSongs ? '' : this.fetchAllSongs();
             this.allSheets ? '' : this.fetchAllSheets();
-            this.allSingers?'':this.fetchAllSingers().then(res=>{
-                console.log(res)
-            })
+            this.allSingers?'':this.fetchAllSingers();
         },
     }
 </script>
