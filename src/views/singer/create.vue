@@ -29,9 +29,9 @@
                 <FormItem label="头像链接">
                     <Input v-model="avatar"></Input>
                     <div style="text-align:end;margin-top:3px;" id="singer-avatar-create-container">
-                        <Button size="small" type="default">预览封面</Button>
-                        <Button size="small" type="default" id="singer-avatar-create-picker">上传封面</Button>
-                        <x-upload container-id="singer-avatar-create-container" browse-id="singer-avatar-create-picker" bucket-name="singeravatars"></x-upload>
+                        <Button size="small" type="default" @click="preview">预览头像</Button>
+                        <Button size="small" type="default" id="singer-avatar-create-picker">上传头像</Button>
+                        <x-upload container-id="singer-avatar-create-container" browse-id="singer-avatar-create-picker" bucket-name="singeravatars" @uploaded="uploaded($event)"></x-upload>
                     </div>
                 </FormItem>
                 <FormItem label="简介">
@@ -56,7 +56,7 @@
             return { name: '', ename: '', lang: '', type: '', avatar: '', summary: '' }
         },
         methods: {
-            ...mapActions(['createSinger']),
+            ...mapActions(['createSinger', 'fetchAllSingers']),
             onBack() {
                 this.$router.go(-1);
             },
@@ -64,12 +64,24 @@
                 if (!this.name && !this.ename) {
                     this.$Message.warning('歌手名字不能为空！');
                     return
-
                 }
                 let data = { name: this.name, ename: this.ename, lang: this.lang, type: this.type, avatar: this.avatar, summary: this.summary };
                 this.createSinger(data).then(res => {
                     this.$Message.success('创建成功');
+                    this.fetchAllSingers().then(res => {
+                        this.$router.push('/singer/list');
+                    });
                 })
+            },
+            uploaded(obj) {
+                this.avatar = obj.url;
+            },
+            preview() {
+                if (!this.avatar) {
+                    this.$Message.info('还没有上传该歌手头像！');
+                    return
+                }
+                window.open(this.avatar, '_blank');
             }
         }
     }

@@ -3,7 +3,7 @@ import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
 
 const state = {
-    allSinger: null,
+    allSingers: null,
     editingSinger: null
 }
 
