@@ -4,21 +4,15 @@ import Vue from 'vue'
 
 const state = {
     allSingers: null,
-    editingSinger: null
 }
 
-const getters = {}
+const getters = {
+    getSingerById: state => id => state.allSingers && state.allSingers.find(singer => singer.id === id)
+}
 
 const mutations = {
     setAllSingers(state, payload) {
         state.allSingers = payload;
-    },
-    setEditingSinger(state, payload) {
-        if (typeof payload === 'object') {
-            state.editingSinger = payload;
-        } else {
-            payload > -1 ? state.editingSinger = state.allSingers[payload] : state.editingSinger = null;
-        }
     },
     patchSinger(state, payload) {
         let array = state.allSingers;
@@ -28,9 +22,6 @@ const mutations = {
                 break;
             }
         }
-    },
-    updateCover(state, payload) {
-        state.editingSinger = payload;
     },
     deleteSinger(state, payload) {
         state.allSingers = state.allSingers.filter(singer => singer.id !== payload);
@@ -57,13 +48,12 @@ const actions = {
     },
 
     async updateSinger({ commit }, data) {
-        let { name, ename, lang, type, id, createdAt, summary, avatar } = data;
-        let res = await Singer.updateSinger({ name, ename, lang, type, summary, avatar }, id);
+        let { name, othernames, lang, type, id, createdAt, summary, avatar } = data;
+        let res = await Singer.updateSinger({ name, othernames, lang, type, summary, avatar }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
-        let payload = { name, ename, lang, type, id, createdAt, summary, updatedAt, avatar };
+        let payload = { name, othernames, lang, type, id, createdAt, summary, updatedAt, avatar };
         commit('patchSinger', payload);
-        commit('setEditingSinger', payload);
         return res;
     },
 

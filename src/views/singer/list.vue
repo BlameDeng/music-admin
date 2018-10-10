@@ -72,7 +72,7 @@
             onClickSinger(singer) {
                 this.$router.push({
                     path: './list/detail',
-                    query: { singer }
+                    query: { id:singer.id }
                 })
             }
         }
@@ -177,6 +177,7 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
+                    padding: 0 2px;
                     >span {
                         font-size: 12px;
                         margin: 5px 0;

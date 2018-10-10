@@ -4,7 +4,11 @@
             <x-play :source="source" :name="songname" ref="play"></x-play>
         </div>
         <Icon type="md-close" size="25" class="icon" @click="onBack" />
-        <div class="singer-info">
+        <div class="singer-info" v-if="singer">
+            <div class="button">
+                <Button style="padding:2px 5px;" @click="onDelete">删除歌手</Button>
+                <Button type="primary" style="padding:2px 5px;" @click="onEdit">编辑歌手信息</Button>
+            </div>
             <div class="avatar">
                 <img :src="singer.avatar" alt="avatar">
             </div>
@@ -25,16 +29,18 @@
         </div>
         <div class="singer-detail">
             <div class="nav">
-                <Tabs value="name1" style="border:none;">
+                <Tabs value="name1" style="border:none;" v-if="singer">
                     <TabPane label="单曲" name="name1">
                         <div class="song-wrapper" style="padding:0 20px 20px 20px;">
-                            <div class="song" v-for="(song,index) in songs" :key="song.id">
-                                <span class="index">{{index|num}}</span>
-                                <span class="songname">{{song.name}}</span>
-                                <span class="play" @click="onClickPlay(song)">
-                                    <Icon type="md-play" size="4" class="icon" style="cursor:pointer;" />
-                                </span>
-                            </div>
+                            <template v-if="songs&&songs.length">
+                                <div class="song" v-for="(song,index) in songs" :key="song.id">
+                                    <span class="index">{{index|num}}</span>
+                                    <span class="songname">{{song.name}}</span>
+                                    <span class="play" @click="onClickPlay(song)">
+                                        <Icon type="md-play" size="4" class="icon" style="cursor:pointer;" />
+                                    </span>
+                                </div>
+                            </template>
                         </div>
                     </TabPane>
                     <TabPane label="专辑" name="name2">
@@ -49,7 +55,7 @@
     </div>
 </template>
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
     import xPlay from '@/components/common/play.vue'
     export default {
         name: 'SingerDetail',
@@ -77,9 +83,10 @@
             }
         },
         created() {
-            this.$route.query && this.$route.query.singer ? this.singer = this.$route.query.singer : '';
+            this.$route.query && this.$route.query.id ? this.singer = this.$store.getters.getSingerById(this.$route.query.id) : '';
         },
         methods: {
+            ...mapActions(['destroySinger']),
             onBack() {
                 this.$router.go(-1);
             },
@@ -88,6 +95,26 @@
                 this.songname = song.name;
                 this.$refs.play.play();
             },
+            onEdit() {
+                this.$router.push({ path: '/singer/list/edit', query: { id: this.singer.id } });
+            },
+            onDelete() {
+                this.$Modal.confirm({
+                    title: '警告',
+                    content: '<p>该操作将永久删除该歌手信息，是否继续？</p>',
+                    okText: '继续删除',
+                    cancelText: '取消删除',
+                    onOk: () => {
+                        this.destroySinger(this.singer.id).then(res => {
+                            this.$Message.info('成功删除歌手');
+                            this.onBack();
+                        });
+                    },
+                    onCancel: () => {
+                        this.$Message.info('已取消删除');
+                    }
+                })
+            }
         }
     }
 </script>
@@ -129,9 +156,12 @@
             justify-content: flex-start;
             align-items: center;
             min-height: 180px;
-
-
-
+            position: relative;
+            >.button {
+                position: absolute;
+                bottom: 20px;
+                right: 0;
+            }
             >.avatar {
                 width: 180px;
                 height: 180px;

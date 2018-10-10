@@ -28,18 +28,24 @@ export default new Router({
             component: () =>
                 import('@/views/singer.vue'),
             children: [{
-                path: 'list',
-                component: () =>
-                    import('@/views/singer/list.vue')
-            }, {
-                path: 'create',
-                component: () =>
-                    import('@/views/singer/create.vue')
-            }, {
-                path: 'list/detail',
-                component: () =>
-                    import('@/views/singer/singer-detail.vue')
-            }]
+                    path: 'list',
+                    component: () =>
+                        import('@/views/singer/list.vue')
+                }, {
+                    path: 'create',
+                    component: () =>
+                        import('@/views/singer/create.vue')
+                }, {
+                    path: 'list/detail',
+                    component: () =>
+                        import('@/views/singer/singer-detail.vue')
+                },
+                {
+                    path: 'list/edit',
+                    component: () =>
+                        import('@/views/singer/singer-edit.vue')
+                }
+            ]
         },
         {
             path: '/sheet',

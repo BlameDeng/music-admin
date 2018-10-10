@@ -1,17 +1,17 @@
 <template>
-    <div class="singer-create">
-        <Icon type="md-arrow-round-back" size="25" class="icon" @click="onBack" />
+    <div class="singer-edit">
+        <Icon type="md-close" size="25" class="icon" @click="onBack" />
         <div class="form-wrapper">
-            <h3>新增歌手</h3>
-            <Form :label-width="80" style="width:100%;">
+            <h3>编辑歌手</h3>
+            <Form :label-width="80" style="width:100%;" v-if="singer">
                 <FormItem label="名字">
-                    <Input v-model.trim="name"></Input>
+                    <Input v-model.trim="singer.name"></Input>
                 </FormItem>
                 <FormItem label="其他名字">
-                    <Input v-model.trim="othernames"></Input>
+                    <Input v-model.trim="singer.othernames"></Input>
                 </FormItem>
                 <FormItem label="语种">
-                    <Select v-model="lang">
+                    <Select v-model="singer.lang">
                         <Option value="华语">华语</Option>
                         <Option value="欧美">欧美</Option>
                         <Option value="日本">日本</Option>
@@ -20,25 +20,25 @@
                     </Select>
                 </FormItem>
                 <FormItem label="分类">
-                    <RadioGroup v-model="type">
+                    <RadioGroup v-model="singer.type">
                         <Radio label="male">男歌手</Radio>
                         <Radio label="female">女歌手</Radio>
                         <Radio label="group">乐队组合</Radio>
                     </RadioGroup>
                 </FormItem>
                 <FormItem label="头像链接">
-                    <Input v-model="avatar"></Input>
-                    <div style="text-align:end;margin-top:3px;" id="singer-avatar-create-container">
+                    <Input v-model="singer.avatar"></Input>
+                    <div style="text-align:end;margin-top:3px;" id="singer-avatar-edit-container">
                         <Button size="small" type="default" @click="preview">预览头像</Button>
-                        <Button size="small" type="default" id="singer-avatar-create-picker">上传头像</Button>
-                        <x-upload container-id="singer-avatar-create-container" browse-id="singer-avatar-create-picker" bucket-name="singeravatars" @uploaded="uploaded($event)"></x-upload>
+                        <Button size="small" type="default" id="singer-avatar-edit-picker">上传头像</Button>
+                        <x-upload container-id="singer-avatar-edit-container" browse-id="singer-avatar-edit-picker" bucket-name="singeravatars" @uploaded="uploaded($event)"></x-upload>
                     </div>
                 </FormItem>
                 <FormItem label="简介">
-                    <Input type="textarea" :autosize="{minRows: 2,maxRows: 5}" v-model="summary"></Input>
+                    <Input type="textarea" :autosize="{minRows: 2,maxRows: 5}" v-model="singer.summary"></Input>
                 </FormItem>
                 <FormItem style="text-align:center;">
-                    <Button style="margin-right: 8px">取消</Button>
+                    <Button style="margin-right: 8px" @click="onBack">取消</Button>
                     <Button type="primary" @click="onSave">提交</Button>
                 </FormItem>
             </Form>
@@ -50,38 +50,41 @@
     import xUpload from "@/components/upload/upload.vue"
     import { mapActions } from 'vuex'
     export default {
-        name: "SingerCreate",
+        name: "SingerEdit",
         components: { xUpload },
         data() {
-            return { name: '', othernames: '', lang: '', type: '', avatar: '', summary: '' }
+            return { singer: null }
+        },
+        created() {
+            this.$route.query && this.$route.query.id ? this.singer = this.getSinger(this.$route.query.id) : '';
         },
         methods: {
-            ...mapActions(['createSinger', 'fetchAllSingers']),
+            ...mapActions(['updateSinger']),
+            getSinger(id) {
+                return this.$store.getters.getSingerById(id);
+            },
             onBack() {
                 this.$router.go(-1);
             },
             onSave() {
-                if (!this.name && !this.othernames) {
+                if (!this.singer.name && !this.singer.othernames) {
                     this.$Message.warning('歌手名字不能为空！');
                     return
                 }
-                let data = { name: this.name, othernames: this.othernames, lang: this.lang, type: this.type, avatar: this.avatar, summary: this.summary };
-                this.createSinger(data).then(res => {
-                    this.$Message.success('创建成功');
-                    this.fetchAllSingers().then(res => {
-                        this.$router.push('/singer/list');
-                    });
+                let data = { name: this.singer.name, othernames: this.singer.othernames, lang: this.singer.lang, type: this.singer.type, avatar: this.singer.avatar, summary: this.singer.summary, id: this.singer.id };
+                this.updateSinger(data).then(res => {
+                    this.$Message.success('修改成功');
                 })
             },
             uploaded(obj) {
-                this.avatar = obj.url + '?x-oss-process=style/avatar';
+                this.singer.avatar = obj.url + '?x-oss-process=style/avatar';
             },
             preview() {
-                if (!this.avatar) {
+                if (!this.singer.avatar) {
                     this.$Message.info('还没有上传该歌手头像！');
                     return
                 }
-                window.open(this.avatar, '_blank');
+                window.open(this.singer.avatar, '_blank');
             }
         }
     }
@@ -89,7 +92,7 @@
 
 <style scoped lang="scss">
     @import "@/assets/base.scss";
-    .singer-create {
+    .singer-edit {
         width: 100%;
         height: 100%;
         border: 1px solid $border;
@@ -102,7 +105,7 @@
         >.icon {
             position: absolute;
             top: 5px;
-            left: 5px;
+            right: 5px;
             color: lighten($sub, 20%);
             cursor: pointer;
             &:hover {

@@ -17,7 +17,6 @@
     </div>
 </template>
 <script>
-    import xUpload from "@/components/upload/upload.vue"
     import mixin from "@/mixin/mixin.js"
     import formatDate from '@/helpers/formatDate.js'
     import { mapActions, mapState, mapMutations } from 'vuex'

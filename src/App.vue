@@ -24,23 +24,22 @@
             ...mapState({
                 allSongs: state => state.song.allSongs,
                 allSheets: state => state.sheet.allSheets,
-                allSingers:state=>state.singer.allSingers
+                allSingers: state => state.singer.allSingers
             })
         },
         methods: {
-            ...mapActions(['fetchAllSongs', 'fetchAllSheets','fetchAllSingers'])
+            ...mapActions(['fetchAllSongs', 'fetchAllSheets', 'fetchAllSingers'])
         },
         created() {
             this.$Message.config({
                 top: 75,
                 duration: 2
             });
-        },
-        mounted() {
             this.allSongs ? '' : this.fetchAllSongs();
             this.allSheets ? '' : this.fetchAllSheets();
-            this.allSingers?'':this.fetchAllSingers();
+            this.allSingers ? '' : this.fetchAllSingers();
         },
+        mounted() {},
     }
 </script>
 <style lang="scss">

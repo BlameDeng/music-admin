@@ -66,7 +66,7 @@
                 this.songname = song.name;
                 this.$refs.play.play();
             },
-            onBack(){this.$router.go(-1);},
+            onBack() { this.$router.go(-1); },
         }
     }
 </script>
@@ -82,13 +82,13 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        >.icon{
+        >.icon {
             position: absolute;
             top: 5px;
             left: 5px;
-            color: lighten($sub,20%);
+            color: lighten($sub, 20%);
             cursor: pointer;
-            &:hover{
+            &:hover {
                 color: $p;
             }
         }
