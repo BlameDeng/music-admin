@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <Menu style="width:100%;height:100%;font-size:14px;" accordion @on-select="onSelectItem($event)" class="menu">
+        <Menu style="height:100%;width:150px;font-size:14px;" accordion @on-select="onSelectItem($event)" class="menu">
             <Submenu name="1">
                 <template slot="title">
                     <Icon type="md-qr-scanner" />
@@ -18,13 +18,13 @@
                 <MenuItem name="song-list">歌曲列表</MenuItem>
                 <MenuItem name="song-create">新增歌曲</MenuItem>
             </Submenu>
-            <Submenu name="3">
+            <Submenu name="singer">
                 <template slot="title">
                     <Icon type="md-person" />
                     歌手
                 </template>
-                <MenuItem name="3-1">文章管理</MenuItem>
-                <MenuItem name="3-2">评论管理</MenuItem>
+                <MenuItem name="singer-list">歌手列表</MenuItem>
+                <MenuItem name="singer-create">新增歌手</MenuItem>
                 <MenuItem name="3-3">举报管理</MenuItem>
             </Submenu>
             <Submenu name="4">
@@ -61,7 +61,6 @@
 </script>
 <style scoped lang="scss">
     .nav {
-        width: 200px;
         height: 100%;
     }
 </style>

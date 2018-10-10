@@ -55,10 +55,10 @@
         color: #fff;
         display: flex;
         >.logo {
-            width: 200px;
+            width: 150px;
             height: 100%;
             border-right: .5px solid $border;
-            font-size: 20px;
+            font-size: 16px;
             display: flex;
             justify-content: flex-start;
             align-items: center;

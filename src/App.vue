@@ -60,7 +60,7 @@
             justify-content: flex-start;
             >.nav {
                 height: 100%;
-                width: 200px;
+                width: 150px;
                 flex-shrink: 0;
             }
             >.views {
