@@ -48,11 +48,11 @@ const actions = {
     },
 
     async updateSinger({ commit }, data) {
-        let { name, othernames, lang, type, id, createdAt, summary, avatar } = data;
+        let { name, othernames, lang, type, id, createdAt, summary, avatar, firstLetter } = data;
         let res = await Singer.updateSinger({ name, othernames, lang, type, summary, avatar }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
-        let payload = { name, othernames, lang, type, id, createdAt, summary, updatedAt, avatar };
+        let payload = { name, othernames, lang, type, id, createdAt, summary, updatedAt, avatar, firstLetter };
         commit('patchSinger', payload);
         return res;
     },

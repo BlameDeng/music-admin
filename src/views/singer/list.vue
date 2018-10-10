@@ -19,8 +19,9 @@
             </div>
             <div class="filter">
                 <span>筛选：</span>
-                <span class="all">全部</span>
-                <span v-for="n in letters" :key="n" class="active">{{n|upper}}</span>
+                <span class="all" @click="onClickFilter('letter','all')" :class="{active:filterArray[2]==='all'}">全部</span>
+                <span v-for="letter in letters" :key="letter" :class="{active:filterArray[2]===letter.toUpperCase()}" @click="onClickFilter('letter',letter.toUpperCase())">{{letter.toUpperCase()}}</span>
+                <span @click="onClickFilter('letter','#')" :class="{active:filterArray[2]==='#'}">#</span>
             </div>
         </div>
         <div class="singers">
@@ -36,20 +37,14 @@
                 </div>
             </template>
         </div>
-        <router-view></router-view>
     </div>
 </template>
 <script>
-    import { mapState, mapActions, mapMutations } from 'vuex'
+    import { mapState } from 'vuex'
     export default {
         name: "SingerList",
         data() {
             return { letters: "abcdefghijklmnopqrstuvwxyz", filterArray: ['all', 'all', 'all'] };
-        },
-        filters: {
-            upper(val) {
-                return val.toUpperCase();
-            }
         },
         computed: {
             ...mapState({
@@ -61,6 +56,7 @@
                 let copy = JSON.parse(JSON.stringify(this.allSingers));
                 this.filterArray[0] === 'all' ? '' : copy = copy.filter(song => song.lang === this.filterArray[0]);
                 this.filterArray[1] === 'all' ? '' : copy = copy.filter(song => song.type === this.filterArray[1]);
+                this.filterArray[2] === 'all' ? '' : copy = copy.filter(song => song.firstLetter === this.filterArray[2]);
                 return copy;
             }
         },
@@ -68,11 +64,12 @@
             onClickFilter(tab, name) {
                 tab === 'lang' ? this.$set(this.filterArray, 0, name) : '';
                 tab === 'type' ? this.$set(this.filterArray, 1, name) : '';
+                tab === 'letter' ? this.$set(this.filterArray, 2, name) : '';
             },
             onClickSinger(singer) {
                 this.$router.push({
                     path: './list/detail',
-                    query: { id:singer.id }
+                    query: { id: singer.id }
                 })
             }
         }

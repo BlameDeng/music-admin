@@ -11,7 +11,7 @@ export default new Router({
         }, {
             path: '/song',
             component: () =>
-                import('@/views/song.vue'),
+                import('@/views/song/song.vue'),
             children: [{
                     path: 'create',
                     component: () =>
@@ -26,7 +26,7 @@ export default new Router({
         }, {
             path: '/singer',
             component: () =>
-                import('@/views/singer.vue'),
+                import('@/views/singer/singer.vue'),
             children: [{
                     path: 'list',
                     component: () =>
@@ -48,9 +48,34 @@ export default new Router({
             ]
         },
         {
+            path: '/album',
+            component: () =>
+                import('@/views/album/album.vue'),
+            children: [{
+                    path: 'create',
+                    component: () =>
+                        import('@/views/album/create.vue')
+                },
+                {
+                    path: 'list',
+                    component: () =>
+                        import('@/views/album/list.vue')
+                },
+                // {
+                //     path: 'list/edit',
+                //     component: () =>
+                //         import('@/views/album/album-edit.vue')
+                // },
+                // {
+                //     path: 'list/detail',
+                //     component: () =>
+                //         import('@/views/album/album-detail.vue')
+                // }
+            ]
+        }, {
             path: '/sheet',
             component: () =>
-                import('@/views/sheet.vue'),
+                import('@/views/sheet/sheet.vue'),
             children: [{
                     path: 'create',
                     component: () =>

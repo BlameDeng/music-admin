@@ -24,12 +24,13 @@
                 <MenuItem name="singer-list">歌手列表</MenuItem>
                 <MenuItem name="singer-create">新增歌手</MenuItem>
             </Submenu>
-            <Submenu name="4">
+            <Submenu name="album">
                 <template slot="title">
                     <Icon type="md-disc" />
                     专辑
                 </template>
-                <MenuItem name="4-1">文章管理</MenuItem>
+                <MenuItem name="album-list">专辑列表</MenuItem>
+                <MenuItem name="album-create">新增专辑</MenuItem>
             </Submenu>
             <Submenu name="sheet">
                 <template slot="title">

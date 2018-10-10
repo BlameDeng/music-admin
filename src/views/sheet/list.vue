@@ -13,13 +13,12 @@
                 导出排序后的数据
             </Button>
         </div>
-        <router-view></router-view>
     </div>
 </template>
 <script>
     import mixin from "@/mixin/mixin.js"
     import formatDate from '@/helpers/formatDate.js'
-    import { mapActions, mapState, mapMutations } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
     export default {
         name: "SheetList",
         mixins: [mixin],
@@ -139,7 +138,7 @@
                 this.$router.push({ path: './list/edit', query: { id: this.allSheets[index].id } });
             },
             onRemove(index) {
-                let id=this.allSheets[index].id;
+                let id = this.allSheets[index].id;
                 this.$Modal.confirm({
                     title: '警告',
                     content: '<p>该操作将永久删除该歌单，是否继续？</p>',

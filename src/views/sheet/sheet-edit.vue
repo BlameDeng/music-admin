@@ -128,13 +128,12 @@
                 }
             },
             pathSheet(type) {
-                let copy = JSON.parse(JSON.stringify(this.sheet));
-                copy.songs = copy.songs || [];
+                this.sheet.songs = this.sheet.songs || [];
                 if (type === "addSong") {
                     this.allId.forEach(id => {
-                        copy.songs.indexOf(id) === -1 ? copy.songs.push(id) : "";
+                        this.sheet.songs.indexOf(id) === -1 ? this.sheet.songs.push(id) : "";
                     });
-                    this.updateSheet(copy).then(res => {
+                    this.updateSheet(this.sheet).then(res => {
                         this.allId = null;
                         this.getSheet(this.sheet.id);
                         this.getSheetSongs();
@@ -142,10 +141,10 @@
                 }
                 if (type === 'removeSong') {
                     this.sheetSongId.forEach(id => {
-                        let index = copy.songs.indexOf(id);
-                        copy.songs.splice(index, 1);
+                        let index = this.sheet.songs.indexOf(id);
+                        this.sheet.songs.splice(index, 1);
                     });
-                    this.updateSheet(copy).then(res => {
+                    this.updateSheet(this.sheet).then(res => {
                         this.sheetSongId = null;
                         this.getSheet(this.sheet.id);
                         this.getSheetSongs();

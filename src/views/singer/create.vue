@@ -49,6 +49,7 @@
 <script>
     import xUpload from "@/components/upload/upload.vue"
     import { mapActions } from 'vuex'
+    import pinyin from 'pinyin'
     export default {
         name: "SingerCreate",
         components: { xUpload },
@@ -65,7 +66,11 @@
                     this.$Message.warning('歌手名字不能为空！');
                     return
                 }
-                let data = { name: this.name, othernames: this.othernames, lang: this.lang, type: this.type, avatar: this.avatar, summary: this.summary };
+                let temp = this.name || this.othernames;
+                temp = temp.substr(0, 1);
+                let firstLetter = pinyin(temp, { style: pinyin.STYLE_FIRST_LETTER })[0][0].toUpperCase();
+                /[A-Z]/.test(firstLetter) ? '' : firstLetter = '#';
+                let data = { name: this.name, othernames: this.othernames, lang: this.lang, type: this.type, avatar: this.avatar, summary: this.summary, firstLetter };
                 this.createSinger(data).then(res => {
                     this.$Message.success('创建成功');
                     this.fetchAllSingers().then(res => {
@@ -119,6 +124,7 @@
             >h3 {
                 text-align: center;
                 margin: 10px 0;
+                font-size: 20px;
                 color: $title;
             }
         }
