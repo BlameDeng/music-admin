@@ -1,5 +1,8 @@
 <template>
     <div class="singer-detail">
+        <div class="play">
+            <x-play :source="source" :name="songname" ref="play"></x-play>
+        </div>
         <Icon type="md-close" size="25" class="icon" @click="onBack" />
         <div class="singer-info">
             <div class="avatar">
@@ -12,10 +15,10 @@
                 </div>
                 <div class="counts">
                     <div class="single">
-                        <Icon type="ios-musical-notes" size="16" /><span style="margin-left:5px;">单曲数：121</span>
+                        <Icon type="ios-musical-notes" size="16" /><span style="margin-left:5px;">单曲数：{{songs.length||'0'}}</span>
                     </div>
                     <div class="album">
-                        <Icon type="ios-disc-outline" size="16" /><span style="margin-left:5px;">专辑数：120</span>
+                        <Icon type="ios-disc-outline" size="16" /><span style="margin-left:5px;">专辑数：0</span>
                     </div>
                 </div>
             </div>
@@ -26,8 +29,10 @@
                     <TabPane label="单曲" name="name1">
                         <div class="song-wrapper" style="padding:0 20px 20px 20px;">
                             <div class="song" v-for="(song,index) in songs" :key="song.id">
-                                <span class="index">{{index|num}}</span><span class="songname">{{song.name}}</span><span class="play">
-                                    <Icon type="md-play" size="8" class="icon" style="cursor:pointer;" />
+                                <span class="index">{{index|num}}</span>
+                                <span class="songname">{{song.name}}</span>
+                                <span class="play" @click="onClickPlay(song)">
+                                    <Icon type="md-play" size="4" class="icon" style="cursor:pointer;" />
                                 </span>
                             </div>
                         </div>
@@ -45,12 +50,15 @@
 </template>
 <script>
     import { mapState } from 'vuex'
+    import xPlay from '@/components/common/play.vue'
     export default {
         name: 'SingerDetail',
-        components: {},
+        components: { xPlay },
         data() {
             return {
                 singer: null,
+                source: '',
+                songname: ''
             }
         },
         computed: {
@@ -74,7 +82,12 @@
         methods: {
             onBack() {
                 this.$router.go(-1);
-            }
+            },
+            onClickPlay(song) {
+                this.source = song.url;
+                this.songname = song.name;
+                this.$refs.play.play();
+            },
         }
     }
 </script>
@@ -87,6 +100,18 @@
         border-radius: 4px;
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         position: relative;
+        padding: 0 20px;
+        >.play {
+            width: calc(100% + 42px);
+            position: absolute;
+            right: 0;
+            bottom: -20px;
+            background: #fff;
+            border-top: .5px solid $border;
+            z-index: 1;
+            padding: 5px 0;
+            transform: translateX(20px);
+        }
         >.icon {
             position: absolute;
             top: 5px;
@@ -103,7 +128,10 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            padding-left: 20px;
+            min-height: 180px;
+
+
+
             >.avatar {
                 width: 180px;
                 height: 180px;
@@ -158,6 +186,7 @@
             font-size: 12px;
             color: $content;
             overflow: auto;
+            position: relative;
             .song {
                 color: $sub;
                 display: flex;
@@ -185,6 +214,7 @@
                 >.play {
                     margin-left: 30px;
                     display: flex;
+                    justify-content: center;
                     align-items: center;
                     border: .5px solid $error;
                     color: $error;

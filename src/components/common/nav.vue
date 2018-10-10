@@ -7,8 +7,6 @@
                     概览
                 </template>
                 <MenuItem name="1-1">123</MenuItem>
-                <MenuItem name="1-2">评论管理</MenuItem>
-                <MenuItem name="1-3">举报管理</MenuItem>
             </Submenu>
             <Submenu name="song">
                 <template slot="title">
@@ -25,7 +23,6 @@
                 </template>
                 <MenuItem name="singer-list">歌手列表</MenuItem>
                 <MenuItem name="singer-create">新增歌手</MenuItem>
-                <MenuItem name="3-3">举报管理</MenuItem>
             </Submenu>
             <Submenu name="4">
                 <template slot="title">
@@ -33,10 +30,8 @@
                     专辑
                 </template>
                 <MenuItem name="4-1">文章管理</MenuItem>
-                <MenuItem name="4-2">评论管理</MenuItem>
-                <MenuItem name="4-3">举报管理</MenuItem>
             </Submenu>
-            <Submenu name="5">
+            <Submenu name="sheet">
                 <template slot="title">
                     <Icon type="ios-list-box" />
                     歌单
