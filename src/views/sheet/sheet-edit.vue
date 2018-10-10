@@ -1,23 +1,23 @@
 <template>
     <div class="sheet-edit">
-        <Icon type="md-arrow-round-back" size="25" class="icon" @click="onBack" />
+        <Icon type="md-close" size="25" class="icon" @click="onBack" />
         <div class="sheet-info">
             <h3>编辑歌单</h3>
-            <Form label-position="left" class="form" v-if="editingSheet">
+            <Form label-position="left" class="form" v-if="sheet">
                 <FormItem label="歌单名">
-                    <Input v-model.trim="editingSheet.name"></Input>
+                    <Input v-model.trim="sheet.name"></Input>
                 </FormItem>
                 <FormItem label="标签" style="display:inline-flex;align-items:center;width:30%;white-space:nowrap;">
-                    <Input v-model.trim="editingSheet.tag1"></Input>
+                    <Input v-model.trim="sheet.tag1"></Input>
                 </FormItem>
                 <FormItem label="标签" style="display:inline-flex;align-items:center;width:30%;white-space:nowrap;">
-                    <Input v-model.trim="editingSheet.tag2"></Input>
+                    <Input v-model.trim="sheet.tag2"></Input>
                 </FormItem>
                 <FormItem label="标签" style="display:inline-flex;align-items:center;width:30%;white-space:nowrap;">
-                    <Input v-model.trim="editingSheet.tag3"></Input>
+                    <Input v-model.trim="sheet.tag3"></Input>
                 </FormItem>
                 <FormItem label="封面链接">
-                    <Input v-model.trim="editingSheet.cover"></Input>
+                    <Input v-model.trim="sheet.cover"></Input>
                 </FormItem>
                 <div style="text-align:end; margin-top:-20px;" id="sheet-cover-upload-container">
                     <Button size="small" type="default" @click="preview">预览封面</Button>
@@ -25,7 +25,7 @@
                     <x-upload container-id="sheet-cover-upload-container" browse-id="sheet-cover-picker" bucket-name="sheetcovers" @uploaded="coverUploaded($event)"></x-upload>
                 </div>
                 <FormItem label="简介">
-                    <Input v-model.trim="editingSheet.summary" type="textarea" :rows="3"></Input>
+                    <Input v-model.trim="sheet.summary" type="textarea" :rows="4"></Input>
                 </FormItem>
                 <FormItem style="text-align:center;">
                     <Button style="margin-right: 18px" @click="onBack">取消</Button>
@@ -77,44 +77,43 @@
                 selectedSheetSongs: null,
                 sheetSongs: null,
                 allId: null,
-                sheetSongId: null
+                sheetSongId: null,
+                sheet: null
             };
         },
         computed: {
             ...mapState({
-                editingSheet: state => state.sheet.editingSheet,
                 allSongs: state => state.song.allSongs
             })
         },
         created() {
-            this.allSongs ? "" : this.fetchAllSongs();
-            if (this.editingSheet && this.editingSheet.songs && this.editingSheet.songs.length) {
-                this.sheetSongs = this.getSheetSongs();
-            }
+            this.$route.query && this.$route.query.id && this.getSheet(this.$route.query.id);
+            this.sheet && this.sheet.songs && this.sheet.songs.length && this.getSheetSongs();
         },
         methods: {
             ...mapActions(["fetchAllSongs", "updateSheet"]),
             ...mapMutations(['updateCover']),
+            getSheet(id) {
+                this.sheet = this.$store.getters.getSheetById(id);
+            },
             onBack() { this.$router.go(-1); },
             getSheetSongs() {
-                return this.$store.getters.getSheetSongs(this.editingSheet.songs);
+                this.sheetSongs = this.$store.getters.getSheetSongs(this.sheet.songs);
             },
             onSave() {
-                this.updateSheet(this.editingSheet).then(res => {
+                this.updateSheet(this.sheet).then(res => {
                     this.$Message.success('保存成功');
                 });
             },
             preview() {
-                if (!this.editingSheet.cover) {
+                if (!this.sheet.cover) {
                     this.$Message.info('该歌单还没有上传封面！');
                     return
                 }
-                window.open(this.editingSheet.cover, '_blank');
+                window.open(this.sheet.cover, '_blank');
             },
             coverUploaded(obj) {
-                let payload = JSON.parse(JSON.stringify(this.editingSheet));
-                payload.cover = obj.url + '?x-oss-process=style/avatar';
-                this.updateCover(payload);
+                this.sheet.cover = obj.url + '?x-oss-process=style/avatar';
             },
             onClickSong(type, id) {
                 if (type === "all") {
@@ -129,7 +128,7 @@
                 }
             },
             pathSheet(type) {
-                let copy = JSON.parse(JSON.stringify(this.editingSheet));
+                let copy = JSON.parse(JSON.stringify(this.sheet));
                 copy.songs = copy.songs || [];
                 if (type === "addSong") {
                     this.allId.forEach(id => {
@@ -137,7 +136,8 @@
                     });
                     this.updateSheet(copy).then(res => {
                         this.allId = null;
-                        this.sheetSongs = this.getSheetSongs();
+                        this.getSheet(this.sheet.id);
+                        this.getSheetSongs();
                     });
                 }
                 if (type === 'removeSong') {
@@ -147,7 +147,8 @@
                     });
                     this.updateSheet(copy).then(res => {
                         this.sheetSongId = null;
-                        this.sheetSongs = this.getSheetSongs();
+                        this.getSheet(this.sheet.id);
+                        this.getSheetSongs();
                     });
                 }
             }
@@ -169,9 +170,10 @@
         >.icon {
             position: absolute;
             top: 5px;
-            left: 5px;
+            right: 15px;
             color: lighten($sub, 20%);
             cursor: pointer;
+            z-index: 1;
             &:hover {
                 color: $p;
             }
@@ -206,7 +208,8 @@
                 }
                 >.button {
                     position: absolute;
-                    top: 5px;
+                    top: 30%;
+                    margin-top: -25px;
                     right: 25px;
                     padding: 0 4px;
                 }

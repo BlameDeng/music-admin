@@ -2,22 +2,16 @@ import Sheet from '@/helpers/sheet.js'
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
 const state = {
-    allSheets: null,
-    editingSheet: null
+    allSheets: null
 }
 
-const getters = {}
+const getters = {
+    getSheetById: state => id => state.allSheets && state.allSheets.find(sheet => sheet.id === id)
+}
 
 const mutations = {
     setAllSheets(state, payload) {
         state.allSheets = payload;
-    },
-    setEditingSheet(state, payload) {
-        if (typeof payload === 'object') {
-            state.editingSheet = payload;
-        } else {
-            payload > -1 ? state.editingSheet = state.allSheets[payload] : state.editingSheet = null;
-        }
     },
     patchSheet(state, payload) {
         let array = state.allSheets;
@@ -27,9 +21,6 @@ const mutations = {
                 break;
             }
         }
-    },
-    updateCover(state, payload) {
-        state.editingSheet = payload;
     },
     deleteSheet(state, payload) {
         state.allSheets = state.allSheets.filter(sheet => sheet.id !== payload);
@@ -62,7 +53,6 @@ const actions = {
         updatedAt = formatDate(updatedAt);
         let payload = { name, tag1, tag2, tag3, cover, id, createdAt, summary, songs, updatedAt };
         commit('patchSheet', payload);
-        commit('setEditingSheet', payload);
         return res;
     },
 

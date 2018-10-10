@@ -1,20 +1,20 @@
 <template>
     <div class="sheet-detail">
-        <Icon type="md-arrow-round-back" size="25" class="icon" @click="onBack" />
-        <div class="sheet-info">
+        <Icon type="md-close" size="25" class="icon" @click="onBack" />
+        <div class="sheet-info" v-if="sheet">
             <div class="cover">
-                <img :src="editingSheet.cover" alt="cover">
+                <img :src="sheet.cover" alt="cover">
             </div>
-            <div class="info" v-if="editingSheet">
+            <div class="info">
                 <div class="title">
                     <span>歌单</span>
-                    <h4>{{editingSheet.name}}</h4>
+                    <h4>{{sheet.name}}</h4>
                 </div>
                 <div class="time">
-                    <span>创建于 {{editingSheet.createdAt}}</span><span>最近更新 {{editingSheet.updatedAt}}</span>
+                    <span>创建于 {{sheet.createdAt}}</span><span>最近更新 {{sheet.updatedAt}}</span>
                 </div>
-                <p class="tags">标签：<span>{{editingSheet.tag1}}</span> / <span>{{editingSheet.tag2}}</span> / <span>{{editingSheet.tag3}}</span></p>
-                <p class="summary">{{editingSheet.summary}}</p>
+                <p class="tags">标签：<span>{{sheet.tag1}}</span> / <span>{{sheet.tag2}}</span> / <span>{{sheet.tag3}}</span></p>
+                <p class="summary">{{sheet.summary}}</p>
             </div>
         </div>
         <div class="sheet-songs">
@@ -48,19 +48,18 @@
         name: "SheetDetail",
         components: { xPlay },
         data() {
-            return { songs: null, source: '', songname: '' }
-        },
-        computed: {
-            ...mapState({
-                editingSheet: state => state.sheet.editingSheet
-            })
+            return { songs: null, source: '', songname: '', sheet: null }
         },
         created() {
-            if (this.editingSheet && this.editingSheet.songs && this.editingSheet.songs.length) {
-                this.songs = this.$store.getters.getSheetSongs(this.editingSheet.songs);
+            this.$route.query && this.$route.query.id ? this.sheet = this.getSheet(this.$route.query.id) : '';
+            if (this.sheet && this.sheet.songs && this.sheet.songs.length) {
+                this.songs = this.$store.getters.getSheetSongs(this.sheet.songs);
             }
         },
         methods: {
+            getSheet(id) {
+                return this.$store.getters.getSheetById(id);
+            },
             onClickPlay(song) {
                 this.source = song.url;
                 this.songname = song.name;
@@ -85,7 +84,7 @@
         >.icon {
             position: absolute;
             top: 5px;
-            left: 5px;
+            right: 5px;
             color: lighten($sub, 20%);
             cursor: pointer;
             &:hover {

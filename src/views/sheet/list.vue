@@ -125,7 +125,6 @@
         computed: {
             ...mapState({
                 allSheets: state => state.sheet.allSheets,
-                editingSheet: state => state.sheet.editingSheet
             })
         },
         created() {
@@ -133,24 +132,21 @@
         },
         methods: {
             ...mapActions(['fetchAllSheets', 'destroySheet']),
-            ...mapMutations(['setEditingSheet']),
             onDetail(index) {
-                this.setEditingSheet(index);
-                this.$router.push({ path: './list/detail' });
+                this.$router.push({ path: './list/detail', query: { id: this.allSheets[index].id } });
             },
             onEdit(index) {
-                this.setEditingSheet(index);
-                this.$router.push({ path: './list/edit' });
+                this.$router.push({ path: './list/edit', query: { id: this.allSheets[index].id } });
             },
             onRemove(index) {
-                this.setEditingSheet(index);
+                let id=this.allSheets[index].id;
                 this.$Modal.confirm({
                     title: '警告',
                     content: '<p>该操作将永久删除该歌单，是否继续？</p>',
                     okText: '继续删除',
                     cancelText: '取消删除',
                     onOk: () => {
-                        this.destroySheet(this.editingSheet.id).then(res => {
+                        this.destroySheet(id).then(res => {
                             this.$Message.info('成功删除歌单');
                         });
                     },

@@ -83,10 +83,13 @@
             }
         },
         created() {
-            this.$route.query && this.$route.query.id ? this.singer = this.$store.getters.getSingerById(this.$route.query.id) : '';
+            this.$route.query && this.$route.query.id ? this.singer = this.getSinger(this.$route.query.id) : '';
         },
         methods: {
             ...mapActions(['destroySinger']),
+            getSinger(id) {
+                return this.$store.getters.getSingerById(id);
+            },
             onBack() {
                 this.$router.go(-1);
             },

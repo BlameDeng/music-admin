@@ -46,18 +46,14 @@
                 }
             }
         },
-        created() {
-            // Sheet.createSheet({name:'123',tag1:'xxx',summary:'yyy'}).then(res=>{
-            //     console.log(res);
-            // })
-        },
+        created() {},
         methods: {
             ...mapActions(['createSheet', 'fetchAllSheets']),
             onSave() {
                 if (!this.formData.name) { this.$Message.warning('歌单名不能为空'); return; }
                 let array = [];
                 if (this.formData.tags) { array = this.formData.tags.split('/'); }
-                this.createSheet({ name: this.formData.name, tag1: array[0] || '', tag2: array[1] || '', tag3: array[2] || '', summary: this.formData.summary, songs: [],cover:this.formData.cover }).then(res => {
+                this.createSheet({ name: this.formData.name, tag1: array[0] || '', tag2: array[1] || '', tag3: array[2] || '', summary: this.formData.summary, songs: [], cover: this.formData.cover }).then(res => {
                     this.$Message.success('成功创建歌单！');
                     this.fetchAllSheets().then(res => {
                         this.$router.push('/sheet/list');
