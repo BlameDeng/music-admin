@@ -1,8 +1,11 @@
 <template>
     <div class="create-sheet">
-        <div class="sheet-info">
-            <h3>新建歌单</h3>
+        <Icon type="md-close" size="25" class="icon" @click="onBack" />
+        <div class="form-wrapper">
             <Form label-position="left" class="form" v-if="formData">
+                <FormItem style="margin:0;">
+                    <h3>新建歌单</h3>
+                </FormItem>
                 <FormItem label="歌单名" style="margin:0;">
                     <Input v-model.trim="formData.name"></Input>
                 </FormItem>
@@ -22,7 +25,7 @@
                     <Input v-model.trim="formData.summary" type="textarea" :rows="3"></Input>
                 </FormItem>
                 <FormItem style="text-align:center;margin-top:10px;">
-                    <Button style="margin-right: 18px">取消</Button>
+                    <Button style="margin-right: 18px" @click="onBack">取消</Button>
                     <Button type="primary" @click="onSave">保存</Button>
                 </FormItem>
             </Form>
@@ -67,6 +70,9 @@
                     return
                 }
                 window.open(this.formData.cover, '_blank');
+            },
+            onBack() {
+                this.$router.go(-1);
             }
         }
     }
@@ -79,21 +85,34 @@
         border: 1px solid $border;
         border-radius: 4px;
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-        display: flex;
-        align-items: center;
-        >.sheet-info {
-            width: 70%;
-            height: 90%;
-            padding: 0 30px;
-            margin: 0 auto;
+        position: relative;
+        >.icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: lighten($sub, 20%);
+            cursor: pointer;
+            &:hover {
+                color: $p;
+            }
+        }
+        >.form-wrapper {
+            width: 80%;
+            height: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            margin: 0 auto;
             color: $content;
-            >h3 {
-                text-align: center;
-                font-size: 20px;
-                color: $title;
+            >.form {
+                width: 100%;
+                h3 {
+                    text-align: center;
+                    font-size: 20px;
+                    padding: 10px 0;
+                    line-height: 1.8em;
+                    color: $title;
+                }
             }
         }
     }

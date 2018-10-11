@@ -57,9 +57,7 @@
                 }
             },
             play() {
-
                 this.audio.addEventListener('canplay', this.startToPlay);
-
             },
             startToPlay() {
                 this.audio.play();
@@ -82,6 +80,7 @@
         },
         beforeDestroy() {
             this.audio.removeEventListener('canplay', this.startToPlay);
+            this.audio = null;
         },
     }
 </script>

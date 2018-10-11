@@ -20,33 +20,42 @@
                     <p class="slider" ref="slider"></p>
                 </div>
                 <div class="song-upload-container" id="song-upload-container">
-                    <Button type="primary" icon="md-add-circle" id="song-picker" class="button" :disabled="!pickerUsable" @click="onClickPick">选择文件</Button>
+                    <Button type="primary" icon="md-add-circle" id="song-picker" class="button" :disabled="!pickerUsable" @click="onClickPick" ref='filePicker'>选择文件</Button>
                     <Button type="primary" icon="md-cloud-upload" id="song-uploader" class="button" :disabled="!uploadUsable">开始上传</Button>
                 </div>
             </div>
             <div class="edit-step" v-show="current===2||current===3">
-                <h3>编辑歌曲</h3>
-                <Form label-position="right" :label-width="60" class="edit-form">
-                    <FormItem label="歌名">
-                        <Input v-model.trim="formData.name"></Input>
-                    </FormItem>
-                    <FormItem label="歌手">
-                        <Input v-model.trim="formData.singer"></Input>
-                    </FormItem>
-                    <FormItem label="链接">
-                        <Input v-model.trim="formData.url"></Input>
-                    </FormItem>
-                    <FormItem label="封面">
-                        <Input v-model.trim="formData.cover"></Input>
-                    </FormItem>
-                    <FormItem label="歌词">
-                        <Input type="textarea" v-model.trim="formData.lrc"></Input>
-                    </FormItem>
-                    <FormItem style="text-align:center;">
-                        <Button style="margin-right: 8px" @click="onCancleSave">取消</Button>
-                        <Button type="primary" @click="onSave">保存</Button>
-                    </FormItem>
-                </Form>
+                <div class="form-wrapper">
+                    <Form label-position="left" class="form">
+                        <FormItem style="margin:0;">
+                            <h3>编辑歌曲</h3>
+                        </FormItem>
+                        <FormItem label="歌名" style="margin:0;">
+                            <Input v-model.trim="formData.name"></Input>
+                        </FormItem>
+                        <FormItem label="歌手" style="margin:0;">
+                            <Input v-model.trim="formData.singer"></Input>
+                        </FormItem>
+                        <FormItem label="歌曲链接" style="margin:0;">
+                            <Input v-model.trim="formData.url"></Input>
+                        </FormItem>
+                        <FormItem label="封面链接" style="margin:0;">
+                            <Input v-model.trim="formData.cover" ref="cover"></Input>
+                            <div style="text-align:end;" id="avatar-upload-container">
+                                <Button size="small" type="default" @click="preview">预览封面</Button>
+                                <Button size="small" type="default" id="create-song-avatar-picker">上传新封面</Button>
+                            </div>
+                            <x-upload container-id="avatar-upload-container" browse-id="create-song-avatar-picker" bucket-name="songcovers" @uploaded="coverUploaded($event)"></x-upload>
+                        </FormItem>
+                        <FormItem label="歌词" style="margin:0;">
+                            <Input type="textarea" v-model.trim="formData.lrc" :rows="3"></Input>
+                        </FormItem>
+                        <FormItem style="text-align:center;margin-top:10px;">
+                            <Button style="margin-right: 28px" @click="onCancleSave">取消</Button>
+                            <Button type="primary" @click="onSave">保存</Button>
+                        </FormItem>
+                    </Form>
+                </div>
             </div>
             <div class="success-info" v-show="infoVisible">
                 <h4>
@@ -72,19 +81,21 @@
                 songFile: null,
                 current: 0,
                 pickerUsable: true,
-                uploadUsable:true,
+                uploadUsable: true,
                 formData: { name: '', singer: '', url: '', cover: '', lrc: '' },
                 infoVisible: false
             };
         },
         methods: {
-            ...mapActions(['createSong','fetchAllSongs']),
+            ...mapActions(['createSong', 'fetchAllSongs']),
             onClickPick() {
                 this.current = 0;
+                this.$refs.slider.style.transform = `translateX(-100%)`;
             },
             songAdded(file) {
                 if (file.type.toLowerCase() !== 'audio/mp3') {
                     this.$Message.warning('您需要选择一个MP3音频文件');
+                    return;
                 }
                 this.songFile = file;
                 this.current = 1;
@@ -97,13 +108,20 @@
             },
             uploaded(obj) {
                 this.pickerUsable = true;
-                this.uploadUsable=true;
+                this.uploadUsable = true;
                 this.current = 2;
                 this.formData.url = obj.url;
                 this.formData.name = this.formatSongName(obj.file.name);
                 this.songFile = null;
             },
+            coverUploaded(obj) {
+                this.formData.cover = obj.url + '?x-oss-process=style/avatar';
+            },
             onSave() {
+                if (!this.formData.name) {
+                    this.$$Message.warning('歌名不能为空！');
+                    return;
+                }
                 this.current = 3;
                 this.createSong(this.formData).then(res => {
                     this.fetchAllSongs();
@@ -118,16 +136,23 @@
                 this.songFile = null;
             },
             continueAdd() {
-                this.current = 0;
                 this.songFile = null;
                 this.infoVisible = false;
-                this.$refs.slider.style.transform = `translateX(-100%)`;
+                let e = new Event('click');
+                this.$refs.filePicker.$el.dispatchEvent(e);
             },
             scanSongList() {
                 this.$router.push('/song/list');
             },
             beforeUpload(file) {
-                this.uploadUsable=false;
+                this.uploadUsable = false;
+            },
+            preview() {
+                if (!this.formData.cover) {
+                    this.$Message.info('该歌曲还没有上传封面！');
+                    return
+                }
+                window.open(this.formData.cover, '_blank');
             }
         }
     };
@@ -204,14 +229,24 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                >h3 {
-                    font-size: 20px;
-                    margin-bottom: 40px;
-                    text-align: center;
-                }
-                >.edit-form {
-                    width: 60%;
+                >.form-wrapper {
+                    width: 80%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     margin: 0 auto;
+                    color: $content;
+                    >.form {
+                        width: 100%;
+                        h3 {
+                            text-align: center;
+                            font-size: 20px;
+                            padding: 10px 0;
+                            line-height: 1.8em;
+                            color: $title;
+                        }
+                    }
                 }
             }
             >.success-info {

@@ -1,9 +1,11 @@
 <template>
     <div class="album-create">
         <Icon type="md-close" size="25" class="icon" @click="onBack" />
-        <h3>新建专辑</h3>
         <div class="form-wrapper">
             <Form label-position="left" class="form">
+                <FormItem style="margin:0;">
+                    <h3>新建专辑</h3>
+                </FormItem>
                 <FormItem label="专辑名" style="margin:0;">
                     <Input v-model.trim="formData.name"></Input>
                 </FormItem>
@@ -33,47 +35,52 @@
     </div>
 </template>
 <script>
-    import xUpload from "@/components/upload/upload.vue"
-    import { mapActions } from 'vuex'
+    import xUpload from "@/components/upload/upload.vue";
+    import { mapActions } from "vuex";
     export default {
         name: "AlbumCreate",
         components: { xUpload },
         data() {
             return {
                 formData: {
-                    name: '',
-                    singer: '',
-                    time: '',
-                    cover: '',
-                    summary: '',
+                    name: "",
+                    singer: "",
+                    time: "",
+                    cover: "",
+                    summary: "",
                     songs: []
                 }
-            }
+            };
         },
         methods: {
-            ...mapActions(['createAlbum', 'fetchAllAlbums']),
+            ...mapActions(["createAlbum", "fetchAllAlbums"]),
             onSave() {
-                if (!this.formData.name) { this.$Message.warning('专辑名不能为空'); return; }
+                if (!this.formData.name) {
+                    this.$Message.warning("专辑名不能为空");
+                    return;
+                }
                 this.createAlbum({ ...this.formData }).then(res => {
-                    this.$Message.success('成功创建专辑！');
+                    this.$Message.success("成功创建专辑！");
                     this.fetchAllAlbums().then(res => {
-                        this.$router.push('/album/list');
-                    })
-                })
+                        this.$router.push("/album/list");
+                    });
+                });
             },
             coverUploaded(obj) {
-                this.formData.cover = obj.url + '?x-oss-process=style/avatar';
+                this.formData.cover = obj.url + "?x-oss-process=style/avatar";
             },
             preview() {
                 if (!this.formData.cover) {
-                    this.$Message.info('该专辑还没有上传封面！');
-                    return
+                    this.$Message.info("该专辑还没有上传封面！");
+                    return;
                 }
-                window.open(this.formData.cover, '_blank');
+                window.open(this.formData.cover, "_blank");
             },
-            onBack() { this.$router.go(-1); }
+            onBack() {
+                this.$router.go(-1);
+            }
         }
-    }
+    };
 </script>
 
 <style scoped lang="scss">
@@ -84,7 +91,6 @@
         border: 1px solid $border;
         border-radius: 4px;
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-        padding-top: 60px;
         position: relative;
         >.icon {
             position: absolute;
@@ -96,14 +102,6 @@
                 color: $p;
             }
         }
-        >h3 {
-            text-align: center;
-            font-size: 20px;
-            padding: 10px 0;
-            line-height: 2em;
-            color: $title;
-            margin-top: -60px;
-        }
         >.form-wrapper {
             width: 80%;
             height: 100%;
@@ -114,6 +112,13 @@
             color: $content;
             >.form {
                 width: 100%;
+                h3 {
+                    text-align: center;
+                    font-size: 20px;
+                    padding: 10px 0;
+                    line-height: 1.8em;
+                    color: $title;
+                }
             }
         }
     }

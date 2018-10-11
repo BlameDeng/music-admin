@@ -1,19 +1,21 @@
 <template>
     <div class="song-edit">
         <Icon type="md-close" size="25" class="icon" @click="onBack" />
-        <h3>编辑歌曲</h3>
         <div class="form-wrapper">
-            <Form label-position="right" :label-width="60" class="form">
-                <FormItem label="歌名">
+            <Form label-position="left" class="form" v-if="song">
+                <FormItem style="margin:0;">
+                    <h3>编辑歌曲</h3>
+                </FormItem>
+                <FormItem label="歌名" style="margin:0;">
                     <Input v-model.trim="song.name"></Input>
                 </FormItem>
-                <FormItem label="歌手">
+                <FormItem label="歌手" style="margin:0;">
                     <Input v-model.trim="song.singer"></Input>
                 </FormItem>
-                <FormItem label="歌曲链接">
+                <FormItem label="歌曲链接" style="margin:0;">
                     <Input v-model.trim="song.url"></Input>
                 </FormItem>
-                <FormItem label="封面链接">
+                <FormItem label="封面链接" style="margin:0;">
                     <Input v-model.trim="song.cover" ref="cover"></Input>
                     <div style="text-align:end;" id="avatar-upload-container">
                         <Button size="small" type="default" @click="preview">预览封面</Button>
@@ -21,10 +23,10 @@
                     </div>
                     <x-upload container-id="avatar-upload-container" browse-id="avatar-picker" bucket-name="songcovers" @uploaded="coverUploaded($event)"></x-upload>
                 </FormItem>
-                <FormItem label="歌词">
+                <FormItem label="歌词" style="margin:0;">
                     <Input type="textarea" v-model.trim="song.lrc" :rows="3"></Input>
                 </FormItem>
-                <FormItem style="text-align:center;">
+                <FormItem style="text-align:center;margin-top:10px;">
                     <Button style="margin-right: 28px" @click="onBack">取消</Button>
                     <Button type="primary" @click="onSave">保存</Button>
                 </FormItem>
@@ -79,7 +81,6 @@
         border-radius: 4px;
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         position: relative;
-        padding-top: 60px;
         >.icon {
             position: absolute;
             top: 5px;
@@ -90,23 +91,23 @@
                 color: $p;
             }
         }
-        >h3 {
-            text-align: center;
-            font-size: 20px;
-            padding: 10px 0;
-            line-height: 2em;
-            color: $title;
-            margin-top: -60px;
-        }
         >.form-wrapper {
-            height: 100%;
             width: 80%;
-            margin: 0 auto;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 0 auto;
+            color: $content;
             >.form {
                 width: 100%;
+                h3 {
+                    text-align: center;
+                    font-size: 20px;
+                    padding: 10px 0;
+                    line-height: 1.8em;
+                    color: $title;
+                }
             }
         }
     }
