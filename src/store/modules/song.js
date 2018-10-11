@@ -14,7 +14,8 @@ const getters = {
             queryArray.indexOf(song.id) > -1 ? array.push(song) : '';
         });
         return array;
-    }
+    },
+    getSongById: state => id => state.allSongs && state.allSongs.find(song => song.id === id)
 }
 
 const mutations = {
@@ -64,7 +65,7 @@ const actions = {
         let { name, singer, url, cover, lrc, id, createdAt } = data;
         let res = await Song.updateSong({ name, singer, url, cover, lrc }, id);
         let { updatedAt } = res;
-        updatedAt=formatDate(updatedAt);
+        updatedAt = formatDate(updatedAt);
         let payload = { name, singer, url, cover, lrc, id, createdAt, updatedAt };
         commit('patchSong', payload);
         return res;

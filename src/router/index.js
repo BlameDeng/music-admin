@@ -21,6 +21,16 @@ export default new Router({
                     path: 'list',
                     component: () =>
                         import('@/views/song/list.vue')
+                },
+                {
+                    path: 'list/edit',
+                    component: () =>
+                        import('@/views/song/song-edit.vue')
+                },
+                {
+                    path: 'list/detail',
+                    component: () =>
+                        import('@/views/song/song-detail.vue')
                 }
             ]
         }, {

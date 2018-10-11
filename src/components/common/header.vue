@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="logo">
-            <x-icon name="logo"></x-icon>
+            <x-icon name="logo" class="logo-icon"></x-icon>
             <span class="logo-text">后台管理系统</span>
         </div>
         <div class="user-bar">
@@ -65,6 +65,9 @@
             padding-left: 20px;
             flex-shrink: 0;
             transition: all .3s;
+            >.logo-icon{
+                animation: circle 6s linear infinite;
+            }
             >.logo-text {
                 margin-left: 10px;
             }
@@ -123,6 +126,10 @@
                 }
             }
         }
+    }
+    @keyframes circle{
+        from{transform: rotateZ(0);}
+        to{transform: rotateZ(360deg);}
     }
     .fade-enter-active, .fade-leave-active {
         transition: opacity .3s;

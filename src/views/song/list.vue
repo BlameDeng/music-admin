@@ -16,74 +16,6 @@
                 </Button>
             </div>
         </div>
-        <transition name="fade">
-            <div class="edit-layer" v-if="editingSong&&!detailVisible">
-                <div class="edit">
-                    <Icon type="md-close" class="icon" size="25" @click="onCancleSave" />
-                    <h3>编辑歌曲</h3>
-                    <Form label-position="right" :label-width="60" class="edit-form">
-                        <FormItem label="歌名">
-                            <Input v-model.trim="editingSong.name"></Input>
-                        </FormItem>
-                        <FormItem label="歌手">
-                            <Input v-model.trim="editingSong.singer"></Input>
-                        </FormItem>
-                        <FormItem label="歌曲链接">
-                            <Input v-model.trim="editingSong.url"></Input>
-                        </FormItem>
-                        <FormItem label="封面链接">
-                            <Input v-model.trim="editingSong.cover" ref="cover"></Input>
-                            <div style="text-align:end;" id="avatar-upload-container">
-                                <Button size="small" type="default" @click="preview">预览封面</Button>
-                                <Button size="small" type="default" id="avatar-picker">上传新封面</Button>
-                            </div>
-                            <x-upload container-id="avatar-upload-container" browse-id="avatar-picker" bucket-name="songcovers" @uploaded="coverUploaded($event)"></x-upload>
-                        </FormItem>
-                        <FormItem label="歌词">
-                            <Input type="textarea" v-model.trim="editingSong.lrc" :rows="3"></Input>
-                        </FormItem>
-                        <FormItem style="text-align:center;">
-                            <Button style="margin-right: 28px" @click="onCancleSave">取消</Button>
-                            <Button type="primary" @click="onSave">保存</Button>
-                        </FormItem>
-                    </Form>
-                </div>
-            </div>
-        </transition>
-        <transition name="fade">
-            <div class="detail-layer" v-if="editingSong&&detailVisible">
-                <div class="detail">
-                    <div class="title">
-                        <Icon type="md-close" class="icon" size="25" @click="onCloseDetail" />
-                        <div class="title-inner">
-                            <h4 class="name">{{editingSong.name}}</h4>
-                            <p class="singer">
-                                <Icon type="md-microphone" class="icon" />
-                                {{editingSong.singer}}
-                            </p>
-                        </div>
-                        <p class="cover">
-                            <img :src="editingSong.cover" alt="cover" title="点击查看原图">
-                        </p>
-                    </div>
-                    <div class="source">
-                        <div class="info">
-                            <p class="url"><b>歌曲链接：</b><br>{{editingSong.url}}</p>
-                            <p class="created-at">创建时间：{{formatDate(editingSong.createdAt)}}</p>
-                            <p class="updated-at">更新时间：{{formatDate(editingSong.updatedAt)}}</p>
-                        </div>
-                        <div class="lrc">
-                            <span>歌词：</span>
-                            <br>
-                            <pre class="lrc-content">{{editingSong.lrc}}</pre>
-                        </div>
-                    </div>
-                    <div class="play">
-                        <x-play :source="editingSong.url" :name="editingSong.name"></x-play>
-                    </div>
-                </div>
-            </div>
-        </transition>
     </div>
 </template>
 <script>
@@ -116,16 +48,6 @@
                         title: '歌手',
                         key: 'singer',
                         sortable: true,
-                        ellipsis: true
-                    },
-                    {
-                        title: '歌曲链接',
-                        key: 'url',
-                        ellipsis: true
-                    },
-                    {
-                        title: '封面链接',
-                        key: 'cover',
                         ellipsis: true
                     },
                     {
@@ -190,16 +112,14 @@
                         }
                     }
                 ],
-                detailVisible: false,
                 duration: 0,
                 current: 1,
-                pageSize: 10
+                pageSize: 20
             };
         },
         computed: {
             ...mapState({
-                allSongs: state => state.song.allSongs,
-                editingSong: state => state.song.editingSong
+                allSongs: state => state.song.allSongs
             }),
             total() {
                 return this.allSongs.length;
@@ -208,14 +128,10 @@
                 return this.allSongs.slice(this.pageSize * (this.current - 1), this.pageSize * this.current);
             }
         },
-        created() {
-            this.allSongs ? '' : this.fetchAllSongs();
-        },
         methods: {
-            ...mapActions(['fetchAllSongs', 'updateSong', 'destroySong']),
-            ...mapMutations(['setEditingSong', 'updateCover']),
+            ...mapActions(['destroySong']),
             onEdit(index) {
-                this.setEditingSong(index);
+                this.$router.push({ path: './list/edit', query: { id: this.allSongs[index].id } });
             },
             onRemove(index) {
                 this.$Modal.confirm({
@@ -234,8 +150,7 @@
                 })
             },
             onDetail(index) {
-                this.setEditingSong(index);
-                this.detailVisible = true;
+                this.$router.push({ path: './list/detail', query: { id: this.allSongs[index].id } });
             },
             exportData(type) {
                 let now = new Date();
@@ -250,32 +165,6 @@
                         original: false
                     });
                 }
-            },
-            onSave() {
-                this.updateSong(this.editingSong).then(res => {
-                    this.$Message.success('保存成功！');
-                    this.setEditingSong(-1);
-                })
-            },
-            onCancleSave() {
-                this.setEditingSong(-1);
-            },
-            preview() {
-                if (!this.editingSong.cover) {
-                    this.$Message.info('该歌曲还没有上传封面！');
-                    return
-                }
-                window.open(this.editingSong.cover, '_blank');
-            },
-            coverUploaded(obj) {
-                let payload = JSON.parse(JSON.stringify(this.editingSong));
-                payload.cover = obj.url + '?x-oss-process=style/avatar';
-                this.updateCover(payload);
-            },
-            onCloseDetail() {
-                this.detailVisible = false;
-                this.duration = 0;
-                this.setEditingSong(-1);
             }
         }
     }
@@ -301,175 +190,5 @@
             justify-content: space-between;
             align-items: center;
         }
-        >.edit-layer {
-            background: rgba(0, 0, 0, 0.2);
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            >.edit {
-                background: #fff;
-                width: 60%;
-                height: 80%;
-                padding: 20px;
-                border-radius: 4px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                position: relative;
-                >.icon {
-                    position: absolute;
-                    top: 5px;
-                    right: 5px;
-                    cursor: pointer;
-                    color: lighten($sub, 20%);
-                    &:hover {
-                        color: $p;
-                    }
-                }
-                >h3 {
-                    text-align: center;
-                    font-size: 20px;
-                    margin-top: 10px;
-                    margin-bottom: 20px;
-                }
-                >.edit-form {
-                    width: 80%;
-                    margin: 0 auto;
-                }
-            }
-        }
-        >.detail-layer {
-            background: rgba(0, 0, 0, 0.2);
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            >.detail {
-                background: #fff;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translateX(-50%) translateY(-50%);
-                width: 60%;
-                height: 80%;
-                border-radius: 4px;
-                position: relative;
-                >.title {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding-top: 4%;
-                    padding-bottom: 20px;
-                    height: 200px;
-                    position: relative;
-                    >.icon {
-                        position: absolute;
-                        top: 5px;
-                        right: 5px;
-                        cursor: pointer;
-                        color: lighten($sub, 20%);
-                        &:hover {
-                            color: $p;
-                        }
-                    }
-                    >.title-inner {
-                        width: 50%;
-                        text-align: center;
-                        >.name {
-                            font-size: 20px;
-                            color: $title;
-                            margin-bottom: 20px;
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                        }
-                        >.singer {
-                            font-size: 14px;
-                            color: $content;
-                            >.icon {
-                                color: $content;
-                            }
-                        }
-                    }
-                    >.cover {
-                        width: 50%;
-                        height: 150px;
-                        >img {
-                            width: 150px;
-                            height: 150px;
-                            vertical-align: top;
-                            border-radius: 4px;
-                            cursor: pointer;
-                        }
-                    }
-                }
-                >.source {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    padding: 0 5%;
-                    color: $content;
-                    height: calc(100% - 200px);
-                    >.info {
-                        width: 50%;
-                        padding-right: 20px;
-                        padding-top: 10px;
-                        >.url {
-                            font-size: 12px;
-                            word-break: break-all;
-                        }
-                        >p {
-                            margin-bottom: 10px;
-                        }
-                    }
-                    >.lrc {
-                        width: 50%;
-                        border: 1px solid $border;
-                        border-radius: 4px;
-                        padding: 10px 10px 30px;
-                        background: $bg;
-                        height: calc(100% - 50px);
-                        >span {
-                            font-weight: bold;
-                        }
-                        >.lrc-content {
-                            font-size: 12px;
-                            overflow: auto;
-                            position: relative;
-                            height: 100%;
-                        }
-                    }
-                }
-                >.play {
-                    width: 80%;
-                    height: 40px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    user-select: none;
-                    position: absolute;
-                    bottom: 0;
-                    left: 50%;
-                    transform: translateX(-50%);
-                }
-            }
-        }
-    }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .3s;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
-    }
-    .fade-enter-to, .fade-leave {
-        opacity: 1;
     }
 </style>
