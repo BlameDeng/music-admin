@@ -13,7 +13,13 @@
                 <div class="time">
                     <span>创建于 {{sheet.createdAt}}</span><span>最近更新 {{sheet.updatedAt}}</span>
                 </div>
-                <p class="tags">标签：<span>{{sheet.tag1}}</span> / <span>{{sheet.tag2}}</span> / <span>{{sheet.tag3}}</span></p>
+                <div class="tags">
+                    <span>标签：</span>
+                    <span v-for="tag in sheet.tags.split('/')" :key="tag" class="tag-wrapper">
+                        <span class="tag">{{tag}}</span>
+                        <span class="line"> / </span>
+                    </span>
+                </div>
                 <p class="summary">{{sheet.summary}}</p>
             </div>
         </div>
@@ -124,6 +130,8 @@
                     display: flex;
                     justify-content: flex-start;
                     align-items: center;
+                    font-size: 20px;
+                    color: $title;
                     >span {
                         border: .5px solid $error;
                         font-size: 12px;
@@ -132,8 +140,6 @@
                         border-radius: 6px;
                         margin-right: 6px;
                     }
-                    font-size: 20px;
-                    color: $title;
                 }
                 >.time {
                     margin: 15px 0;
@@ -145,9 +151,18 @@
                 }
                 >.tags {
                     margin-bottom: 15px;
-                    >span {
+                    font-size: 12px;
+                    color: $sub;
+                    .tag {
                         color: $p;
                         cursor: pointer;
+                    }
+                    >.tag-wrapper {
+                        &:last-child {
+                            >.line {
+                                display: none;
+                            }
+                        }
                     }
                 }
                 >.summary {

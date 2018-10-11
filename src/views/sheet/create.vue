@@ -11,7 +11,7 @@
                 </FormItem>
                 <FormItem label="标签" style="margin:0;">
                     <Input v-model.trim="formData.tags"></Input>
-                    <span>最多可设置三个标签，以 / 分隔，例如：70后/80后/90后</span>
+                    <span>可设置多个标签，以 / 分隔，例如：70后/80后/90后</span>
                 </FormItem>
                 <FormItem label="封面链接" style="margin:0;">
                     <Input v-model.trim="formData.cover"></Input>
@@ -52,9 +52,7 @@
             ...mapActions(['createSheet', 'fetchAllSheets']),
             onSave() {
                 if (!this.formData.name) { this.$Message.warning('歌单名不能为空'); return; }
-                let array = [];
-                if (this.formData.tags) { array = this.formData.tags.split('/'); }
-                this.createSheet({ name: this.formData.name, tag1: array[0] || '', tag2: array[1] || '', tag3: array[2] || '', summary: this.formData.summary, songs: [], cover: this.formData.cover }).then(res => {
+                this.createSheet({ ...this.formData }).then(res => {
                     this.$Message.success('成功创建歌单！');
                     this.fetchAllSheets().then(res => {
                         this.$router.push('/sheet/list');

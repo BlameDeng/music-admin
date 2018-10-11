@@ -35,20 +35,8 @@
                         ellipsis: true
                     },
                     {
-                        title: '标签1',
-                        key: 'tag1',
-                        sortable: true,
-                        ellipsis: true
-                    },
-                    {
-                        title: '标签2',
-                        key: 'tag2',
-                        sortable: true,
-                        ellipsis: true
-                    },
-                    {
-                        title: '标签3',
-                        key: 'tag3',
+                        title: '标签',
+                        key: 'tags',
                         sortable: true,
                         ellipsis: true
                     },

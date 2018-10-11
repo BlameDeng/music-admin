@@ -1,31 +1,27 @@
 <template>
     <div class="sheet-edit">
         <Icon type="md-close" size="25" class="icon" @click="onBack" />
-        <div class="sheet-info">
-            <h3>编辑歌单</h3>
+        <div class="form-wrapper">
             <Form label-position="left" class="form" v-if="sheet">
-                <FormItem label="歌单名">
+                <FormItem style="margin:0;">
+                    <h3>编辑歌单</h3>
+                </FormItem>
+                <FormItem label="歌单名" style="margin:0;">
                     <Input v-model.trim="sheet.name"></Input>
                 </FormItem>
-                <FormItem label="标签" style="display:inline-flex;align-items:center;width:30%;white-space:nowrap;">
-                    <Input v-model.trim="sheet.tag1"></Input>
+                <FormItem label="标签" style="margin:0;">
+                    <Input v-model.trim="sheet.tags"></Input>
                 </FormItem>
-                <FormItem label="标签" style="display:inline-flex;align-items:center;width:30%;white-space:nowrap;">
-                    <Input v-model.trim="sheet.tag2"></Input>
-                </FormItem>
-                <FormItem label="标签" style="display:inline-flex;align-items:center;width:30%;white-space:nowrap;">
-                    <Input v-model.trim="sheet.tag3"></Input>
-                </FormItem>
-                <FormItem label="封面链接">
+                <FormItem label="封面链接" style="margin:0;">
                     <Input v-model.trim="sheet.cover"></Input>
                 </FormItem>
-                <div style="text-align:end; margin-top:-20px;" id="sheet-cover-upload-container">
+                <div style="text-align:end;margin-top:3px;" id="sheet-cover-upload-container">
                     <Button size="small" type="default" @click="preview">预览封面</Button>
                     <Button size="small" type="default" id="sheet-cover-picker">上传新封面</Button>
                     <x-upload container-id="sheet-cover-upload-container" browse-id="sheet-cover-picker" bucket-name="sheetcovers" @uploaded="coverUploaded($event)"></x-upload>
                 </div>
                 <FormItem label="简介">
-                    <Input v-model.trim="sheet.summary" type="textarea" :rows="4"></Input>
+                    <Input v-model.trim="sheet.summary" type="textarea" :rows="2"></Input>
                 </FormItem>
                 <FormItem style="text-align:center;">
                     <Button style="margin-right: 18px" @click="onBack">取消</Button>
@@ -33,7 +29,7 @@
                 </FormItem>
             </Form>
         </div>
-        <div class="songs">
+        <!-- <div class="songs">
             <div class="sheet-songs">
                 <Button type="error" class="button" @click="pathSheet('removeSong')">从歌单移除</Button>
                 <div class="title">
@@ -62,7 +58,7 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -88,7 +84,7 @@
         },
         created() {
             this.$route.query && this.$route.query.id && this.getSheet(this.$route.query.id);
-            this.sheet && this.sheet.songs && this.sheet.songs.length && this.getSheetSongs();
+            this.sheet && this.sheet.songs && this.sheet.songs.length && this.getSongs();
         },
         methods: {
             ...mapActions(["fetchAllSongs", "updateSheet"]),
@@ -97,8 +93,8 @@
                 this.sheet = this.$store.getters.getSheetById(id);
             },
             onBack() { this.$router.go(-1); },
-            getSheetSongs() {
-                this.sheetSongs = this.$store.getters.getSheetSongs(this.sheet.songs);
+            getSongs() {
+                this.sheetSongs = this.$store.getters.getSongsByArray(this.sheet.songs);
             },
             onSave() {
                 this.updateSheet(this.sheet).then(res => {
@@ -136,7 +132,7 @@
                     this.updateSheet(this.sheet).then(res => {
                         this.allId = null;
                         this.getSheet(this.sheet.id);
-                        this.getSheetSongs();
+                        this.getSongs();
                     });
                 }
                 if (type === 'removeSong') {
@@ -147,7 +143,7 @@
                     this.updateSheet(this.sheet).then(res => {
                         this.sheetSongId = null;
                         this.getSheet(this.sheet.id);
-                        this.getSheetSongs();
+                        this.getSongs();
                     });
                 }
             }
@@ -158,8 +154,6 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .sheet-edit {
-        display: flex;
-        justify-content: center;
         width: 100%;
         height: 100%;
         border: 1px solid $border;
@@ -169,155 +163,158 @@
         >.icon {
             position: absolute;
             top: 5px;
-            right: 15px;
+            right: 5px;
             color: lighten($sub, 20%);
             cursor: pointer;
-            z-index: 1;
             &:hover {
                 color: $p;
             }
         }
-        >.sheet-info {
-            width: 40%;
+        >.form-wrapper {
+            width: 80%;
             height: 100%;
-            padding: 0 30px;
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            margin: 0 auto;
             color: $content;
-            >h3 {
-                margin: 10px 0;
-                text-align: center;
-                font-size: 20px;
-                color: $title;
-            }
-        }
-        >.songs {
-            width: 60%;
-            height: 100%;
-            color: $content;
-            font-size: 12px;
-            position: relative;
-            >.sheet-songs {
-                height: 30%;
-                padding: 5px 20px;
-                overflow: auto;
-                >.title {
-                    color: $p;
-                }
-                >.button {
-                    position: absolute;
-                    top: 30%;
-                    margin-top: -25px;
-                    right: 25px;
-                    padding: 0 4px;
-                }
-                >.song {
-                    display: inline-flex;
-                    align-items: center;
-                    width: 40%;
-                    vertical-align: top;
-                    padding: 3px 0 3px 3px;
-                    &:hover {
-                        background: $bg;
-                    }
-                    >p {
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        margin-right: 5px;
-                        &:first-child {
-                            width: 10%;
-                            color: lighten($content, 30%);
-                        }
-                        &.song-name {
-                            width: 50%;
-                        }
-                        &.singer {
-                            width: 30%;
-                        }
-                        &:last-child {
-                            height: 14px;
-                            width: 14px;
-                            border: 1px solid $border;
-                            border-radius: 3px;
-                            cursor: pointer;
-                            margin-right: 20px;
-                            >.icon {
-                                display: none;
-                            }
-                        }
-                        &.selected {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            >.icon {
-                                display: inline;
-                            }
-                        }
-                    }
-                }
-            }
-            >.all-songs {
-                height: 70%;
-                padding: 5px 20px;
-                overflow: auto;
-                border-top: 1px solid $border;
-                >.title {
-                    color: $p;
-                }
-                >.button {
-                    position: absolute;
-                    bottom: 5px;
-                    right: 25px;
-                    padding: 0 4px;
-                }
-                >.song {
-                    display: inline-flex;
-                    align-items: center;
-                    width: 40%;
-                    vertical-align: top;
-                    padding: 3px 0 3px 3px;
-                    &:hover {
-                        background: $bg;
-                    }
-                    >p {
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        margin-right: 5px;
-                        &:first-child {
-                            width: 10%;
-                            color: lighten($content, 30%);
-                        }
-                        &.song-name {
-                            width: 50%;
-                        }
-                        &.singer {
-                            width: 30%;
-                        }
-                        &:last-child {
-                            height: 14px;
-                            width: 14px;
-                            border: 1px solid $border;
-                            border-radius: 3px;
-                            cursor: pointer;
-                            margin-right: 20px;
-                            >.icon {
-                                display: none;
-                            }
-                        }
-                        &.selected {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            >.icon {
-                                display: inline;
-                            }
-                        }
-                    }
+            >.form {
+                width: 100%;
+                h3 {
+                    text-align: center;
+                    font-size: 20px;
+                    padding: 10px 0;
+                    line-height: 1.8em;
+                    color: $title;
                 }
             }
         }
+        // >.songs {
+        //     width: 60%;
+        //     height: 100%;
+        //     color: $content;
+        //     font-size: 12px;
+        //     position: relative;
+        //     >.sheet-songs {
+        //         height: 30%;
+        //         padding: 5px 20px;
+        //         overflow: auto;
+        //         >.title {
+        //             color: $p;
+        //         }
+        //         >.button {
+        //             position: absolute;
+        //             top: 30%;
+        //             margin-top: -25px;
+        //             right: 25px;
+        //             padding: 0 4px;
+        //         }
+        //         >.song {
+        //             display: inline-flex;
+        //             align-items: center;
+        //             width: 40%;
+        //             vertical-align: top;
+        //             padding: 3px 0 3px 3px;
+        //             &:hover {
+        //                 background: $bg;
+        //             }
+        //             >p {
+        //                 white-space: nowrap;
+        //                 overflow: hidden;
+        //                 text-overflow: ellipsis;
+        //                 margin-right: 5px;
+        //                 &:first-child {
+        //                     width: 10%;
+        //                     color: lighten($content, 30%);
+        //                 }
+        //                 &.song-name {
+        //                     width: 50%;
+        //                 }
+        //                 &.singer {
+        //                     width: 30%;
+        //                 }
+        //                 &:last-child {
+        //                     height: 14px;
+        //                     width: 14px;
+        //                     border: 1px solid $border;
+        //                     border-radius: 3px;
+        //                     cursor: pointer;
+        //                     margin-right: 20px;
+        //                     >.icon {
+        //                         display: none;
+        //                     }
+        //                 }
+        //                 &.selected {
+        //                     display: flex;
+        //                     justify-content: center;
+        //                     align-items: center;
+        //                     >.icon {
+        //                         display: inline;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     >.all-songs {
+        //         height: 70%;
+        //         padding: 5px 20px;
+        //         overflow: auto;
+        //         border-top: 1px solid $border;
+        //         >.title {
+        //             color: $p;
+        //         }
+        //         >.button {
+        //             position: absolute;
+        //             bottom: 5px;
+        //             right: 25px;
+        //             padding: 0 4px;
+        //         }
+        //         >.song {
+        //             display: inline-flex;
+        //             align-items: center;
+        //             width: 40%;
+        //             vertical-align: top;
+        //             padding: 3px 0 3px 3px;
+        //             &:hover {
+        //                 background: $bg;
+        //             }
+        //             >p {
+        //                 white-space: nowrap;
+        //                 overflow: hidden;
+        //                 text-overflow: ellipsis;
+        //                 margin-right: 5px;
+        //                 &:first-child {
+        //                     width: 10%;
+        //                     color: lighten($content, 30%);
+        //                 }
+        //                 &.song-name {
+        //                     width: 50%;
+        //                 }
+        //                 &.singer {
+        //                     width: 30%;
+        //                 }
+        //                 &:last-child {
+        //                     height: 14px;
+        //                     width: 14px;
+        //                     border: 1px solid $border;
+        //                     border-radius: 3px;
+        //                     cursor: pointer;
+        //                     margin-right: 20px;
+        //                     >.icon {
+        //                         display: none;
+        //                     }
+        //                 }
+        //                 &.selected {
+        //                     display: flex;
+        //                     justify-content: center;
+        //                     align-items: center;
+        //                     >.icon {
+        //                         display: inline;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 </style>

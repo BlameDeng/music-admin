@@ -15,6 +15,7 @@ const mutations = {
     },
     patchSheet(state, payload) {
         let array = state.allSheets;
+        payload.tags ? payload.tags = payload.tags.join('/') : ''; //数组转字符串
         for (let i = 0; i < array.length; i++) {
             if (array[i].id === payload.id) {
                 Vue.set(array, i, payload);
@@ -29,6 +30,7 @@ const mutations = {
 
 const actions = {
     async createSheet({ commit }, data) {
+        data.tags ? data.tags = data.tags.split('/').filter(v => v) : ''; //字符串转数组
         let res = await Sheet.createSheet(data);
         return res;
     },
@@ -40,6 +42,7 @@ const actions = {
             let { id, createdAt, updatedAt, attributes } = sheet;
             createdAt = formatDate(createdAt);
             updatedAt = formatDate(updatedAt);
+            sheet.attributes.tags ? sheet.attributes.tags = sheet.attributes.tags.join('/') : ''; //数组转字符串
             array.push({ id, createdAt, updatedAt, ...attributes });
         });
         commit('setAllSheets', array);
@@ -47,11 +50,12 @@ const actions = {
     },
 
     async updateSheet({ commit }, data) {
-        let { name, tag1, tag2, tag3, cover, id, createdAt, summary, songs } = data;
-        let res = await Sheet.updateSheet({ name, tag1, tag2, tag3, cover, summary, songs }, id);
+        let { name, tags, cover, id, createdAt, summary, songs } = data;
+        tags = tags.split('/').filter(v => v); //字符串转数组
+        let res = await Sheet.updateSheet({ name, tags, cover, summary, songs }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
-        let payload = { name, tag1, tag2, tag3, cover, id, createdAt, summary, songs, updatedAt };
+        let payload = { name, tags, cover, id, createdAt, summary, songs, updatedAt };
         commit('patchSheet', payload);
         return res;
     },
