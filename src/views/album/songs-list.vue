@@ -7,17 +7,17 @@
         </div>
         <div class="action-bar">
             <div class="add" @click="add">
-                <span>添加到歌单</span>
+                <span>添加到专辑</span>
                 <x-icon name="right" class="icon"></x-icon>
             </div>
             <div class="remove" @click="remove">
                 <x-icon name="right" class="icon"></x-icon>
-                <span>从歌单移除</span>
+                <span>从专辑移除</span>
             </div>
         </div>
         <div class="songs">
             <div class="header">歌曲列表</div>
-            <Table border size="small" ref="songs" :columns="columns2" :data="songs" v-if="songs" @on-selection-change="selectSheet($event)"></Table>
+            <Table border size="small" ref="songs" :columns="columns2" :data="songs" v-if="songs" @on-selection-change="selectAlbum($event)"></Table>
         </div>
     </div>
 </template>
@@ -29,10 +29,10 @@
         components: { xIcon },
         data() {
             return {
-                sheet: null,
+                album: null,
                 songs: null,
                 idsFromAll: null,
-                idsFromSheet: null,
+                idsFromAlbum: null,
                 columns1: [{
                         title: '歌名',
                         key: 'name',
@@ -73,17 +73,17 @@
             })
         },
         mounted() {
-            this.$route.query && this.$route.query.id ? this.getSheet(this.$route.query.id) : '';
-            this.sheet && this.sheet.songs && this.sheet.songs.length ? this.getSongs() : '';
+            this.$route.query && this.$route.query.id ? this.getAlbum(this.$route.query.id) : '';
+            this.album && this.album.songs && this.album.songs.length ? this.getSongs() : '';
         },
         methods: {
-            ...mapActions(['updateSheet']),
+            ...mapActions(['updateAlbum']),
             onBack() { this.$router.go(-1); },
-            getSheet(id) {
-                this.sheet = this.$store.getters.getSheetById(id);
+            getAlbum(id) {
+                this.album = this.$store.getters.getAlbumById(id);
             },
             getSongs() {
-                this.songs = this.$store.getters.getSongsByArray(this.sheet.songs);
+                this.songs = this.$store.getters.getSongsByArray(this.album.songs);
             },
             selectAll(arr) {
                 let array = [];
@@ -94,39 +94,39 @@
                 }
                 this.idsFromAll = array;
             },
-            selectSheet(arr) {
+            selectAlbum(arr) {
                 let array = [];
                 if (arr.length) {
                     arr.forEach(song => {
                         array.push(song.id);
                     })
                 }
-                this.idsFromSheet = array;
+                this.idsFromAlbum = array;
             },
             add() {
                 if (!this.idsFromAll || !this.idsFromAll.length) { return }
-                this.sheet.songs = this.sheet.songs || [];
+                this.album.songs = this.album.songs || [];
                 this.idsFromAll.forEach(id => {
-                    this.sheet.songs.indexOf(id) === -1 ? this.sheet.songs.push(id) : '';
+                    this.album.songs.indexOf(id) === -1 ? this.album.songs.push(id) : '';
                 });
-                this.updateSheet(this.sheet).then(res => {
-                    this.getSheet(this.$route.query.id);
+                this.updateAlbum(this.album).then(res => {
+                    this.getAlbum(this.$route.query.id);
                     this.getSongs();
                     this.idsFromAll = null;
                     this.$refs.allSongs.selectAll(false);
-                    this.$Message.success('已添加至歌单！');
+                    this.$Message.success('已添加至专辑！');
                 })
             },
             remove() {
-                if (!this.idsFromSheet || !this.idsFromSheet.length) { return }
-                this.idsFromSheet.forEach(id => {
-                    let index = this.sheet.songs.indexOf(id);
-                    this.sheet.songs.splice(index, 1);
+                if (!this.idsFromAlbum || !this.idsFromAlbum.length) { return }
+                this.idsFromAlbum.forEach(id => {
+                    let index = this.album.songs.indexOf(id);
+                    this.album.songs.splice(index, 1);
                 });
-                this.updateSheet(this.sheet).then(res => {
-                    this.getSheet(this.$route.query.id);
+                this.updateAlbum(this.album).then(res => {
+                    this.getAlbum(this.$route.query.id);
                     this.getSongs();
-                    this.idsFromSheet = null;
+                    this.idsFromAlbum = null;
                     this.$refs.songs.selectAll(false);
                     this.$Message.success('操作成功！');
                 })

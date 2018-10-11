@@ -15,6 +15,9 @@
                     <p>歌手： {{album.singer}}</p>
                 </div>
             </div>
+            <div class="button">
+                <Button type="primary" style="padding:2px 5px;" @click="onEditList">编辑歌单列表</Button>
+            </div>
         </div>
         <div class="detail">
             <Tabs>
@@ -77,6 +80,9 @@
             },
             onBack() {
                 this.$router.go(-1);
+            },
+            onEditList() {
+                this.$router.push({ path: '/album/songslist', query: { id: this.album.id } });
             }
         }
     };
@@ -111,6 +117,8 @@
             align-items: center;
             padding-left: 20px;
             color: $content;
+            position: relative;
+            border-bottom: .5px solid $border;
             >.cover {
                 width: 180px;
                 height: 180px;
@@ -156,6 +164,11 @@
                         color: $sub;
                     }
                 }
+            }
+            >.button {
+                position: absolute;
+                bottom: 5px;
+                right: 0;
             }
         }
         >.detail {

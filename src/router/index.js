@@ -71,15 +71,20 @@ export default new Router({
                     component: () =>
                         import('@/views/album/list.vue')
                 },
-                // {
-                //     path: 'list/edit',
-                //     component: () =>
-                //         import('@/views/album/album-edit.vue')
-                // },
+                {
+                    path: 'list/edit',
+                    component: () =>
+                        import('@/views/album/album-edit.vue')
+                },
                 {
                     path: 'list/detail',
                     component: () =>
                         import('@/views/album/album-detail.vue')
+                },
+                {
+                    path: 'songslist',
+                    component: () =>
+                        import('@/views/album/songs-list.vue')
                 }
             ]
         }, {

@@ -4,13 +4,13 @@
             <Table size="small" stripe border :columns="columns" :data="currentArray" ref="table"></Table>
         </div>
         <div class="button-bar" v-if="allSongs&&allSongs.length">
-            <Page :total="total" :current.sync="current" :page-size="pageSize" style="margin-left:40px;" />
+            <Page :total="total" :current.sync="current" :page-size="pageSize" style="margin-left:40px;" size="small" />
             <div style="margin-right:40px;">
-                <Button type="primary" size="large" @click="exportData(1)">
+                <Button type="primary" size="small" @click="exportData(1)">
                     <Icon type="ios-download-outline"></Icon>
                     导出原始数据
                 </Button>
-                <Button type="primary" size="large" @click="exportData(2)">
+                <Button type="primary" size="small" @click="exportData(2)">
                     <Icon type="ios-download-outline"></Icon>
                     导出排序后的数据
                 </Button>

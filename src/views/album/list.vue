@@ -1,14 +1,14 @@
 <template>
     <div class="album-list">
         <div class="list">
-            <Table size="small" stripe border :columns="columns" :data="allAlbums" ref="table"></Table>
+            <Table size="small" stripe border :columns="columns" :data="allAlbums" ref="table" v-if="allAlbums"></Table>
         </div>
         <div class="button-bar">
-            <Button type="primary" size="large" @click="exportData(1)">
+            <Button type="primary" size="small" @click="exportData(1)">
                 <Icon type="ios-download-outline"></Icon>
                 导出原始数据
             </Button>
-            <Button type="primary" size="large" @click="exportData(2)">
+            <Button type="primary" size="small" @click="exportData(2)">
                 <Icon type="ios-download-outline"></Icon>
                 导出排序后的数据
             </Button>
@@ -161,14 +161,14 @@
         border: 1px solid $border;
         border-radius: 4px;
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-        padding-bottom: 42px;
+        padding-bottom: 35px;
         >.list {
             width: 100%;
             height: 100%;
         }
         >.button-bar {
             text-align: end;
-            height: 42px;
+            height: 35px;
             padding: 2px 35px 4px 0;
         }
     }
