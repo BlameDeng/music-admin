@@ -22,6 +22,9 @@
                 </div>
                 <p class="summary">{{sheet.summary}}</p>
             </div>
+            <div class="button">
+                <Button type="primary" style="padding:2px 5px;" @click="onEditList">编辑歌单列表</Button>
+            </div>
         </div>
         <div class="sheet-songs">
             <div class="header">
@@ -72,7 +75,10 @@
                 this.songname = song.name;
                 this.$refs.play.play();
             },
-            onBack() { this.$router.go(-1); }
+            onBack() { this.$router.go(-1); },
+            onEditList() {
+                this.$router.push({ path: '/sheet/songslist', query: { id: this.sheet.id } });
+            }
         }
     }
 </script>
@@ -107,6 +113,7 @@
             align-items: center;
             padding-left: 20px;
             color: $content;
+            position: relative;
             >.cover {
                 width: 180px;
                 height: 180px;
@@ -171,6 +178,11 @@
                     -webkit-box-orient: vertical;
                     overflow: hidden;
                 }
+            }
+            >.button {
+                position: absolute;
+                bottom: 5px;
+                right: 0;
             }
         }
         >.sheet-songs {

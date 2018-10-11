@@ -33,7 +33,7 @@
                     </div>
                 </TabPane>
                 <TabPane label="专辑详情" name="name2">
-                    <p class="summary">{{album.summary}}</p>
+                    <p class="summary" v-if="album">{{album.summary}}</p>
                 </TabPane>
             </Tabs>
         </div>

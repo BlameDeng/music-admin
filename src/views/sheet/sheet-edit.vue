@@ -21,7 +21,7 @@
                     <x-upload container-id="sheet-cover-upload-container" browse-id="sheet-cover-picker" bucket-name="sheetcovers" @uploaded="coverUploaded($event)"></x-upload>
                 </div>
                 <FormItem label="简介">
-                    <Input v-model.trim="sheet.summary" type="textarea" :rows="2"></Input>
+                    <Input v-model.trim="sheet.summary" type="textarea" :rows="3"></Input>
                 </FormItem>
                 <FormItem style="text-align:center;">
                     <Button style="margin-right: 18px" @click="onBack">取消</Button>

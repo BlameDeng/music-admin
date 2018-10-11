@@ -105,6 +105,11 @@ export default new Router({
                     path: 'list/detail',
                     component: () =>
                         import('@/views/sheet/sheet-detail.vue')
+                },
+                {
+                    path: 'songslist',
+                    component: () =>
+                        import('@/views/sheet/songs-list.vue')
                 }
             ]
         }
