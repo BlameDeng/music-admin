@@ -117,6 +117,12 @@
                 pageSize: 20
             };
         },
+        created() {
+            if (this.$route.params && this.$route.params.page) {
+                this.$route.params.page.match(/^page=([0-9]+)$/);
+                this.current = +RegExp.$1;
+            }
+        },
         computed: {
             ...mapState({
                 allSongs: state => state.song.allSongs
@@ -131,7 +137,7 @@
         methods: {
             ...mapActions(['destroySong']),
             onEdit(index) {
-                this.$router.push({ path: './list/edit', query: { id: this.allSongs[index].id } });
+                this.$router.push({ path: '/song/edit', query: { id: this.allSongs[index].id } });
             },
             onRemove(index) {
                 this.$Modal.confirm({
@@ -150,7 +156,7 @@
                 })
             },
             onDetail(index) {
-                this.$router.push({ path: './list/detail', query: { id: this.allSongs[index].id } });
+                this.$router.push({ path: '/song/detail', query: { id: this.allSongs[index].id } });
             },
             exportData(type) {
                 let now = new Date();
@@ -166,6 +172,9 @@
                     });
                 }
             }
+        },
+        watch: {
+            current(val) { this.$router.push(`/song/list/page=${val}`) }
         }
     }
 </script>

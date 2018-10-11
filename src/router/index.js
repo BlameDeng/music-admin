@@ -18,17 +18,17 @@ export default new Router({
                         import('@/views/song/create.vue')
                 },
                 {
-                    path: 'list',
+                    path: 'list/:page?',
                     component: () =>
                         import('@/views/song/list.vue')
                 },
                 {
-                    path: 'list/edit',
+                    path: 'edit',
                     component: () =>
                         import('@/views/song/song-edit.vue')
                 },
                 {
-                    path: 'list/detail',
+                    path: 'detail',
                     component: () =>
                         import('@/views/song/song-detail.vue')
                 }
