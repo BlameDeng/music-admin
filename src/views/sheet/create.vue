@@ -31,7 +31,6 @@
 </template>
 <script>
     import xUpload from "@/components/upload/upload.vue"
-    import mixin from "@/mixin/mixin.js"
     import { mapActions } from 'vuex'
     export default {
         name: 'CreateSheet',
@@ -46,7 +45,6 @@
                 }
             }
         },
-        created() {},
         methods: {
             ...mapActions(['createSheet', 'fetchAllSheets']),
             onSave() {
@@ -61,7 +59,7 @@
                 })
             },
             coverUploaded(obj) {
-                this.formData.cover = obj.url;
+                this.formData.cover = obj.url + '?x-oss-process=style/avatar';
             },
             preview() {
                 if (!this.formData.cover) {

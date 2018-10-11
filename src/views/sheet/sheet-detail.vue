@@ -65,7 +65,7 @@
                 this.songname = song.name;
                 this.$refs.play.play();
             },
-            onBack() { this.$router.go(-1); },
+            onBack() { this.$router.go(-1); }
         }
     }
 </script>

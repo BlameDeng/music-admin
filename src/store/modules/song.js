@@ -2,8 +2,7 @@ import Song from '@/helpers/song.js'
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
 const state = {
-    allSongs: null,
-    editingSong: null
+    allSongs: null
 }
 
 const getters = {
@@ -22,9 +21,6 @@ const mutations = {
     setAllSongs(state, payload) {
         state.allSongs = payload;
     },
-    setEditingSong(state, payload) {
-        payload > -1 ? state.editingSong = state.allSongs[payload] : state.editingSong = null;
-    },
     patchSong(state, payload) {
         let array = state.allSongs;
         for (let i = 0; i < array.length; i++) {
@@ -36,9 +32,6 @@ const mutations = {
     },
     deleteSong(state, payload) {
         state.allSongs = state.allSongs.filter(song => song.id !== payload);
-    },
-    updateCover(state, payload) {
-        state.editingSong = payload;
     }
 }
 

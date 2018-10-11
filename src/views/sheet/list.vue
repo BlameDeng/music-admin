@@ -53,12 +53,6 @@
                         ellipsis: true
                     },
                     {
-                        title: '简介',
-                        key: 'summary',
-                        sortable: true,
-                        ellipsis: true
-                    },
-                    {
                         title: '创建时间',
                         key: 'createdAt',
                         sortable: true,

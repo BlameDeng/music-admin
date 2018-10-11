@@ -95,6 +95,7 @@
             font-size: 20px;
             padding: 10px 0;
             line-height: 2em;
+            color: $title;
             margin-top: -60px;
         }
         >.form-wrapper {
@@ -104,7 +105,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            >.form{
+            >.form {
                 width: 100%;
             }
         }

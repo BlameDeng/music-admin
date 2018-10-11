@@ -4,8 +4,9 @@ Vue.use(Vuex);
 import song from './modules/song.js'
 import sheet from './modules/sheet.js'
 import singer from './modules/singer.js'
+import album from './modules/album.js'
 
 const store = new Vuex.Store({
-    modules: { song, sheet, singer }
+    modules: { song, sheet, singer, album }
 });
 export default store;
