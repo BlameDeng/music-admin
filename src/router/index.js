@@ -76,11 +76,11 @@ export default new Router({
                 //     component: () =>
                 //         import('@/views/album/album-edit.vue')
                 // },
-                // {
-                //     path: 'list/detail',
-                //     component: () =>
-                //         import('@/views/album/album-detail.vue')
-                // }
+                {
+                    path: 'list/detail',
+                    component: () =>
+                        import('@/views/album/album-detail.vue')
+                }
             ]
         }, {
             path: '/sheet',

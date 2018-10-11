@@ -6,7 +6,7 @@ const state = {
 }
 
 const getters = {
-    getSheetSongs: state => (queryArray) => {
+    getSongsByArray: state => queryArray => {
         let array = [];
         state.allSongs = state.allSongs || [];
         state.allSongs.forEach(song => {

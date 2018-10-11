@@ -43,22 +43,23 @@
 
 <script>
     import xPlay from '@/components/common/play.vue'
-    import { mapState } from 'vuex'
     export default {
         name: "SheetDetail",
         components: { xPlay },
         data() {
             return { songs: null, source: '', songname: '', sheet: null }
         },
-        created() {
-            this.$route.query && this.$route.query.id ? this.sheet = this.getSheet(this.$route.query.id) : '';
-            if (this.sheet && this.sheet.songs && this.sheet.songs.length) {
-                this.songs = this.$store.getters.getSheetSongs(this.sheet.songs);
-            }
+        mounted() {
+            this.$route.query && this.$route.query.id ? this.getSheet(this.$route.query.id) : '';
+            this.sheet && this.sheet.songs && this.sheet.songs.length ?
+                this.getSongs(this.sheet.songs) : '';
         },
         methods: {
             getSheet(id) {
-                return this.$store.getters.getSheetById(id);
+                this.sheet = this.$store.getters.getSheetById(id);
+            },
+            getSongs(array) {
+                this.songs = this.$store.getters.getSongsByArray(array);
             },
             onClickPlay(song) {
                 this.source = song.url;
