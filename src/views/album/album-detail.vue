@@ -7,14 +7,13 @@
             </div>
             <div class="info">
                 <div class="title">
-                    <span>歌单</span>
-                    <h4>{{album.name}}</h4>
+                    <span>专辑</span>
+                    <h3>{{album.name}}</h3>
                 </div>
                 <div class="time">
-                    <span>创建于 {{album.createdAt}}</span><span>最近更新 {{album.updatedAt}}</span>
+                    <p>时间： {{album.time}}</p>
+                    <p>歌手： {{album.singer}}</p>
                 </div>
-                <p class="tags">标签：<span>{{album.tag1}}</span> / <span>{{album.tag2}}</span> / <span>{{album.tag3}}</span></p>
-                <p class="summary">{{album.summary}}</p>
             </div>
         </div>
         <div class="detail">
@@ -33,8 +32,9 @@
                         </template>
                     </div>
                 </TabPane>
-                <TabPane label="标签二" name="name2">标签二的内容</TabPane>
-                <TabPane label="标签三" name="name3">标签三的内容</TabPane>
+                <TabPane label="专辑详情" name="name2">
+                    <p class="summary">{{album.summary}}</p>
+                </TabPane>
             </Tabs>
         </div>
         <div class="play">
@@ -43,17 +43,25 @@
     </div>
 </template>
 <script>
-    import xPlay from '@/components/common/play.vue'
+    import xPlay from "@/components/common/play.vue";
     export default {
         name: "AlbumDetail",
         components: { xPlay },
         data() {
-            return { songs: null, source: '', songname: '', album: null }
+            return {
+                album: null,
+                songs: null,
+                source: "",
+                songname: ""
+            };
         },
         mounted() {
-            this.$route.query && this.$route.query.id ? this.getAlbum(this.$route.query.id) : '';
+            this.$route.query && this.$route.query.id ?
+                this.getAlbum(this.$route.query.id) :
+                "";
             this.album && this.album.songs && this.album.songs.length ?
-                this.getSongs(this.album.songs) : '';
+                this.getSongs(this.album.songs) :
+                "";
         },
         methods: {
             getAlbum(id) {
@@ -67,9 +75,11 @@
                 this.songname = song.name;
                 this.$refs.play.play();
             },
-            onBack() { this.$router.go(-1); }
+            onBack() {
+                this.$router.go(-1);
+            }
         }
-    }
+    };
 </script>
 <style scoped lang="scss">
     @import "@/assets/base.scss";
@@ -125,36 +135,26 @@
                     justify-content: flex-start;
                     align-items: center;
                     >span {
-                        border: .5px solid $error;
+                        border: 0.5px solid $error;
                         font-size: 12px;
                         color: $error;
                         padding: 2px 4px;
                         border-radius: 6px;
                         margin-right: 6px;
                     }
-                    font-size: 20px;
-                    color: $title;
+                    >h3 {
+                        font-size: 20px;
+                        color: $title;
+                        line-height: 1.8em;
+                    }
                 }
                 >.time {
                     margin: 15px 0;
-                    >span {
+                    >p {
                         font-size: 12px;
+                        line-height: 1.8em;
                         color: $sub;
-                        margin-right: 10px;
                     }
-                }
-                >.tags {
-                    margin-bottom: 15px;
-                    >span {
-                        color: $p;
-                        cursor: pointer;
-                    }
-                }
-                >.summary {
-                    display: -webkit-box;
-                    -webkit-line-clamp: 3;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
                 }
             }
         }
@@ -165,7 +165,7 @@
             color: $content;
             overflow: auto;
             .album-songs {
-                width:100%;
+                width: 100%;
                 // margin: 0 auto;
                 // height: 50%;
                 color: $content;
@@ -249,6 +249,11 @@
                         }
                     }
                 }
+            }
+            .summary {
+                font-size: 14px;
+                color: $content;
+                text-indent: 2em;
             }
         }
         >.play {
