@@ -120,11 +120,8 @@
                 allSheets: state => state.sheet.allSheets,
             })
         },
-        created() {
-            this.allSheets ? '' : this.fetchAllSheets();
-        },
         methods: {
-            ...mapActions(['fetchAllSheets', 'destroySheet']),
+            ...mapActions(['destroySheet']),
             onDetail(index) {
                 this.$router.push({ path: './list/detail', query: { id: this.allSheets[index].id } });
             },

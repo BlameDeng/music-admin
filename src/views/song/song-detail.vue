@@ -10,7 +10,7 @@
                 </p>
             </div>
             <p class="cover">
-                <img :src="song.cover" alt="cover" title="点击查看原图">
+                <img :src="song.cover" alt="cover">
             </p>
         </div>
         <div class="source">
@@ -109,7 +109,6 @@
                     height: 150px;
                     vertical-align: top;
                     border-radius: 4px;
-                    cursor: pointer;
                 }
             }
         }

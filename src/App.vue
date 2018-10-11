@@ -24,11 +24,12 @@
             ...mapState({
                 allSongs: state => state.song.allSongs,
                 allSheets: state => state.sheet.allSheets,
-                allSingers: state => state.singer.allSingers
+                allSingers: state => state.singer.allSingers,
+                allAlbums: state => state.album.allAlbums
             })
         },
         methods: {
-            ...mapActions(['fetchAllSongs', 'fetchAllSheets', 'fetchAllSingers'])
+            ...mapActions(['fetchAllSongs', 'fetchAllSheets', 'fetchAllSingers', 'fetchAllAlbums'])
         },
         created() {
             this.$Message.config({
@@ -38,6 +39,7 @@
             this.allSongs ? '' : this.fetchAllSongs();
             this.allSheets ? '' : this.fetchAllSheets();
             this.allSingers ? '' : this.fetchAllSingers();
+            this.allAlbums ? '' : this.fetchAllAlbums();
         },
         mounted() {},
     }
