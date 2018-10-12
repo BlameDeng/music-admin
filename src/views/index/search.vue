@@ -9,7 +9,7 @@
             </span>
         </div>
         <div class="results">
-            <Tabs>
+            <Tabs :value="tab" @on-click="onClickTab($event)">
                 <TabPane label="单曲" name="song">
                     <div class="song">
                         <Table size="small" stripe border :columns="columns" :data="searchResults.songs" ref="table" v-if="searchResults&&searchResults.songs"></Table>
@@ -17,7 +17,7 @@
                 </TabPane>
                 <TabPane label="歌手" name="singer">
                     <template v-if="searchResults&&searchResults.singers&&searchResults.singers.length">
-                        <div class="singer" v-for="singer in searchResults.singers" :key="singer.id">
+                        <div class="singer" v-for="singer in searchResults.singers" :key="singer.id" @click="onSinger(singer)">
                             <img :src="singer.avatar" alt="avatar" class="avatar">
                             <span class="name">{{singer.name}}</span>
                             <span class="othernames">（{{singer.othernames}}）</span>
@@ -27,16 +27,19 @@
                 </TabPane>
                 <TabPane label="专辑" name="album">
                     <template v-if="searchResults&&searchResults.albums&&searchResults.albums.length">
-                        <div class="album" v-for="album in searchResults.albums" :key="album.id">
+                        <div class="album" v-for="album in searchResults.albums" :key="album.id" @click="onAlbum(album)">
                             <img :src="album.cover" alt="cover">
                             <span class="name">{{album.name}}</span>
-                            <span class="singer">{{album.singer}}</span>
+                            <span class="singer" @click.stop="onSinger(album.singer)">
+                                {{album.singer}}
+                                <img src="@/assets/person.png">
+                            </span>
                         </div>
                     </template>
                 </TabPane>
                 <TabPane label="歌单" name="sheet">
                     <template v-if="searchResults&&searchResults.sheets&&searchResults.sheets.length">
-                        <div class="sheet" v-for="sheet in searchResults.sheets" :key="sheet.id">
+                        <div class="sheet" v-for="sheet in searchResults.sheets" :key="sheet.id" @click="onSheet(sheet)">
                             <img :src="sheet.cover" alt="cover">
                             <span class="name">{{sheet.name}}</span>
                             <span class="length">{{sheet.songs.length}}首</span>
@@ -55,6 +58,7 @@
         data() {
             return {
                 keyword: '',
+                tab: 'song',
                 columns: [{
                         type: 'index',
                         width: 80,
@@ -123,6 +127,12 @@
                 searchResults: state => state.searchResults
             })
         },
+        created() {
+            if (this.$route.params && this.$route.params.tab) {
+                this.$route.params.tab.match(/^tab=(\w+)$/);
+                this.tab = RegExp.$1;
+            }
+        },
         methods: {
             ...mapMutations(['setSearchResults']),
             onSearch(value) {
@@ -165,7 +175,28 @@
             onEdit(index) {
                 let id = this.searchResults.songs[index].id;
                 this.$router.push({ path: '/song/edit', query: { id } });
+            },
+            onSinger(singer) {
+                let id = '';
+                if (typeof singer === 'object') { id = singer.id; }
+                if (typeof singer === 'string') {
+                    let temp = this.allSingers.find(item => item.name === singer);
+                    id = temp.id;
+                }
+                this.$router.push({ path: '/singer/list/detail', query: { id } });
+            },
+            onAlbum(album) {
+                this.$router.push({ path: '/album/list/detail', query: { id: album.id } });
+            },
+            onSheet(sheet) {
+                this.$router.push({ path: '/sheet/list/detail', query: { id: sheet.id } });
+            },
+            onClickTab(tab) {
+                this.tab = tab;
             }
+        },
+        watch: {
+            tab(val) { this.$router.push(`/index/search/tab=${val}`) }
         }
     };
 </script>
@@ -263,6 +294,15 @@
                     top: 50%;
                     left: 50%;
                     transform: translateX(-50%) translateY(-50%);
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    >img {
+                        vertical-align: top;
+                        width: 14px;
+                        height: 14px;
+                        margin-left: 5px;
+                    }
                 }
             }
             .sheet {

@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="detail">
-            <Tabs>
-                <TabPane label="歌曲列表" name="name1">
+            <Tabs value="list">
+                <TabPane label="歌曲列表" name="list">
                     <div class="album-songs">
                         <template v-if="songs&&songs.length">
                             <div class="song" v-for="(song,index) in songs" :key="song.id">
@@ -35,7 +35,7 @@
                         </template>
                     </div>
                 </TabPane>
-                <TabPane label="专辑详情" name="name2">
+                <TabPane label="专辑详情" name="detail">
                     <p class="summary" v-if="album">{{album.summary}}</p>
                 </TabPane>
             </Tabs>

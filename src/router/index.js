@@ -8,7 +8,7 @@ export default new Router({
             component: () =>
                 import('@/views/index/index.vue'),
             children: [{
-                path: 'search',
+                path: 'search/:tab?',
                 component: () =>
                     import('@/views/index/search.vue')
             }, ]

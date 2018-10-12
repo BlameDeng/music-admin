@@ -64,11 +64,11 @@
                 this.$router.go(-1);
             },
             onSave() {
-                if (!this.name && !this.othernames) {
+                if (!this.formData.name && !this.formData.othernames) {
                     this.$Message.warning('歌手名字不能为空！');
                     return
                 }
-                let temp = this.name || this.othernames;
+                let temp = this.formData.name || this.formData.othernames;
                 temp = temp.substr(0, 1);
                 let firstLetter = pinyin(temp, { style: pinyin.STYLE_FIRST_LETTER })[0][0].toUpperCase();
                 /[A-Z]/.test(firstLetter) ? '' : firstLetter = '#';
