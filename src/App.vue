@@ -46,6 +46,7 @@
     }
 </script>
 <style lang="scss">
+    @import "@/assets/base.scss";
     #app {
         font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -54,6 +55,7 @@
         height: 100%;
         padding-top: 60px;
         font-size: 14px;
+        background: $bg;
         >.header {
             width: 100%;
             height: 60px;
@@ -73,7 +75,6 @@
                 flex-grow: 1;
                 padding: 20px;
                 overflow: hidden;
-                background: #fff;
             }
         }
     }

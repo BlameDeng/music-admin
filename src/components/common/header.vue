@@ -2,12 +2,12 @@
     <div class="header">
         <div class="logo">
             <x-icon name="logo" class="logo-icon"></x-icon>
-            <span class="logo-text">歌曲管理系统</span>
+            <span class="logo-text">后台管理系统</span>
         </div>
         <div class="user-bar">
             <Icon type="md-menu" size="25" style="cursor:pointer;" />
             <div class="user-info" @click="onUserInfo">
-                <span class="user-name">张三</span>
+                <span class="user-name">admin</span>
                 <img src="../../assets/avatar.jpg" alt="avatar" class="user-avatar">
                 <transition name="fade">
                     <ul class="popover" v-show="popoverVisible">
@@ -58,18 +58,19 @@
             width: 150px;
             height: 100%;
             border-right: .5px solid $border;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            padding-left: 20px;
+            padding-left: 5px;
             flex-shrink: 0;
             transition: all .3s;
-            >.logo-icon{
+            >.logo-icon {
                 animation: circle 6s linear infinite;
             }
             >.logo-text {
-                margin-left: 10px;
+                margin-left: 5px;
             }
         }
         >.user-bar {
@@ -127,9 +128,13 @@
             }
         }
     }
-    @keyframes circle{
-        from{transform: rotateZ(0);}
-        to{transform: rotateZ(360deg);}
+    @keyframes circle {
+        from {
+            transform: rotateZ(0);
+        }
+        to {
+            transform: rotateZ(360deg);
+        }
     }
     .fade-enter-active, .fade-leave-active {
         transition: opacity .3s;

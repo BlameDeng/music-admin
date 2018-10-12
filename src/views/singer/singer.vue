@@ -12,6 +12,7 @@
     .singer {
         width: 100%;
         height: 100%;
+        background: #fff;
     }
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s;

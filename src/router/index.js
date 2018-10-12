@@ -11,6 +11,10 @@ export default new Router({
                 path: 'search/:tab?',
                 component: () =>
                     import('@/views/index/search.vue')
+            }, {
+                path: 'scan',
+                component: () =>
+                    import('@/views/index/scan.vue')
             }, ]
         }, {
             path: '/song',
