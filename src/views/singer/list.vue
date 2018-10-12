@@ -84,7 +84,7 @@
         border-radius: 4px;
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         padding-top: 122.5px;
-                    overflow: auto;
+        overflow: auto;
         >.singer-nav {
             font-size: 12px;
             padding: 10px 0;

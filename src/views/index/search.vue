@@ -2,22 +2,22 @@
     <div class="index-search">
         <div class="search-bar">
             <Input search enter-button style="width:300px;" @on-search="onSearch($event)" placeholder="搜索音乐、歌手、专辑、歌单" />
-            <span v-if="keyword&&results">
+            <span v-if="keyword&&searchResults">
                 搜索
                 <span> “{{keyword}}” </span>
-                找到 {{results.songs.length}} 首单曲，{{results.singers.length}} 个歌手，{{results.albums.length}} 张专辑，{{results.sheets.length}} 张歌单。
+                找到 {{searchResults.songs.length}} 首单曲，{{searchResults.singers.length}} 个歌手，{{searchResults.albums.length}} 张专辑，{{searchResults.sheets.length}} 张歌单。
             </span>
         </div>
         <div class="results">
             <Tabs>
                 <TabPane label="单曲" name="song">
                     <div class="song">
-                        <Table size="small" stripe border :columns="columns" :data="results.songs" ref="table" v-if="results&&results.songs"></Table>
+                        <Table size="small" stripe border :columns="columns" :data="searchResults.songs" ref="table" v-if="searchResults&&searchResults.songs"></Table>
                     </div>
                 </TabPane>
                 <TabPane label="歌手" name="singer">
-                    <template v-if="results&&results.singers&&results.singers.length">
-                        <div class="singer" v-for="singer in results.singers" :key="singer.id">
+                    <template v-if="searchResults&&searchResults.singers&&searchResults.singers.length">
+                        <div class="singer" v-for="singer in searchResults.singers" :key="singer.id">
                             <img :src="singer.avatar" alt="avatar" class="avatar">
                             <span class="name">{{singer.name}}</span>
                             <span class="othernames">（{{singer.othernames}}）</span>
@@ -26,8 +26,8 @@
                     </template>
                 </TabPane>
                 <TabPane label="专辑" name="album">
-                    <template v-if="results&&results.albums&&results.albums.length">
-                        <div class="album" v-for="album in results.albums" :key="album.id">
+                    <template v-if="searchResults&&searchResults.albums&&searchResults.albums.length">
+                        <div class="album" v-for="album in searchResults.albums" :key="album.id">
                             <img :src="album.cover" alt="cover">
                             <span class="name">{{album.name}}</span>
                             <span class="singer">{{album.singer}}</span>
@@ -35,8 +35,8 @@
                     </template>
                 </TabPane>
                 <TabPane label="歌单" name="sheet">
-                    <template v-if="results&&results.sheets&&results.sheets.length">
-                        <div class="sheet" v-for="sheet in results.sheets" :key="sheet.id">
+                    <template v-if="searchResults&&searchResults.sheets&&searchResults.sheets.length">
+                        <div class="sheet" v-for="sheet in searchResults.sheets" :key="sheet.id">
                             <img :src="sheet.cover" alt="cover">
                             <span class="name">{{sheet.name}}</span>
                             <span class="length">{{sheet.songs.length}}首</span>
@@ -49,16 +49,15 @@
     </div>
 </template>
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapMutations } from 'vuex'
     export default {
         name: "IndexSearch",
         data() {
             return {
                 keyword: '',
-                results: null,
                 columns: [{
                         type: 'index',
-                        width: 60,
+                        width: 80,
                         align: 'center',
                         sortable: true
                     },
@@ -91,7 +90,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.onDetail(params.index + (this.current - 1) * this.pageSize)
+                                            this.onDetail(params.index)
                                         }
                                     }
                                 }, '详情'),
@@ -105,7 +104,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.onEdit(params.index + (this.current - 1) * this.pageSize)
+                                            this.onEdit(params.index)
                                         }
                                     }
                                 }, '编辑')
@@ -120,10 +119,12 @@
                 allSongs: state => state.song.allSongs,
                 allSingers: state => state.singer.allSingers,
                 allAlbums: state => state.album.allAlbums,
-                allSheets: state => state.sheet.allSheets
+                allSheets: state => state.sheet.allSheets,
+                searchResults: state => state.searchResults
             })
         },
         methods: {
+            ...mapMutations(['setSearchResults']),
             onSearch(value) {
                 if (!value) { return }
                 this.keyword = value;
@@ -155,7 +156,15 @@
                         return sheet;
                     }
                 });
-                this.results = { songs, singers, albums, sheets };
+                this.setSearchResults({ songs, singers, albums, sheets });
+            },
+            onDetail(index) {
+                let id = this.searchResults.songs[index].id;
+                this.$router.push({ path: '/song/detail', query: { id } });
+            },
+            onEdit(index) {
+                let id = this.searchResults.songs[index].id;
+                this.$router.push({ path: '/song/edit', query: { id } });
             }
         }
     };
