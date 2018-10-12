@@ -4,18 +4,26 @@
             <Input search enter-button style="width:300px;" @on-search="onSearch($event)" placeholder="搜索音乐、歌手、专辑、歌单" />
             <span v-if="keyword&&searchResults">
                 搜索
-                <span> “{{keyword}}” </span>
-                找到 {{searchResults.songs.length}} 首单曲，{{searchResults.singers.length}} 个歌手，{{searchResults.albums.length}} 张专辑，{{searchResults.sheets.length}} 张歌单。
+                <span class="keyword"> “{{keyword}}” </span>
+                找到
+                <span :class="{active:searchResults.songs.length}">{{searchResults.songs.length}}</span>
+                首单曲，
+                <span :class="{active:searchResults.singers.length}">{{searchResults.singers.length}}</span>
+                个歌手，
+                <span :class="{active:searchResults.albums.length}">{{searchResults.albums.length}}</span>
+                张专辑，
+                <span :class="{active:searchResults.sheets.length}">{{searchResults.sheets.length}}</span>
+                张歌单。
             </span>
         </div>
         <div class="results">
             <Tabs :value="tab" @on-click="onClickTab($event)">
-                <TabPane label="单曲" name="song">
+                <TabPane label="单曲" name="songs">
                     <div class="song">
                         <Table size="small" stripe border :columns="columns" :data="searchResults.songs" ref="table" v-if="searchResults&&searchResults.songs"></Table>
                     </div>
                 </TabPane>
-                <TabPane label="歌手" name="singer">
+                <TabPane label="歌手" name="singers">
                     <template v-if="searchResults&&searchResults.singers&&searchResults.singers.length">
                         <div class="singer" v-for="singer in searchResults.singers" :key="singer.id" @click="onSinger(singer)">
                             <img :src="singer.avatar" alt="avatar" class="avatar">
@@ -25,7 +33,7 @@
                         </div>
                     </template>
                 </TabPane>
-                <TabPane label="专辑" name="album">
+                <TabPane label="专辑" name="albums">
                     <template v-if="searchResults&&searchResults.albums&&searchResults.albums.length">
                         <div class="album" v-for="album in searchResults.albums" :key="album.id" @click="onAlbum(album)">
                             <img :src="album.cover" alt="cover">
@@ -37,13 +45,18 @@
                         </div>
                     </template>
                 </TabPane>
-                <TabPane label="歌单" name="sheet">
+                <TabPane label="歌单" name="sheets">
                     <template v-if="searchResults&&searchResults.sheets&&searchResults.sheets.length">
                         <div class="sheet" v-for="sheet in searchResults.sheets" :key="sheet.id" @click="onSheet(sheet)">
                             <img :src="sheet.cover" alt="cover">
                             <span class="name">{{sheet.name}}</span>
                             <span class="length">{{sheet.songs.length}}首</span>
-                            <span class="tags">{{sheet.tags}}</span>
+                            <p class="tags">
+                                <span v-for="tag in sheet.tags.split('/')" :key="tag" class="tag">
+                                    {{tag}}
+                                    <span class="line"> / </span>
+                                </span>
+                            </p>
                         </div>
                     </template>
                 </TabPane>
@@ -58,7 +71,7 @@
         data() {
             return {
                 keyword: '',
-                tab: 'song',
+                tab: '',
                 columns: [{
                         type: 'index',
                         width: 80,
@@ -139,6 +152,13 @@
                 if (!value) { return }
                 this.keyword = value;
                 this.search(this.keyword);
+                let tabs = ['songs', 'singers', 'albums', 'sheets'];
+                for (let i = 0; i < tabs.length; i++) {
+                    if (this.searchResults[tabs[i]].length) {
+                        this.tab = tabs[i];
+                        break;
+                    }
+                }
             },
             search(keyword) {
                 let songs = [];
@@ -219,8 +239,12 @@
                 font-size: 12px;
                 color: $sub;
                 margin-left: 10px;
-                >span {
+                >.keyword {
                     color: $p;
+                }
+                >.active {
+                    color: $success;
+                    font-weight: bold;
                 }
             }
         }
@@ -346,6 +370,18 @@
                     left: 70%;
                     transform: translateX(-50%) translateY(-50%);
                     font-size: 12px;
+                    color: $p;
+                    >.tag {
+                        padding: 2px 4px;
+                        >.line {
+                            color: $sub;
+                        }
+                        &:last-child {
+                            >.line {
+                                display: none;
+                            }
+                        }
+                    }
                 }
             }
         }
