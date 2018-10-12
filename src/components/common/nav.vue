@@ -1,12 +1,12 @@
 <template>
     <div class="nav">
         <Menu style="height:100%;width:150px;font-size:14px;" accordion @on-select="onSelectItem($event)" class="menu">
-            <Submenu name="1">
+            <Submenu name="index">
                 <template slot="title">
                     <Icon type="md-qr-scanner" />
-                    概览
+                    首页
                 </template>
-                <MenuItem name="1-1">123</MenuItem>
+                <MenuItem name="index-search">搜索</MenuItem>
             </Submenu>
             <Submenu name="song">
                 <template slot="title">

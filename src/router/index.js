@@ -1,13 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/views/index.vue'
-
 Vue.use(Router)
 
 export default new Router({
     routes: [{
-            path: '/',
-            component: Index
+            path: '/index',
+            component: () =>
+                import('@/views/index/index.vue'),
+            children: [{
+                path: 'search',
+                component: () =>
+                    import('@/views/index/search.vue')
+            }, ]
         }, {
             path: '/song',
             component: () =>
