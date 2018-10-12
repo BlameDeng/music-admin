@@ -235,7 +235,7 @@
                     background: $bg;
                 }
                 &:hover {
-                    background: darken($bg, 10%);
+                    background: darken($bg, 5%);
                 }
                 >.index {
                     width: 10%;

@@ -6,12 +6,7 @@
 <script>
     export default {
         name: 'Singer',
-        components: {},
-        data() {
-            return {
-
-            }
-        },
+        data() { return {} },
     }
 </script>
 <style scoped lang="scss">

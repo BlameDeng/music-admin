@@ -181,6 +181,9 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .song-list {
+        /deep/ td {
+            height: 30px;
+        }
         width: 100%;
         height: 100%;
         border: 1px solid $border;
