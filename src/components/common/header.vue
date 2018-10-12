@@ -2,7 +2,7 @@
     <div class="header">
         <div class="logo">
             <x-icon name="logo" class="logo-icon"></x-icon>
-            <span class="logo-text">后台管理系统</span>
+            <span class="logo-text">歌曲管理系统</span>
         </div>
         <div class="user-bar">
             <Icon type="md-menu" size="25" style="cursor:pointer;" />

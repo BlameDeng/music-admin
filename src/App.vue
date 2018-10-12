@@ -8,7 +8,9 @@
                 <x-nav></x-nav>
             </div>
             <div class="views">
-                <router-view />
+                <transition name="fade">
+                    <router-view />
+                </transition>
             </div>
         </div>
     </div>
@@ -40,8 +42,7 @@
             this.allSheets ? '' : this.fetchAllSheets();
             this.allSingers ? '' : this.fetchAllSingers();
             this.allAlbums ? '' : this.fetchAllAlbums();
-        },
-        mounted() {},
+        }
     }
 </script>
 <style lang="scss">
@@ -71,7 +72,8 @@
             >.views {
                 flex-grow: 1;
                 padding: 20px;
-                overflow: auto;
+                overflow: hidden;
+                background: #fff;
             }
         }
     }
@@ -89,5 +91,12 @@
     }
     ul, ol {
         list-style: none;
+    }
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .3s;
+        margin-bottom: 20px;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 </style>
