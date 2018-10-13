@@ -40,7 +40,7 @@
         </div>
         <div class="main">
             <div class="inventory">
-                <div class="title">收录信息总览</div>
+                <div class="title">信息总览</div>
                 <div class="detail">
                     <div class="songs">
                         <span class="icon-wrapper">
@@ -79,6 +79,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="chart" ref="chart" style="height:50%;width:100%;"></div>
             </div>
             <div class="lang">
                 <div class="lang-inner">
@@ -122,6 +123,7 @@
 <script>
     import { mapState, mapActions } from "vuex";
     import xIcon from '@/components/icon.vue'
+    import Chart from '@/helpers/chart.js'
     export default {
         name: "IndexScan",
         components: { xIcon },
@@ -146,6 +148,7 @@
                 ["v", "j", "o"].forEach(key => {
                     this.$refs[key].style.width = `${this.lang[key]}%`;
                 });
+                this.chart();
             });
         },
         methods: {
@@ -161,6 +164,10 @@
             },
             removeTodo(todo) {
                 this.destroyTodo(todo.id);
+            },
+            chart() {
+                const chart = new Chart(this.$refs.chart);
+                chart.axis();
             }
         }
     };
@@ -175,7 +182,7 @@
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         overflow: auto;
         >.info {
-            height: 40%;
+            height: 35%;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -308,7 +315,7 @@
             }
         }
         >.main {
-            height: 60%;
+            height: 65%;
             border-top: 0.5px solid $border;
             display: flex;
             justify-content: space-between;
@@ -318,18 +325,16 @@
                 width: 60%;
                 flex-shrink: 0;
                 >.title {
-                    font-size: 20px;
-                    font-weight: bold;
+                    font-size: 16px;
                     color: $title;
                     line-height: 2em;
-                    padding: 10px 0;
-                    height: 25%;
+                    height: 10%;
                     display: flex;
                     justify-content: center;
                     align-items: center;
                 }
                 >.detail {
-                    height: 75%;
+                    height: 40%;
                     display: flex;
                     justify-content: space-evenly;
                     align-items: flex-start;
