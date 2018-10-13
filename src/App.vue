@@ -75,7 +75,7 @@
             }
             >.views {
                 flex-grow: 1;
-                padding: 20px;
+                padding: 10px;
                 overflow: hidden;
             }
         }
@@ -89,7 +89,7 @@
         width: 100%;
         height: 100%;
         line-height: 1.4em;
-        min-width: 1000px;
+        min-width: 1200px;
         min-height: 600px;
     }
     ul, ol {
@@ -97,7 +97,7 @@
     }
     .fade-enter-active, .fade-leave-active {
         transition: opacity .3s;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     .fade-enter, .fade-leave-to {
         opacity: 0;

@@ -1,10 +1,34 @@
 import echarts from 'echarts'
 
-function recent(data) {
-    let now = new Date();
-    
+const helper = {
+    recent(data) {
+        let strs = [];
+        let today = new Date();
+        let array = [today]
+        let now = today.getTime();
+        for (let i = 0; i < data - 1; i++) {
+            let time = now - (1000 * 60 * 60 * 24) * (i + 1);
+            let obj = new Date(time);
+            array.push(obj);
+        }
+        array.forEach(obj => {
+            strs.unshift(this.formatDate(obj));
+        });
+        return strs;
+    },
 
+    formatDate(obj) {
+        let year = obj.getFullYear();
+        let month = obj.getMonth() + 1;
+        let date = obj.getDate();
+        return `${year}/${month}/${date}`
+    },
+
+    random(m, n) {
+        return Math.floor(Math.random() * (m - n + 1) + n);
+    }
 }
+
 const option = {
     title: {
         text: '近五日网站访问量统计',
@@ -20,18 +44,18 @@ const option = {
     xAxis: [{
         type: 'category',
         boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五']
+        data: helper.recent(5)
     }],
     yAxis: [{
         type: 'value',
         axisLabel: {
-            formatter: '{value} °C'
+            formatter: '{value}'
         }
     }],
     series: [{
         name: '访问量',
         type: 'line',
-        data: [200, 1400, 1500, 1600, 1400],
+        data: [helper.random(100, 1000), helper.random(100, 1000), helper.random(100, 1000), helper.random(100, 1000), helper.random(100, 1000)],
         markPoint: {
             data: [
                 { type: 'max', name: '最大值' }

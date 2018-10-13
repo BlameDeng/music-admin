@@ -79,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="chart" ref="chart" style="height:50%;width:100%;"></div>
+                <div class="chart" ref="chart"></div>
             </div>
             <div class="lang">
                 <div class="lang-inner">
@@ -377,6 +377,10 @@
                             }
                         }
                     }
+                }
+                >.chart{
+                  width: 100%;
+                  height: 50%;
                 }
             }
             >.lang {

@@ -16,7 +16,7 @@
     }
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     .fade-enter, .fade-leave-to {
         opacity: 0;
