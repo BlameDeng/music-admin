@@ -7,15 +7,16 @@ export default new Router({
             path: '/index',
             component: () =>
                 import('@/views/index/index.vue'),
+            redirect: '/index/scan',
             children: [{
-                path: 'search/:tab?',
-                component: () =>
-                    import('@/views/index/search.vue')
-            }, {
                 path: 'scan',
                 component: () =>
                     import('@/views/index/scan.vue')
-            }, ]
+            }, {
+                path: 'search/:tab?',
+                component: () =>
+                    import('@/views/index/search.vue')
+            }]
         }, {
             path: '/song',
             component: () =>

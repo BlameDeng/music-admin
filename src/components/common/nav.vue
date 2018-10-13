@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <Menu style="height:100%;width:150px;font-size:14px;background: #f8f8f9;" accordion @on-select="onSelectItem($event)" class="menu">
+        <Menu style="height:100%;width:150px;font-size:14px;background: #f8f8f9;" accordion @on-select="onSelectItem($event)" class="menu" :active-name="activeName" :open-names="openNames" ref="menu">
             <Submenu name="index">
                 <template slot="title">
                     <div class="slot">
@@ -55,34 +55,51 @@
     </div>
 </template>
 <script>
-    export default {
-        name: 'Nav',
-        methods: {
-            onSelectItem(name) {
-                this.$router.push('/' + name.replace('-', '/'));
-            }
-        }
+export default {
+  name: "Nav",
+  data() {
+    return { activeName: "", openNames: null };
+  },
+  methods: {
+    onSelectItem(name) {
+      this.$router.push("/" + name.replace("-", "/"));
     }
+  },
+  watch: {
+    $route: {
+      handler: function(val) {
+        let array = val.path.split("/").filter(v => v);
+        this.activeName = `${array[0]}-${array[1]}`;
+        this.openNames = array.slice(0, 1);
+        this.$nextTick(() => {
+          this.$refs.menu.updateOpened();
+        });
+      },
+      deep: true,
+      immediate: true
+    }
+  }
+};
 </script>
 <style scoped lang="scss">
-    .nav {
-        height: 100%;
-        /deep/ .ivu-menu-item {
-            padding: 8px;
-            font-size: 14px;
-        }
-        /deep/ i.ivu-icon {
-            top: 1px;
-        }
-        .slot {
-            display: inline-flex;
-            justify-content: flex-start;
-            align-items: center;
-            >span {
-                margin-left: 5px;
-                font-weight: bold;
-                margin-right: 5px;
-            }
-        }
+.nav {
+  height: 100%;
+  /deep/ .ivu-menu-item {
+    padding: 8px;
+    font-size: 14px;
+  }
+  /deep/ i.ivu-icon {
+    top: 1px;
+  }
+  .slot {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    > span {
+      margin-left: 5px;
+      font-weight: bold;
+      margin-right: 5px;
     }
+  }
+}
 </style>

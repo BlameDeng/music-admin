@@ -156,17 +156,17 @@
             align-items: flex-start;
             align-content: flex-start;
             >.singer {
-                width: 100px;
+                width: 150px;
                 color: $content;
                 flex-shrink: 0;
                 margin-right: 10px;
                 cursor: pointer;
                 >.avatar {
-                    width: 100px;
-                    height: 100px;
+                    width: 150px;
+                    height: 150px;
                     >img {
-                        width: 100px;
-                        height: 100px;
+                        width: 150px;
+                        height: 150px;
                         vertical-align: top;
                         border-radius: 2px;
                     }
@@ -175,7 +175,7 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 0 2px;
+                    padding: 0 8px;
                     >span {
                         font-size: 12px;
                         margin: 5px 0;

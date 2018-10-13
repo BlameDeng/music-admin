@@ -27,11 +27,12 @@
                 allSongs: state => state.song.allSongs,
                 allSheets: state => state.sheet.allSheets,
                 allSingers: state => state.singer.allSingers,
-                allAlbums: state => state.album.allAlbums
+                allAlbums: state => state.album.allAlbums,
+                allTodos: state => state.todo.allTodos
             })
         },
         methods: {
-            ...mapActions(['fetchAllSongs', 'fetchAllSheets', 'fetchAllSingers', 'fetchAllAlbums'])
+            ...mapActions(['fetchAllSongs', 'fetchAllSheets', 'fetchAllSingers', 'fetchAllAlbums', 'fetchAllTodos'])
         },
         created() {
             this.$Message.config({
@@ -42,6 +43,7 @@
             this.allSheets ? '' : this.fetchAllSheets();
             this.allSingers ? '' : this.fetchAllSingers();
             this.allAlbums ? '' : this.fetchAllAlbums();
+            this.allTodos ? '' : this.fetchAllTodos();
         }
     }
 </script>

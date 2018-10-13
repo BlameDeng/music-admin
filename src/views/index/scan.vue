@@ -16,60 +16,103 @@
                     </div>
                 </div>
             </div>
-            <div class="lang">
-                <div class="title">语言详情</div>
-                <div class="vue">
-                    <p>Vue</p>
-                    <div class="full">
-                        <div class="pro" style="background:#2c3e50;" ref="v"></div>
-                    </div>
-                    <span>{{lang.v.toFixed(1)}}%</span>
+            <div class="todo">
+                <div class="title">
+                    <input type="text" class="todo-input" placeholder="待办事项" v-model.trim="content" @keyup.enter="onCreateTodo">
+                    <Icon type="md-add" class="icon" size="20" @click="onCreateTodo" />
                 </div>
-                <div class="js">
-                    <p>JavaScript</p>
-                    <div class="full">
-                        <div class="pro" style="background:#f1e05a;" ref="j"></div>
-                    </div>
-                    <span>{{lang.j.toFixed(1)}}%</span>
-                </div>
-                <div class="other">
-                    <p>Other</p>
-                    <div class="full">
-                        <div class="pro" style="background:#ededed;" ref="o"></div>
-                    </div>
-                    <span>{{lang.o.toFixed(1)}}%</span>
-                </div>
+                <ul class="todo-list">
+                    <template v-if="allTodos&&allTodos.length">
+                        <li v-for="todo in allTodos" :key="todo.id" class="list" :class="{done:todo.done}">
+                            <span class="check" :class="{done:todo.done}" @click="onCheck(todo)">
+                                <Icon type="md-checkmark" class="icon" style="cursor: pointer;" />
+                            </span>
+                            <span class="text">
+                                {{todo.content}}
+                            </span>
+                            <span class="delete" @click="removeTodo(todo)">
+                                <Icon type="md-close" class="icon" style="cursor: pointer;" />
+                            </span>
+                        </li>
+                    </template>
+                </ul>
             </div>
         </div>
-        <div class="inventory">
-            <div class="title">收录信息总览</div>
-            <div class="detail">
-                <div class="songs">
-                    <Icon type="md-musical-notes" size="60" />
-                    <div>
-                        <p>歌曲</p>
-                        <span>{{allSongs.length}}</span>
+        <div class="main">
+            <div class="inventory">
+                <div class="title">收录信息总览</div>
+                <div class="detail">
+                    <div class="songs">
+                        <span class="icon-wrapper">
+                            <Icon type="md-musical-notes" size="60" />
+                        </span>
+                        <div>
+                            <p>歌曲</p>
+                            <span v-if="allSongs">{{allSongs.length}}</span>
+                        </div>
+                    </div>
+                    <div class="singers">
+                        <span class="icon-wrapper">
+                            <Icon type="md-person" size="60" />
+                        </span>
+                        <div>
+                            <p>歌手</p>
+                            <span v-if="allSingers">{{allSingers.length}}</span>
+                        </div>
+                    </div>
+                    <div class="albums">
+                        <span class="icon-wrapper">
+                            <Icon type="md-disc" size="60" />
+                        </span>
+                        <div>
+                            <p>专辑</p>
+                            <span v-if="allAlbums">{{allAlbums.length}}</span>
+                        </div>
+                    </div>
+                    <div class="sheets">
+                        <span class="icon-wrapper">
+                            <Icon type="ios-list-box" size="60" />
+                        </span>
+                        <div>
+                            <p>歌单</p>
+                            <span v-if="allSheets">{{allSheets.length}}</span>
+                        </div>
                     </div>
                 </div>
-                <div class="singers">
-                    <Icon type="md-person" size="60" />
-                    <div>
-                        <p>歌手</p>
-                        <span>{{allSingers.length}}</span>
+            </div>
+            <div class="lang">
+                <div class="lang-inner">
+                    <div class="banner">
+                        <img src="@/assets/banner.jpg">
+                        <div class="logo">
+                            <x-icon name="logo" class="logo-icon"></x-icon>
+                        </div>
                     </div>
-                </div>
-                <div class="albums">
-                    <Icon type="md-disc" size="60" />
-                    <div>
-                        <p>专辑</p>
-                        <span>{{allAlbums.length}}</span>
+                    <div class="title">
+                        <span>
+                            vue - admin
+                        </span>
                     </div>
-                </div>
-                <div class="sheets">
-                    <Icon type="ios-list-box" size="60" />
-                    <div>
-                        <p>歌单</p>
-                        <span>{{allSheets.length}}</span>
+                    <div class="vue">
+                        <p>Vue</p>
+                        <div class="full">
+                            <div class="pro" style="background:#2c3e50;" ref="v"></div>
+                        </div>
+                        <span>{{lang.v.toFixed(1)}}%</span>
+                    </div>
+                    <div class="js">
+                        <p>JavaScript</p>
+                        <div class="full">
+                            <div class="pro" style="background:#f1e05a;" ref="j"></div>
+                        </div>
+                        <span>{{lang.j.toFixed(1)}}%</span>
+                    </div>
+                    <div class="other">
+                        <p>Other</p>
+                        <div class="full">
+                            <div class="pro" style="background:#ededed;" ref="o"></div>
+                        </div>
+                        <span>{{lang.o.toFixed(1)}}%</span>
                     </div>
                 </div>
             </div>
@@ -77,12 +120,16 @@
     </div>
 </template>
 <script>
-    import { mapState, mapMutations } from 'vuex'
-    import echarts from 'echarts'
+    import { mapState, mapActions } from "vuex";
+    import xIcon from '@/components/icon.vue'
     export default {
         name: "IndexScan",
+        components: { xIcon },
         data() {
-            return { lang: { v: 78.0, j: 21.7, o: 0.3 } };
+            return {
+                lang: { v: 78.9, j: 20.8, o: 0.3 },
+                content: ""
+            };
         },
         computed: {
             ...mapState({
@@ -90,21 +137,31 @@
                 allSingers: state => state.singer.allSingers,
                 allAlbums: state => state.album.allAlbums,
                 allSheets: state => state.sheet.allSheets,
-                searchResults: state => state.searchResults
+                searchResults: state => state.searchResults,
+                allTodos: state => state.todo.allTodos
             })
         },
         mounted() {
             this.$nextTick(() => {
-                ['v', 'j', 'o'].forEach(key => {
+                ["v", "j", "o"].forEach(key => {
                     this.$refs[key].style.width = `${this.lang[key]}%`;
-                })
-            })
+                });
+            });
         },
         methods: {
-
-        },
-        watch: {
-
+            ...mapActions(["fetchAllTodos", "createTodo", "destroyTodo", "updateTodo"]),
+            onCreateTodo() {
+                this.createTodo({ content: this.content, done: false }).then(res => {
+                    this.content = "";
+                });
+            },
+            onCheck(todo) {
+                todo.done = !todo.done;
+                this.updateTodo(todo);
+            },
+            removeTodo(todo) {
+                this.destroyTodo(todo.id);
+            }
         }
     };
 </script>
@@ -123,7 +180,7 @@
             justify-content: flex-start;
             align-items: center;
             >.admin {
-                width: 50%;
+                width: 30%;
                 >.user-wrapper {
                     width: 300px;
                     margin: 0 auto;
@@ -161,89 +218,257 @@
                     }
                 }
             }
-            >.lang {
-                width: 50%;
+            >.todo {
+                width: 40%;
+                height: 100%;
+                padding: 10px;
                 >.title {
-                    font-size: 16px;
-                    line-height: 1.8em;
-                    border-bottom: .5px solid $border;
-                    padding-bottom: 10px;
-                }
-                >div {
+                    color: $title;
+                    font-size: 12px;
+                    line-height: 2em;
+                    border-bottom: 0.5px solid $border;
+                    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
                     display: flex;
-                    flex-wrap: wrap;
-                    justify-content: flex-start;
+                    justify-content: space-between;
                     align-items: center;
-                    >p {
+                    >.todo-input {
+                        border: none;
+                        padding-left: 0.5em;
                         width: 100%;
-                        font-size: 14px;
-                        color: $title;
-                        font-weight: bold;
-                        line-height: 2em;
-                    }
-                    >div {
-                        height: 10px;
-                        background: $bg;
-                        border-radius: 4px;
-                        flex-shrink: 0;
-                        width: 60%;
-                        margin-right: 5px;
-                        >div {
-                            height: 10px;
-                            width: 50%;
-                            border-radius: 4px;
+                        &:focus {
+                            outline: none;
                         }
                     }
-                    >span {
+                    >.icon {
                         color: $sub;
-                        font-size: 12px;
+                        cursor: pointer;
+                    }
+                }
+                >.todo-list {
+                    width: 100%;
+                    height: calc(100% - 24.5px);
+                    padding-top: 5px;
+                    overflow: auto;
+                    >.list {
+                        width: 100%;
+                        border-bottom: 0.5px solid $border;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        padding-left: 0.5em;
+                        position: relative;
+                        >.check {
+                            display: inline-flex;
+                            justify-content: center;
+                            align-items: center;
+                            border-radius: 50%;
+                            border: 0.5px solid;
+                            border-color: $border;
+                            margin-right: 4px;
+                            padding: 1px;
+                            >.icon {
+                                color: transparent;
+                            }
+                            &.done {
+                                >.icon {
+                                    color: $p;
+                                }
+                            }
+                        }
+                        >.text {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            color: $content;
+                            line-height: 1.8em;
+                            padding-right: 2em;
+                            cursor: default;
+                        }
+                        >.delete {
+                            display: none;
+                            color: $error;
+                            position: absolute;
+                            top: 50%;
+                            right: 5px;
+                            transform: translateY(-50%);
+                        }
+                        &:hover {
+                            >.delete {
+                                display: inline;
+                            }
+                        }
+                        &.done {
+                            >.text {
+                                color: $sub;
+                                text-decoration: line-through;
+                            }
+                        }
                     }
                 }
             }
         }
-        >.inventory {
+        >.main {
             height: 60%;
-            border-top: .5px solid $border;
-            >.title {
-                font-size: 20px;
-                font-weight: bold;
-                color: $title;
-                line-height: 2em;
-                padding: 10px 0;
-                height: 25%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            >.detail {
-                height: 75%;
-                display: flex;
-                justify-content: space-evenly;
-                align-items: flex-start;
-                >div {
+            border-top: 0.5px solid $border;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            >.inventory {
+                height: 100%;
+                width: 60%;
+                flex-shrink: 0;
+                >.title {
+                    font-size: 20px;
+                    font-weight: bold;
+                    color: $title;
+                    line-height: 2em;
+                    padding: 10px 0;
+                    height: 25%;
                     display: flex;
-                    justify-content: flex-start;
+                    justify-content: center;
                     align-items: center;
-                    background: lighten($p, 10%);
-                    color: #fff;
-                    padding: 50px;
-                    border-radius: 10px;
-                    cursor: pointer;
-                    transition: all .3s linear;
+                }
+                >.detail {
+                    height: 75%;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: flex-start;
                     >div {
-                        text-align: center;
-                        margin-left: 5px;
-                        >p {
-                            font-size: 16px;
-                            line-height: 1.8em;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        color: $content;
+                        background: $bg;
+                        padding: 20px;
+                        border: 0.5px solid $border;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        transition: all 0.3s linear;
+                        >.icon-wrapper {
+                            padding: 5px;
+                            border-radius: 5px;
+                            color: lighten($p, 10%);
+                            transition: all 0.3s linear;
                         }
-                        >span {
-                            line-height: 1.8em;
+                        >div {
+                            text-align: center;
+                            margin-left: 10px;
+                            >p {
+                                font-size: 16px;
+                                line-height: 1.8em;
+                                color: $sub;
+                            }
+                            >span {
+                                line-height: 1.8em;
+                            }
+                        }
+                        &:hover {
+                            transform: translateX(5px) translateY(-5px);
+                            box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
+                            >.icon-wrapper {
+                                color: #fff;
+                                background: lighten($p, 10%);
+                                transition: all 0.3s linear;
+                            }
                         }
                     }
-                    &:hover {
-                        transform: translateX(5px) translateY(-5px);
-                        box-shadow: -5px 5px 15px rgba(45, 140, 240, 0.8);
+                }
+            }
+            >.lang {
+                width: 35%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 10px;
+                flex-shrink: 0;
+                >.lang-inner {
+                    width: 100%;
+                    padding-right: 10px;
+                    >.banner {
+                        width: 100%;
+                        position: relative;
+                        >img {
+                            width: 100%;
+                            border-radius: 4px;
+                            vertical-align: top;
+                        }
+                        >.logo {
+                            position: absolute;
+                            left: 20px;
+                            bottom: -20px;
+                            height: auto;
+                            width: auto;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            border-radius: 50%;
+                            padding: 5px;
+                            background: #fff;
+                            >.logo-icon {
+                                color: $p;
+                                width: 30px;
+                                height: 30px;
+                                transition: all .3s linear;
+                            }
+                            &:hover {
+                                >.logo-icon {
+                                    transform: rotateZ(-125deg);
+                                    transform-origin: 100% 50%;
+                                }
+                            }
+                        }
+                    }
+                    >.title {
+                        border-bottom: 0.5px solid $border;
+                        font-weight: bold;
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        margin-bottom: 10px;
+                        >span {
+                            color: $p;
+                            font-size: 20px;
+                            line-height: 1.8em;
+                            transition: all 1s linear;
+                            cursor: default;
+                            &:hover {
+                                color: $success;
+                            }
+                        }
+                    }
+                    >div {
+                        display: flex;
+                        justify-content: flex-start;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        width: 100%;
+                        padding-bottom: 2px;
+                        >p {
+                            width: 100%;
+                            font-size: 12px;
+                            color: $title;
+                            font-weight: bold;
+                            line-height: 1.4em;
+                        }
+                        >div {
+                            height: 8px;
+                            background: $bg;
+                            border-radius: 4px;
+                            flex-shrink: 0;
+                            width: 80%;
+                            margin-right: 5px;
+                            >div {
+                                height: 8px;
+                                width: 50%;
+                                border-radius: 4px;
+                            }
+                        }
+                        >span {
+                            color: $sub;
+                            font-size: 12px;
+                        }
                     }
                 }
             }
