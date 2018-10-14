@@ -85,11 +85,11 @@
                 <div class="lang-inner">
                     <div class="banner">
                         <img src="@/assets/banner.jpg">
+                    </div>
+                    <div class="title">
                         <div class="logo">
                             <x-icon name="logo" class="logo-icon"></x-icon>
                         </div>
-                    </div>
-                    <div class="title">
                         <span>
                             vue - admin
                         </span>
@@ -122,8 +122,8 @@
 </template>
 <script>
     import { mapState, mapActions } from "vuex";
-    import xIcon from '@/components/icon.vue'
-    import Chart from '@/helpers/chart.js'
+    import xIcon from "@/components/icon.vue";
+    import Chart from "@/helpers/chart.js";
     export default {
         name: "IndexScan",
         components: { xIcon },
@@ -154,6 +154,7 @@
         methods: {
             ...mapActions(["fetchAllTodos", "createTodo", "destroyTodo", "updateTodo"]),
             onCreateTodo() {
+                if (!this.content) { return }
                 this.createTodo({ content: this.content, done: false }).then(res => {
                     this.content = "";
                 });
@@ -325,10 +326,12 @@
                 width: 60%;
                 flex-shrink: 0;
                 >.title {
-                    font-size: 16px;
+                    font-size: 18px;
+                    font-weight: bold;
                     color: $title;
                     line-height: 2em;
                     height: 10%;
+                    padding-left: .2em;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -337,18 +340,19 @@
                     height: 40%;
                     display: flex;
                     justify-content: space-evenly;
-                    align-items: flex-start;
+                    align-items: center;
                     >div {
                         display: flex;
                         justify-content: flex-start;
                         align-items: center;
                         color: $content;
                         background: $bg;
-                        padding: 20px;
+                        padding: 30px 20px;
                         border: 0.5px solid $border;
                         border-radius: 10px;
                         cursor: pointer;
                         transition: all 0.3s linear;
+                        user-select: none;
                         >.icon-wrapper {
                             padding: 5px;
                             border-radius: 5px;
@@ -378,9 +382,9 @@
                         }
                     }
                 }
-                >.chart{
-                  width: 100%;
-                  height: 50%;
+                >.chart {
+                    width: 100%;
+                    height: 50%;
                 }
             }
             >.lang {
@@ -397,16 +401,30 @@
                     padding-right: 10px;
                     >.banner {
                         width: 100%;
-                        position: relative;
+                        border-radius: 4px;
+                        overflow: hidden;
                         >img {
                             width: 100%;
                             border-radius: 4px;
                             vertical-align: top;
+                            transition: all 0.3s linear;
+                            &:hover {
+                                transform: scale(1.3);
+                            }
                         }
+                    }
+                    >.title {
+                        border-bottom: 0.5px solid $border;
+                        font-weight: bold;
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        margin-bottom: 10px;
+                        position: relative;
                         >.logo {
                             position: absolute;
                             left: 20px;
-                            bottom: -20px;
+                            top: -20px;
                             height: auto;
                             width: auto;
                             display: flex;
@@ -419,7 +437,7 @@
                                 color: $p;
                                 width: 30px;
                                 height: 30px;
-                                transition: all .3s linear;
+                                transition: all 0.3s linear;
                             }
                             &:hover {
                                 >.logo-icon {
@@ -428,14 +446,6 @@
                                 }
                             }
                         }
-                    }
-                    >.title {
-                        border-bottom: 0.5px solid $border;
-                        font-weight: bold;
-                        display: flex;
-                        justify-content: flex-end;
-                        align-items: center;
-                        margin-bottom: 10px;
                         >span {
                             color: $p;
                             font-size: 20px;

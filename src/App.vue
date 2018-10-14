@@ -39,11 +39,13 @@
                 top: 75,
                 duration: 2
             });
-            this.allSongs ? '' : this.fetchAllSongs();
-            this.allSheets ? '' : this.fetchAllSheets();
-            this.allSingers ? '' : this.fetchAllSingers();
-            this.allAlbums ? '' : this.fetchAllAlbums();
-            this.allTodos ? '' : this.fetchAllTodos();
+        },
+        mounted() {
+            this.fetchAllSongs();
+            this.fetchAllSheets();
+            this.fetchAllSingers();
+            this.fetchAllAlbums();
+            this.fetchAllTodos();
         }
     }
 </script>
