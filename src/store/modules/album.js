@@ -1,4 +1,5 @@
-import Album from '@/helpers/album.js'
+import Leancloud from '@/helpers/leancloud.js'
+const Album = new Leancloud('Album');
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
 const state = {
@@ -29,12 +30,12 @@ const mutations = {
 
 const actions = {
     async createAlbum({ commit }, data) {
-        let res = await Album.createAlbum(data);
+        let res = await Album.create(data);
         return res;
     },
 
     async fetchAllAlbums({ commit }) {
-        let res = await Album.fetchAllAlbums();
+        let res = await Album.fetchAll();
         let array = [];
         res.forEach(album => {
             let { id, createdAt, updatedAt, attributes } = album;
@@ -48,7 +49,7 @@ const actions = {
 
     async updateAlbum({ commit }, data) {
         let { name, time, cover, singer, summary, songs, id, createdAt } = data;
-        let res = await Album.updateAlbum({ name, time, singer, cover, summary, songs }, id);
+        let res = await Album.update({ name, time, singer, cover, summary, songs }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
         let payload = { name, time, cover, singer, summary, songs, id, createdAt, updatedAt };
@@ -57,7 +58,7 @@ const actions = {
     },
 
     async destroyAlbum({ commit }, id) {
-        let res = await Album.destroyAlbum(id);
+        let res = await Album.destroy(id);
         commit('deleteAlbum', id);
         return res;
     }

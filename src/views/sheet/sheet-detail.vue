@@ -15,7 +15,7 @@
                 </div>
                 <div class="tags">
                     <span>标签：</span>
-                    <span v-for="tag in sheet.tags.split('/')" :key="tag" class="tag-wrapper">
+                    <span v-for="(tag,index) in sheet.tags.split('/')" :key="index" class="tag-wrapper">
                         <span class="tag">{{tag}}</span>
                         <span class="line"> / </span>
                     </span>

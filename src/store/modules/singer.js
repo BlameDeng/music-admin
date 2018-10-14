@@ -1,4 +1,5 @@
-import Singer from '@/helpers/singer.js'
+import Leancloud from '@/helpers/leancloud.js'
+const Singer = new Leancloud('Singer');
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
 
@@ -30,12 +31,12 @@ const mutations = {
 
 const actions = {
     async createSinger({ commit }, data) {
-        let res = await Singer.createSinger(data);
+        let res = await Singer.create(data);
         return res;
     },
 
     async fetchAllSingers({ commit }) {
-        let res = await Singer.fetchAllSingers();
+        let res = await Singer.fetchAll();
         let array = [];
         res.forEach(Singer => {
             let { id, createdAt, updatedAt, attributes } = Singer;
@@ -49,7 +50,7 @@ const actions = {
 
     async updateSinger({ commit }, data) {
         let { name, othernames, lang, type, id, createdAt, summary, avatar, firstLetter } = data;
-        let res = await Singer.updateSinger({ name, othernames, lang, type, summary, avatar }, id);
+        let res = await Singer.update({ name, othernames, lang, type, summary, avatar }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
         let payload = { name, othernames, lang, type, id, createdAt, summary, updatedAt, avatar, firstLetter };
@@ -58,7 +59,7 @@ const actions = {
     },
 
     async destroySinger({ commit }, id) {
-        let res = await Singer.destroySinger(id);
+        let res = await Singer.destroy(id);
         commit('deleteSinger', id);
         return res;
     }

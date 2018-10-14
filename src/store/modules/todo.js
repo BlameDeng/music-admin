@@ -1,4 +1,5 @@
-import Todo from '@/helpers/todo.js'
+import Leancloud from '@/helpers/leancloud.js'
+const Todo = new Leancloud('Todo');
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
 const state = {
@@ -31,7 +32,7 @@ const mutations = {
 
 const actions = {
     async createTodo({ commit }, data) {
-        let res = await Todo.createTodo(data);
+        let res = await Todo.create(data);
         let { id, createdAt, updatedAt, attributes } = res;
         createdAt = formatDate(createdAt);
         updatedAt = formatDate(updatedAt);
@@ -42,7 +43,7 @@ const actions = {
 
     async fetchAllTodos({ commit }) {
         let array = [];
-        let res = await Todo.fetchAllTodos();
+        let res = await Todo.fetchAll();
         res.forEach(todo => {
             let { id, createdAt, updatedAt, attributes } = todo;
             createdAt = formatDate(createdAt);
@@ -55,7 +56,7 @@ const actions = {
 
     async updateTodo({ commit }, data) {
         let { content, done, id, createdAt } = data;
-        let res = await Todo.updateTodo({ content, done }, id);
+        let res = await Todo.update({ content, done }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
         let payload = { content, done, id, createdAt, updatedAt };
@@ -64,7 +65,7 @@ const actions = {
     },
 
     async destroyTodo({ commit }, id) {
-        let res = await Todo.destroyTodo(id);
+        let res = await Todo.destroy(id);
         commit('deleteTodo', id);
         return res;
     }

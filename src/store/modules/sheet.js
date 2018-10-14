@@ -1,6 +1,9 @@
-import Sheet from '@/helpers/sheet.js'
+// import Sheet from '@/helpers/sheet.js'
+import Leancloud from '@/helpers/leancloud.js'
+const Sheet = new Leancloud('Sheet');
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
+
 const state = {
     allSheets: null
 }
@@ -31,12 +34,12 @@ const mutations = {
 const actions = {
     async createSheet({ commit }, data) {
         data.tags ? data.tags = data.tags.split('/').filter(v => v) : ''; //字符串转数组
-        let res = await Sheet.createSheet(data);
+        let res = await Sheet.create(data);
         return res;
     },
 
     async fetchAllSheets({ commit }) {
-        let res = await Sheet.fetchAllSheets();
+        let res = await Sheet.fetchAll();
         let array = [];
         res.forEach(sheet => {
             let { id, createdAt, updatedAt, attributes } = sheet;
@@ -52,7 +55,7 @@ const actions = {
     async updateSheet({ commit }, data) {
         let { name, tags, cover, id, createdAt, summary, songs } = data;
         tags = tags.split('/').filter(v => v); //字符串转数组
-        let res = await Sheet.updateSheet({ name, tags, cover, summary, songs }, id);
+        let res = await Sheet.update({ name, tags, cover, summary, songs }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
         let payload = { name, tags, cover, id, createdAt, summary, songs, updatedAt };
@@ -61,7 +64,7 @@ const actions = {
     },
 
     async destroySheet({ commit }, id) {
-        let res = await Sheet.destroySheet(id);
+        let res = await Sheet.destroy(id);
         commit('deleteSheet', id);
         return res;
     }
