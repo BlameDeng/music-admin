@@ -28,7 +28,8 @@
                 allSheets: state => state.sheet.allSheets,
                 allSingers: state => state.singer.allSingers,
                 allAlbums: state => state.album.allAlbums,
-                allTodos: state => state.todo.allTodos
+                allTodos: state => state.todo.allTodos,
+                isLogin: state => state.isLogin
             })
         },
         methods: {
@@ -40,12 +41,16 @@
                 duration: 2
             });
         },
-        mounted() {
-            this.fetchAllSongs();
-            this.fetchAllSheets();
-            this.fetchAllSingers();
-            this.fetchAllAlbums();
-            this.fetchAllTodos();
+        watch: {
+            isLogin(val) {
+                if (val) {
+                    this.fetchAllSongs();
+                    this.fetchAllSheets();
+                    this.fetchAllSingers();
+                    this.fetchAllAlbums();
+                    this.fetchAllTodos();
+                }
+            }
         }
     }
 </script>

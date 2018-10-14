@@ -245,6 +245,7 @@
                 border: 0.5px solid $border;
                 border-bottom: none;
                 border-top: none;
+                cursor: default;
                 &:nth-child(2n) {
                     background: $bg;
                 }

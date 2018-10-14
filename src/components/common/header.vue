@@ -5,14 +5,16 @@
             <span class="logo-text">后台管理系统</span>
         </div>
         <div class="user-bar">
-            <Icon type="md-menu" size="25" style="cursor:pointer;" />
+            <span class="message" @click="onMessage">
+                <x-icon name="message" class="icon"></x-icon>
+                <span class="count"></span>
+            </span>
             <div class="user-info" @click="onUserInfo">
-                <span class="user-name">admin</span>
                 <img src="../../assets/avatar.jpg" alt="avatar" class="user-avatar">
+                <span class="user-name">admin</span>
                 <transition name="fade">
                     <ul class="popover" v-show="popoverVisible">
-                        <li>我的消息</li>
-                        <li>个人设置</li>
+                        <li>项目简介</li>
                         <li @click="onLogout">退出登录</li>
                     </ul>
                 </transition>
@@ -40,6 +42,9 @@
             onLogout() {
                 this.logout();
                 this.$router.push('/');
+            },
+            onMessage() {
+                this.$router.push('/index/message');
             }
         },
         watch: {
@@ -49,7 +54,7 @@
         },
         beforeDestroy() {
             document.removeEventListener('click', this.listenDocument);
-        },
+        }
     }
 </script>
 <style scoped lang="scss">
@@ -82,9 +87,29 @@
         >.user-bar {
             flex-grow: 1;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             padding: 0 40px 0 20px;
+            >.message {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                margin-right: 10px;
+                cursor: pointer;
+                >.icon {
+                    width: 22px;
+                    height: 22px;
+                }
+                >.count {
+                    position: absolute;
+                    top: 0;
+                    right: -5px;
+                    padding: 4px;
+                    background: $error;
+                    border-radius: 50%;
+                }
+            }
             >.user-info {
                 display: flex;
                 justify-content: flex-start;
@@ -99,7 +124,7 @@
                     height: 40px;
                     vertical-align: top;
                     border-radius: 50%;
-                    margin-left: 10px;
+                    margin: 0 5px;
                 }
                 >.popover {
                     position: absolute;

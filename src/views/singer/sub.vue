@@ -93,6 +93,7 @@
                     font-size: 12px;
                     border-left: 0.5px solid $border;
                     border-right: 0.5px solid $border;
+                    cursor: default;
                     &:first-child {
                         border-top: 0.5px solid $border;
                     }

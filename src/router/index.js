@@ -24,6 +24,11 @@ const router = new Router({
                 component: () =>
                     import('@/views/index/search.vue'),
                 meta: { requiresLogin: true }
+            }, {
+                path: 'message',
+                component: () =>
+                    import('@/views/index/message.vue'),
+                meta: { requiresLogin: true }
             }]
         }, {
             path: '/song',

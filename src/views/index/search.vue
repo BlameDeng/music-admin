@@ -53,7 +53,7 @@
                             <span class="name">{{sheet.name}}</span>
                             <span class="length">{{sheet.songs.length}}首</span>
                             <p class="tags">
-                                <span v-for="tag in sheet.tags.split('/')" :key="tag" class="tag">
+                                <span v-for="(tag,index) in sheet.tags.split('/')" :key="index" class="tag">
                                     {{tag}}
                                     <span class="line"> / </span>
                                 </span>
