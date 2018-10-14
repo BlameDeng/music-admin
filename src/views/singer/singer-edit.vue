@@ -37,7 +37,7 @@
                     </div>
                 </FormItem>
                 <FormItem label="简介" style="margin:0;">
-                    <Input type="textarea" :autosize="{minRows: 2,maxRows: 5}" v-model="singer.summary"></Input>
+                    <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="singer.summary"></Input>
                 </FormItem>
                 <FormItem style="text-align:center;margin-top:10px;">
                     <Button style="margin-right: 8px" @click="onBack">取消</Button>

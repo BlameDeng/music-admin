@@ -9,8 +9,14 @@ import todo from './modules/todo.js'
 
 const store = new Vuex.Store({
     modules: { song, sheet, singer, album, todo },
-    state: { searchResults: null },
+    state: { isLogin: false, searchResults: null },
     mutations: {
+        setLogin(state) {
+            state.isLogin = true;
+        },
+        logout(state) {
+            state.isLogin = false;
+        },
         setSearchResults(state, payload) {
             state.searchResults = payload;
         }

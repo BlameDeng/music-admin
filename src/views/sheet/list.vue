@@ -17,7 +17,6 @@
 </template>
 <script>
     import mixin from "@/mixin/mixin.js"
-    import formatDate from '@/helpers/formatDate.js'
     import { mapActions, mapState } from 'vuex'
     export default {
         name: "SheetList",

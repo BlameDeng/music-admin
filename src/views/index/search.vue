@@ -1,5 +1,6 @@
 <template>
     <div class="index-search">
+        <Icon type="md-close" size="25" class="icon" @click="onBack" />
         <div class="search-bar">
             <Input search enter-button style="width:300px;" @on-search="onSearch($event)" placeholder="搜索音乐、歌手、专辑、歌单" />
             <span v-if="keyword&&searchResults">
@@ -213,6 +214,9 @@
             },
             onClickTab(tab) {
                 this.tab = tab;
+            },
+            onBack() {
+                this.$router.go(-1);
             }
         },
         watch: {
@@ -229,6 +233,17 @@
         border-radius: 4px;
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         overflow: auto;
+        position: relative;
+        >.icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: lighten($sub, 20%);
+            cursor: pointer;
+            &:hover {
+                color: $p;
+            }
+        }
         >.search-bar {
             padding: 10px;
             display: flex;

@@ -13,7 +13,7 @@
                     <ul class="popover" v-show="popoverVisible">
                         <li>我的消息</li>
                         <li>个人设置</li>
-                        <li>退出登录</li>
+                        <li @click="onLogout">退出登录</li>
                     </ul>
                 </transition>
             </div>
@@ -22,6 +22,7 @@
 </template>
 <script>
     import xIcon from '../icon.vue'
+    import { mapMutations } from 'vuex'
     export default {
         name: 'Header',
         components: { xIcon },
@@ -29,11 +30,16 @@
             return { popoverVisible: false }
         },
         methods: {
+            ...mapMutations(['logout']),
             onUserInfo() {
                 this.popoverVisible = !this.popoverVisible;
             },
             listenDocument() {
                 this.popoverVisible = false;
+            },
+            onLogout() {
+                this.logout();
+                this.$router.push('/');
             }
         },
         watch: {

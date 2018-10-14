@@ -16,9 +16,11 @@
     </div>
 </template>
 <script>
+    import mixin from "@/mixin/mixin.js"
     import { mapState, mapActions } from 'vuex'
     export default {
         name: "AlbumList",
+        mixins: [mixin],
         data() {
             return {
                 columns: [{

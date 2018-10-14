@@ -6,16 +6,7 @@ const mixin = {
         },
         formatImgSize(val) {
             return `${(val / 1000).toFixed(2)} KB`;
-        },
-        // formatSongTime(val) {
-        //     if (!val) {
-        //         return `0:00`;
-        //     }
-        //     let m = Math.floor(val / 60);
-        //     let s = Math.floor(val % 60);
-        //     s===0?s='00':'';
-        //     return `${m}:${s}`;
-        // }
+        }
     },
     methods: {
         formatSongName(name) {

@@ -351,13 +351,13 @@
                         border: 0.5px solid $border;
                         border-radius: 10px;
                         cursor: pointer;
-                        transition: all 0.3s linear;
+                        transition: all .3s linear;
                         user-select: none;
                         >.icon-wrapper {
                             padding: 5px;
                             border-radius: 5px;
                             color: lighten($p, 10%);
-                            transition: all 0.3s linear;
+                            transition: all .3s linear;
                         }
                         >div {
                             text-align: center;

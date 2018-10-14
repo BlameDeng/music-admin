@@ -1,5 +1,6 @@
 <template>
     <div class="create-song">
+        <Icon type="md-close" size="25" class="icon" @click="onBack" />
         <x-upload container-id="song-upload-container" browse-id="song-picker" post-id="song-uploader" bucket-name="songsbucket" @files-added="songAdded($event)" @uploading="uploading($event)" @uploaded="uploaded($event)" @before-upload="beforeUpload($event)"></x-upload>
         <div class="steps">
             <Steps :current="current" direction="vertical">
@@ -153,6 +154,9 @@
                     return
                 }
                 window.open(this.formData.cover, '_blank');
+            },
+            onBack() {
+                this.$router.go(-1);
             }
         }
     };
@@ -167,6 +171,17 @@
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         display: flex;
         justify-content: flex-start;
+        position: relative;
+        >.icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: lighten($sub, 20%);
+            cursor: pointer;
+            &:hover {
+                color: $p;
+            }
+        }
         >.steps {
             width: 150px;
             margin: 0 20px;
