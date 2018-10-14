@@ -42,7 +42,7 @@
             <div class="inventory">
                 <div class="title">信息总览</div>
                 <div class="detail">
-                    <div class="songs">
+                    <div class="songs" @click="onTab('song')">
                         <span class="icon-wrapper">
                             <Icon type="md-musical-notes" size="60" />
                         </span>
@@ -51,7 +51,7 @@
                             <span v-if="allSongs">{{allSongs.length}}</span>
                         </div>
                     </div>
-                    <div class="singers">
+                    <div class="singers" @click="onTab('singer')">
                         <span class="icon-wrapper">
                             <Icon type="md-person" size="60" />
                         </span>
@@ -60,7 +60,7 @@
                             <span v-if="allSingers">{{allSingers.length}}</span>
                         </div>
                     </div>
-                    <div class="albums">
+                    <div class="albums" @click="onTab('album')">
                         <span class="icon-wrapper">
                             <Icon type="md-disc" size="60" />
                         </span>
@@ -69,7 +69,7 @@
                             <span v-if="allAlbums">{{allAlbums.length}}</span>
                         </div>
                     </div>
-                    <div class="sheets">
+                    <div class="sheets" @click="onTab('sheet')">
                         <span class="icon-wrapper">
                             <Icon type="ios-list-box" size="60" />
                         </span>
@@ -169,6 +169,9 @@
             chart() {
                 const chart = new Chart(this.$refs.chart);
                 chart.axis();
+            },
+            onTab(tab) {
+                this.$router.push(`/${tab}/list`);
             }
         }
     };
@@ -361,14 +364,16 @@
                         }
                         >div {
                             text-align: center;
-                            margin-left: 10px;
+                            margin-left: 5px;
+                            color: $sub;
                             >p {
                                 font-size: 16px;
                                 line-height: 1.8em;
-                                color: $sub;
                             }
                             >span {
+                                font-size: 12px;
                                 line-height: 1.8em;
+
                             }
                         }
                         &:hover {

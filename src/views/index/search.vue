@@ -141,11 +141,17 @@
                 searchResults: state => state.searchResults
             })
         },
-        created() {
-            if (this.$route.params && this.$route.params.tab) {
-                this.$route.params.tab.match(/^tab=(\w+)$/);
-                this.tab = RegExp.$1;
-            }
+        mounted() {
+            this.$nextTick(() => {
+                if (this.$route.params && this.$route.params.tab) {
+                    this.$route.params.tab.match(/^tab=(\w+)$/);
+                    this.tab = RegExp.$1;
+                }
+                if (this.$route.query && this.$route.query.tag) {
+                    this.keyword = decodeURIComponent(decodeURIComponent(this.$route.query.tag));
+                    this.onSearch(this.keyword);
+                }
+            })
         },
         methods: {
             ...mapMutations(['setSearchResults']),

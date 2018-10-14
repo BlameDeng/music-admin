@@ -9,11 +9,11 @@ class Leancloud {
     }
 
     //创建对象
-    create(obj) {
-        if (typeof obj !== 'object') {
+    create(data) {
+        if (typeof data !== 'object') {
             return Promise.reject('参数必须为非空对象');
         }
-        let entries = Object.entries(obj);
+        let entries = Object.entries(data);
         if (entries.length === 0) {
             return Promise.reject('参数必须为非空对象');
         }
@@ -31,11 +31,11 @@ class Leancloud {
     }
 
     //根据条件查找对象
-    query(obj) {
-        if (typeof obj !== 'object') {
+    query(data) {
+        if (typeof data !== 'object') {
             return Promise.reject('参数必须为非空对象');
         }
-        let entries = Object.entries(obj);
+        let entries = Object.entries(data);
         if (entries.length === 0) {
             return Promise.reject('参数必须为非空对象');
         }
@@ -46,17 +46,15 @@ class Leancloud {
     }
 
     //更新对象
-    update(obj, id) {
-        if (typeof obj !== 'object') {
-            return Promise.reject('update方法必须传一个非空对象作为参数！');
+    update(data, id) {
+        if (typeof data !== 'object') {
+            return Promise.reject('参数必须为非空对象');
         }
-        let entries = Object.entries(obj);
+        let entries = Object.entries(data);
         if (entries.length === 0) {
-            return Promise.reject('提交参数为空，未做更改');
+            return Promise.reject('参数必须为非空对象');
         }
-        if (!id) {
-            return Promise.reject('必须提供id');
-        }
+        if (!id) { return Promise.reject('必须提供id'); }
         let instance = AV.Object.createWithoutData(this.className, id);
         entries.forEach(array => {
             instance.set(array[0], array[1]);
@@ -66,6 +64,7 @@ class Leancloud {
 
     //删除对象
     destroy(id) {
+        if (!id) { return Promise.reject('必须提供id'); }
         let instance = AV.Object.createWithoutData(this.className, id);
         return instance.destroy();
     }

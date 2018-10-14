@@ -16,7 +16,7 @@
                 <div class="tags">
                     <span>标签：</span>
                     <span v-for="(tag,index) in sheet.tags.split('/')" :key="index" class="tag-wrapper">
-                        <span class="tag">{{tag}}</span>
+                        <span class="tag" @click="onTag(tag)">{{tag}}</span>
                         <span class="line"> / </span>
                     </span>
                 </div>
@@ -78,6 +78,9 @@
             onBack() { this.$router.go(-1); },
             onEditList() {
                 this.$router.push({ path: '/sheet/songslist', query: { id: this.sheet.id } });
+            },
+            onTag(tag) {
+                this.$router.push({ path: '/index/search', query: { tag: encodeURIComponent(encodeURIComponent(tag)) } });
             }
         }
     }
