@@ -24,7 +24,7 @@ const helper = {
         return `${year}/${month}/${date}`
     },
 
-    random(m, n) {
+    random(n, m) {
         return Math.floor(Math.random() * (m - n + 1) + n);
     }
 }

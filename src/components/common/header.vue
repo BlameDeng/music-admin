@@ -7,7 +7,7 @@
         <div class="user-bar">
             <span class="message" @click="onMessage">
                 <x-icon name="message" class="icon"></x-icon>
-                <span class="count"></span>
+                <span class="count" v-show="unread&&unread.length"></span>
             </span>
             <div class="user-info" @click="onUserInfo">
                 <img src="../../assets/avatar.jpg" alt="avatar" class="user-avatar">
@@ -24,12 +24,17 @@
 </template>
 <script>
     import xIcon from '../icon.vue'
-    import { mapMutations } from 'vuex'
+    import { mapState, mapMutations } from 'vuex'
     export default {
         name: 'Header',
         components: { xIcon },
         data() {
             return { popoverVisible: false }
+        },
+        computed: {
+            ...mapState({
+                unread: state => state.message.unread
+            })
         },
         methods: {
             ...mapMutations(['logout']),

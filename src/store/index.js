@@ -6,9 +6,10 @@ import sheet from './modules/sheet.js'
 import singer from './modules/singer.js'
 import album from './modules/album.js'
 import todo from './modules/todo.js'
+import message from './modules/message.js'
 
 const store = new Vuex.Store({
-    modules: { song, sheet, singer, album, todo },
+    modules: { song, sheet, singer, album, todo, message },
     state: { isLogin: false, searchResults: null },
     mutations: {
         setLogin(state) {

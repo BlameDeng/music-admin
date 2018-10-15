@@ -4,54 +4,113 @@
         <Tabs value="name1">
             <TabPane label="未读消息" name="name1">
                 <div class="unread">
-                    <div class="inner" v-for="n in 5">
-                        <span class="content">
-                            【系统通知】该系统将于今晚凌晨2点到5点进行升级维护
-                        </span>
-                        <span class="info">
-                            <span class="time">2018-04-19 20:00:00</span>
-                            <Button style="padding:1px 8px;">标为已读</Button>
-                        </span>
-                    </div>
-                    <Button type="success" style="padding:4px 12px;margin-top:10px;">全部标为已读</Button>
+                    <template v-if="unread&&unread.length">
+                        <div class="inner" v-for="(item,index) in unread" :key="index">
+                            <span class="content">
+                                {{item.content}}
+                            </span>
+                            <span class="info">
+                                <span class="time">{{item.time}}</span>
+                                <Button style="padding:1px 8px;" @click="onMoveToRead(item)">标为已读</Button>
+                            </span>
+                        </div>
+                    </template>
+                    <div class="none" v-else>暂无数据</div>
+                    <Button type="success" style="padding:4px 12px;margin-top:10px;" @click="readAll">全部标为已读</Button>
                 </div>
             </TabPane>
             <TabPane label="已读消息" name="name2">
                 <div class="read">
-                    <div class="inner" v-for="n in 5">
-                        <span class="content">
-                            【系统通知】该系统将于今晚凌晨2点到5点进行升级维护
-                        </span>
-                        <span class="info">
-                            <span class="time">2018-04-19 20:00:00</span>
-                            <Button type="error" style="padding:1px 8px;">删除</Button>
-                        </span>
-                    </div>
-                    <Button type="error" style="padding:4px 12px;margin-top:10px;">全部删除</Button>
+                    <template v-if="read&&read.length">
+                        <div class="inner" v-for="(item,index) in read" :key="index">
+                            <span class="content">
+                                {{item.content}}
+                            </span>
+                            <span class="info">
+                                <span class="time">{{item.time}}</span>
+                                <Button type="error" style="padding:1px 8px;" @click="onMoveToTrash(item)">删除</Button>
+                            </span>
+                        </div>
+                    </template>
+                    <div class="none" v-else>暂无数据</div>
+                    <Button type="error" style="padding:4px 12px;margin-top:10px;" @click="trashAll">全部删除</Button>
                 </div>
             </TabPane>
             <TabPane label="回收站" name="name3">
                 <div class="trash">
-                    <div class="inner" v-for="n in 5">
-                        <span class="content">
-                            【系统通知】该系统将于今晚凌晨2点到5点进行升级维护
-                        </span>
-                        <span class="info">
-                            <span class="time">2018-04-19 20:00:00</span>
-                            <Button style="padding:1px 8px;">还原</Button>
-                        </span>
-                    </div>
-                    <Button style="padding:4px 12px;margin-top:10px;">全部还原</Button>
+                    <template v-if="trash&&trash.length">
+                        <div class="inner" v-for="(item,index) in trash" :key="index">
+                            <span class="content">
+                                {{item.content}}
+                            </span>
+                            <span class="info">
+                                <span class="time">{{item.time}}</span>
+                                <Button style="padding:1px 8px;" @click="onBackToRead(item)">还原</Button>
+                            </span>
+                        </div>
+                    </template>
+                    <div class="none" v-else>暂无数据</div>
+                    <Button type="error" style="padding:4px 12px;margin-top:10px;" @click="destroyAll">清空回收站</Button>
+                    <Button style="padding:4px 12px;margin-top:10px;" @click="backAll">全部还原</Button>
                 </div>
             </TabPane>
         </Tabs>
     </div>
 </template>
 <script>
+    import { mapState, mapMutations } from 'vuex'
     export default {
         name: "Message",
+        computed: {
+            ...mapState({
+                unread: state => state.message.unread,
+                read: state => state.message.read,
+                trash: state => state.message.trash
+            })
+        },
         methods: {
+            ...mapMutations(['moveToRead', 'moveToTrash', 'backToRead', 'destroy']),
             onBack() { this.$router.go(-1); },
+            onMoveToRead(item) {
+                this.moveToRead(item);
+            },
+            onMoveToTrash(item) {
+                this.moveToTrash(item);
+            },
+            onBackToRead(item) {
+                this.backToRead(item);
+            },
+            onDestroy(item) {
+                this.destroy(item);
+            },
+            readAll() {
+                if (!this.unread || !this.unread.length) { return }
+                console.log(this.unread);
+                
+                this.unread.forEach(item => {
+                    console.log(item);
+                    
+                    this.onMoveToRead(item);
+                });
+            },
+            trashAll() {
+                if (!this.read || !this.read.length) { return }
+                this.read.forEach(item => {
+                    this.onMoveToTrash(item);
+                });
+            },
+            destroyAll() {
+                if (!this.trash || !this.trash.length) { return }
+                this.trash.forEach(item => {
+                    this.destroy(item);
+                });
+            },
+            backAll() {
+                if (!this.trash || !this.trash.length) { return }
+                this.trash.forEach(item => {
+                    this.onBackToRead(item);
+                });
+            }
         }
     }
 </script>
@@ -102,6 +161,13 @@
                     }
                 }
             }
+            >.none {
+                font-size: 12px;
+                color: $sub;
+                text-align: center;
+                padding: 4px 0;
+                border-bottom: .5px solid $border;
+            }
         }
         .read {
             padding-left: 15px;
@@ -129,6 +195,13 @@
                     }
                 }
             }
+            >.none {
+                font-size: 12px;
+                color: $sub;
+                text-align: center;
+                padding: 4px 0;
+                border-bottom: .5px solid $border;
+            }
         }
         .trash {
             padding-left: 15px;
@@ -155,6 +228,13 @@
                         font-size: 12px;
                     }
                 }
+            }
+            >.none {
+                font-size: 12px;
+                color: $sub;
+                text-align: center;
+                padding: 4px 0;
+                border-bottom: .5px solid $border;
             }
         }
     }
