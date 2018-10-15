@@ -15,7 +15,7 @@
         </div>
         <div class="source">
             <div class="info">
-                <p class="url"><b>歌曲链接：</b><br>xxx</p>
+                <p class="url"><b>歌曲链接：</b><br>{{song.url}}</p>
                 <p class="created-at">创建时间：{{formatDate(song.createdAt)}}</p>
                 <p class="updated-at">更新时间：{{formatDate(song.updatedAt)}}</p>
             </div>
