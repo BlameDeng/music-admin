@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 oss.json
 leancloudkey.json
+interceptor.js
 /albumcover/
 /avatar/
 /sheetcover/

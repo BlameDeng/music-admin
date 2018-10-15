@@ -8,7 +8,8 @@ let yesterday = new Date(time - 1000 * 60 * 60 * 24);
 let messageTime = formatDate(yesterday);
 let messages = [
     { content: `【系统通知】系统版本号 0.0.1`, time: messageTime },
-    { content: `【系统通知】系统暂只支持MP3格式音乐文件`, time: messageTime },
+    { content: `【系统通知】只支持上传小于2M的MP3格式音乐文件（最好别上传）`, time: messageTime },
+    { content: `【系统通知】对已有歌曲、歌手、专辑、歌单的编辑和删除都将被拦截，但你新增的信息可以随意编辑和删除`, time: messageTime },
     { content: `【系统通知】系统将于${str}凌晨4点到6点进行日常维护`, time: messageTime }
 ]
 

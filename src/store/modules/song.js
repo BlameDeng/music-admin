@@ -2,6 +2,9 @@ import Leancloud from '@/helpers/leancloud.js'
 const Song = new Leancloud('Song');
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
+import interceptor from '../../../interceptor.js'
+import { Message } from 'iview'
+
 const state = {
     allSongs: null
 }
@@ -64,6 +67,9 @@ const actions = {
     },
     async updateSong({ commit }, data) {
         let { name, singer, url, cover, lrc, id, createdAt } = data;
+        if (interceptor.songs.indexOf(id) > -1) {
+            return
+        }
         let res = await Song.update({ name, singer, url, cover, lrc }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
@@ -72,6 +78,10 @@ const actions = {
         return res;
     },
     async destroySong({ commit }, id) {
+        if (interceptor.songs.indexOf(id) > -1) {
+            Message.info('操作成功，但是被我拦截了哦~~~请不要删除已有的数据');
+            return
+        }
         let res = await Song.destroy(id);
         commit('deleteSong', id);
         return res;

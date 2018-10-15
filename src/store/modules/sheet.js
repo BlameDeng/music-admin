@@ -2,6 +2,8 @@ import Leancloud from '@/helpers/leancloud.js'
 const Sheet = new Leancloud('Sheet');
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
+import interceptor from '../../../interceptor.js'
+import { Message } from 'iview'
 
 const state = {
     allSheets: null
@@ -62,6 +64,9 @@ const actions = {
     async updateSheet({ commit }, data) {
         let { name, tags, cover, id, createdAt, summary, songs } = data;
         tags = tags.split('/').filter(v => v); //字符串转数组
+        if (interceptor.sheets.indexOf(id) > -1) {
+            return
+        }
         let res = await Sheet.update({ name, tags, cover, summary, songs }, id);
         let { updatedAt } = res;
         updatedAt = formatDate(updatedAt);
@@ -70,6 +75,10 @@ const actions = {
         return res;
     },
     async destroySheet({ commit }, id) {
+        if (interceptor.sheets.indexOf(id) > -1) {
+            Message.info('操作成功，但是被我拦截了哦~~~请不要删除已有的数据');
+            return
+        }
         let res = await Sheet.destroy(id);
         commit('deleteSheet', id);
         return res;

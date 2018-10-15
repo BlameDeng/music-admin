@@ -16,6 +16,7 @@
                 <div class="file-info">
                     <p>文件名称：{{songFile&&songFile.name}}</p>
                     <p>文件大小：{{songFile&&songFile.size|formatSongSize}}</p>
+                    <p>只支持上传小于2M的MP3文件</p>
                 </div>
                 <div class="progress">
                     <p class="slider" ref="slider"></p>
@@ -88,14 +89,14 @@
             };
         },
         methods: {
-            ...mapActions(['createSong', 'fetchAllSongs']),
+            ...mapActions(['createSong']),
             onClickPick() {
                 this.current = 0;
                 this.$refs.slider.style.transform = `translateX(-100%)`;
             },
             songAdded(file) {
                 if (file.type.toLowerCase() !== 'audio/mp3') {
-                    this.$Message.warning('您需要选择一个MP3音频文件');
+                    this.$Message.warning('只支持MP3音频文件');
                     return;
                 }
                 this.songFile = file;
@@ -208,6 +209,12 @@
                         white-space: nowrap;
                         &:first-child {
                             margin-bottom: 20px;
+                        }
+                        &:last-child{
+                            margin-top: 20px;
+                            font-size: 12px;
+                            color:$sub;
+                            text-align:center;
                         }
                     }
                 }
