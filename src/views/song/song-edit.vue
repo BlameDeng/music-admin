@@ -13,7 +13,7 @@
                     <Input v-model.trim="song.singer"></Input>
                 </FormItem>
                 <FormItem label="歌曲链接" style="margin:0;">
-                    <Input v-model.trim="song.url"></Input>
+                    <Input></Input>
                 </FormItem>
                 <FormItem label="封面链接" style="margin:0;">
                     <Input v-model.trim="song.cover" ref="cover"></Input>
