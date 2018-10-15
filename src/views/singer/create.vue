@@ -75,9 +75,7 @@
                 let data = { ...this.formData, firstLetter };
                 this.createSinger(data).then(res => {
                     this.$Message.success('创建成功');
-                    this.fetchAllSingers().then(res => {
-                        this.$router.push('/singer/list');
-                    });
+                    this.$router.push('/singer/list');
                 })
             },
             uploaded(obj) {
@@ -97,11 +95,7 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .singer-create {
-        width: 100%;
-        height: 100%;
-        border: 1px solid $border;
-        border-radius: 4px;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        @include container;
         position: relative;
         >.icon {
             position: absolute;

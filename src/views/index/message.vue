@@ -113,11 +113,7 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .message {
-        width: 100%;
-        height: 100%;
-        border: 1px solid $border;
-        border-radius: 4px;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        @include container;
         overflow: auto;
         padding: 20px;
         position: relative;
@@ -131,75 +127,7 @@
                 color: $p;
             }
         }
-        .unread {
-            padding-left: 15px;
-            font-size: 14px;
-            color: $p;
-            line-height: 2em;
-            >.inner {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 4px 0;
-                border-bottom: .5px solid $border;
-                &:hover {
-                    background: $bg;
-                }
-                >.info {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding-right: 20px;
-                    >.time {
-                        margin-right: 20px;
-                        color: $sub;
-                        font-size: 12px;
-                    }
-                }
-            }
-            >.none {
-                font-size: 12px;
-                color: $sub;
-                text-align: center;
-                padding: 4px 0;
-                border-bottom: .5px solid $border;
-            }
-        }
-        .read {
-            padding-left: 15px;
-            font-size: 14px;
-            color: $p;
-            line-height: 2em;
-            >.inner {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 4px 0;
-                border-bottom: .5px solid $border;
-                &:hover {
-                    background: $bg;
-                }
-                >.info {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding-right: 20px;
-                    >.time {
-                        margin-right: 20px;
-                        color: $sub;
-                        font-size: 12px;
-                    }
-                }
-            }
-            >.none {
-                font-size: 12px;
-                color: $sub;
-                text-align: center;
-                padding: 4px 0;
-                border-bottom: .5px solid $border;
-            }
-        }
-        .trash {
+        .unread, .read, .trash {
             padding-left: 15px;
             font-size: 14px;
             color: $p;

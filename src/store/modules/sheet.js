@@ -15,6 +15,11 @@ const mutations = {
     setAllSheets(state, payload) {
         state.allSheets = payload;
     },
+    addSheet(state, payload) {
+        state.allSheets = state.allSheets || [];
+        payload.tags ? payload.tags = payload.tags.join('/') : ''; //数组转字符串
+        state.allSheets.push(payload);
+    },
     patchSheet(state, payload) {
         let array = state.allSheets;
         payload.tags ? payload.tags = payload.tags.join('/') : ''; //数组转字符串
@@ -34,6 +39,11 @@ const actions = {
     async createSheet({ commit }, data) {
         data.tags ? data.tags = data.tags.split('/').filter(v => v) : ''; //字符串转数组
         let res = await Sheet.create(data);
+        let { id, createdAt, updatedAt, attributes } = res;
+        createdAt = formatDate(createdAt);
+        updatedAt = formatDate(updatedAt);
+        let payload = { id, createdAt, updatedAt, ...attributes };
+        commit('addSheet', payload);
         return res;
     },
     async fetchAllSheets({ commit }) {

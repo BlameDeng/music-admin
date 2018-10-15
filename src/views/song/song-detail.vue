@@ -56,11 +56,7 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .song-detail {
-        width: 100%;
-        height: 100%;
-        border: 1px solid $border;
-        border-radius: 4px;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        @include container;
         position: relative;
         >.icon {
             position: absolute;
@@ -116,7 +112,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 0 5%;
+            padding: 10px 5% 0 5%;
             color: $content;
             height: calc(100% - 200px);
             >.info {

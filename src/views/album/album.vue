@@ -1,6 +1,6 @@
 <template>
     <div class="album">
-        <transition name="fade">
+        <transition name="router-transition">
             <router-view />
         </transition>
     </div>
@@ -9,16 +9,8 @@
     export default { name: "Album" }
 </script>
 <style scoped lang="scss">
+    @import "@/assets/base.scss";
     .album {
-        width: 100%;
-        height: 100%;
-        background: #fff;
-    }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .3s;
-        margin-bottom: 10px;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
+        @include router-transition;
     }
 </style>

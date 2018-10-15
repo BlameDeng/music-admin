@@ -12,7 +12,7 @@
             <div class="user-info" @click="onUserInfo">
                 <img src="../../assets/avatar.jpg" alt="avatar" class="user-avatar">
                 <span class="user-name">admin</span>
-                <transition name="fade">
+                <transition name="pop">
                     <ul class="popover" v-show="popoverVisible">
                         <li>项目简介</li>
                         <li @click="onLogout">退出登录</li>
@@ -174,13 +174,13 @@
             transform: rotateZ(360deg);
         }
     }
-    .fade-enter-active, .fade-leave-active {
+    .pop-enter-active, .pop-leave-active {
         transition: opacity .3s;
     }
-    .fade-enter, .fade-leave-to {
+    .pop-enter, .pop-leave-to {
         opacity: 0;
     }
-    .fade-enter-to, .fade-leave {
+    .pop-enter-to, .pop-leave {
         opacity: 1;
     }
 </style>

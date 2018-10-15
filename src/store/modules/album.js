@@ -15,6 +15,10 @@ const mutations = {
     setAllAlbums(state, payload) {
         state.allAlbums = payload;
     },
+    addAlbum(state, payload) {
+        state.allAlbums = state.allAlbums || [];
+        state.allAlbums.push(payload);
+    },
     patchAlbum(state, payload) {
         let array = state.allAlbums;
         for (let i = 0; i < array.length; i++) {
@@ -32,6 +36,11 @@ const mutations = {
 const actions = {
     async createAlbum({ commit }, data) {
         let res = await Album.create(data);
+        let { id, createdAt, updatedAt, attributes } = res;
+        createdAt = formatDate(createdAt);
+        updatedAt = formatDate(updatedAt);
+        let payload = { id, createdAt, updatedAt, ...attributes };
+        commit('addAlbum', payload);
         return res;
     },
     async fetchAllAlbums({ commit }) {

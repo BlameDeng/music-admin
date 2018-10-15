@@ -140,11 +140,7 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .singer-detail {
-        width: 100%;
-        height: 100%;
-        border: 1px solid $border;
-        border-radius: 4px;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        @include container;
         position: relative;
         padding: 0 20px;
         >.play {

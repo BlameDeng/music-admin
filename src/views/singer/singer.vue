@@ -1,6 +1,6 @@
 <template>
     <div class="singer">
-        <transition name="fade">
+        <transition name="router-transition">
             <router-view />
         </transition>
     </div>
@@ -9,16 +9,8 @@
     export default { name: "Singer" }
 </script>
 <style scoped lang="scss">
+    @import "@/assets/base.scss";
     .singer {
-        width: 100%;
-        height: 100%;
-        background: #fff;
-    }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
-        margin-bottom: 10px;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
+        @include router-transition;
     }
 </style>

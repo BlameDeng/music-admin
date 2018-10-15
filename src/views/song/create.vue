@@ -125,7 +125,6 @@
                 }
                 this.current = 3;
                 this.createSong(this.formData).then(res => {
-                    this.fetchAllSongs();
                     this.current = 4;
                     this.formData = { name: '', singer: '', url: '', cover: '', lrc: '' };
                     this.infoVisible = true;
@@ -164,11 +163,7 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .create-song {
-        width: 100%;
-        min-height: 100%;
-        border: 1px solid $border;
-        border-radius: 4px;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        @include container;
         display: flex;
         justify-content: flex-start;
         position: relative;

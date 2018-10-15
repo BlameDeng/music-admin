@@ -15,6 +15,10 @@ const mutations = {
     setAllSingers(state, payload) {
         state.allSingers = payload;
     },
+    addSinger(state, payload) {
+        state.allSingers = state.allSingers || [];
+        state.allSingers.push(payload);
+    },
     patchSinger(state, payload) {
         let array = state.allSingers;
         for (let i = 0; i < array.length; i++) {
@@ -32,6 +36,11 @@ const mutations = {
 const actions = {
     async createSinger({ commit }, data) {
         let res = await Singer.create(data);
+        let { id, createdAt, updatedAt, attributes } = res;
+        createdAt = formatDate(createdAt);
+        updatedAt = formatDate(updatedAt);
+        let payload = { id, createdAt, updatedAt, ...attributes };
+        commit('addSinger', payload);
         return res;
     },
     async fetchAllSingers({ commit }) {

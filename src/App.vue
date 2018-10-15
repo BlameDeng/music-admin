@@ -8,7 +8,7 @@
                 <x-nav></x-nav>
             </div>
             <div class="views">
-                <transition name="fade">
+                <transition name="router-transition">
                     <router-view />
                 </transition>
             </div>
@@ -60,8 +60,7 @@
         font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        width: 100%;
-        height: 100%;
+        @include router-transition;
         padding-top: 60px;
         font-size: 14px;
         background: $bg;
@@ -101,12 +100,5 @@
     }
     ul, ol {
         list-style: none;
-    }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .3s;
-        margin-bottom: 10px;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
     }
 </style>

@@ -44,7 +44,8 @@
                     name: '',
                     tags: '',
                     cover: '',
-                    summary: ''
+                    summary: '',
+                    songs: []
                 }
             }
         },
@@ -54,9 +55,7 @@
                 if (!this.formData.name) { this.$Message.warning('歌单名不能为空'); return; }
                 this.createSheet({ ...this.formData }).then(res => {
                     this.$Message.success('成功创建歌单！');
-                    this.fetchAllSheets().then(res => {
-                        this.$router.push('/sheet/list');
-                    })
+                    this.$router.push('/sheet/list');
                 })
             },
             coverUploaded(obj) {
@@ -78,11 +77,7 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .create-sheet {
-        width: 100%;
-        height: 100%;
-        border: 1px solid $border;
-        border-radius: 4px;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        @include container;
         position: relative;
         >.icon {
             position: absolute;

@@ -61,9 +61,7 @@
                 }
                 this.createAlbum({ ...this.formData }).then(res => {
                     this.$Message.success("成功创建专辑！");
-                    this.fetchAllAlbums().then(res => {
-                        this.$router.push("/album/list");
-                    });
+                    this.$router.push("/album/list");
                 });
             },
             coverUploaded(obj) {
@@ -86,11 +84,7 @@
 <style scoped lang="scss">
     @import "@/assets/base.scss";
     .album-create {
-        width: 100%;
-        height: 100%;
-        border: 1px solid $border;
-        border-radius: 4px;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        @include container;
         position: relative;
         >.icon {
             position: absolute;
