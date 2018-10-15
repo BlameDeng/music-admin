@@ -1,11 +1,11 @@
 <template>
     <div class="header">
-        <div class="logo">
+        <div class="logo" @click="onLogo">
             <x-icon name="logo" class="logo-icon"></x-icon>
             <span class="logo-text">后台管理系统</span>
         </div>
         <div class="user-bar">
-            <span class="message" @click="onMessage">
+            <span class="message" @click="onMessage" title="我的消息">
                 <x-icon name="message" class="icon"></x-icon>
                 <span class="count" v-show="unread&&unread.length"></span>
             </span>
@@ -48,6 +48,7 @@
                 this.logout();
                 this.$router.push('/');
             },
+            onLogo() { this.$router.push('/index/scan'); },
             onMessage() {
                 this.$router.push('/index/message');
             }
@@ -82,6 +83,7 @@
             padding-left: 5px;
             flex-shrink: 0;
             transition: all .3s;
+            cursor: pointer;
             >.logo-icon {
                 animation: circle 6s linear infinite;
             }

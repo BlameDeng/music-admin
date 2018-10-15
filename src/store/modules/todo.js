@@ -40,7 +40,6 @@ const actions = {
         commit('addTodo', payload);
         return res;
     },
-
     async fetchAllTodos({ commit }) {
         let array = [];
         let res = await Todo.fetchAll();
@@ -53,7 +52,6 @@ const actions = {
         commit('setAllTodos', array);
         return Promise.resolve(array);
     },
-
     async updateTodo({ commit }, data) {
         let { content, done, id, createdAt } = data;
         let res = await Todo.update({ content, done }, id);
@@ -63,7 +61,6 @@ const actions = {
         commit('patchTodo', payload);
         return res;
     },
-
     async destroyTodo({ commit }, id) {
         let res = await Todo.destroy(id);
         commit('deleteTodo', id);

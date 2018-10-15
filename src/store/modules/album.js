@@ -2,6 +2,7 @@ import Leancloud from '@/helpers/leancloud.js'
 const Album = new Leancloud('Album');
 import formatDate from '@/helpers/formatDate.js'
 import Vue from 'vue'
+
 const state = {
     allAlbums: null
 }
@@ -33,7 +34,6 @@ const actions = {
         let res = await Album.create(data);
         return res;
     },
-
     async fetchAllAlbums({ commit }) {
         let res = await Album.fetchAll();
         let array = [];
@@ -46,7 +46,6 @@ const actions = {
         commit('setAllAlbums', array);
         return Promise.resolve(array);
     },
-
     async updateAlbum({ commit }, data) {
         let { name, time, cover, singer, summary, songs, id, createdAt } = data;
         let res = await Album.update({ name, time, singer, cover, summary, songs }, id);
@@ -56,7 +55,6 @@ const actions = {
         commit('patchAlbum', payload);
         return res;
     },
-
     async destroyAlbum({ commit }, id) {
         let res = await Album.destroy(id);
         commit('deleteAlbum', id);

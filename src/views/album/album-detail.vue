@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="button">
-                <Button type="primary" style="padding:2px 5px;" @click="onEditList">编辑歌单列表</Button>
+                <Button type="primary" style="padding:2px 5px;" @click="onEditList">编辑歌曲列表</Button>
             </div>
         </div>
         <div class="detail">

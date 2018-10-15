@@ -30,7 +30,7 @@
                             <img :src="singer.avatar" alt="avatar" class="avatar">
                             <span class="name">{{singer.name}}</span>
                             <span class="othernames">（{{singer.othernames}}）</span>
-                            <img src="@/assets/person.png" class="person">
+                            <x-icon name="person" style="width:14px;height:14px;"></x-icon>
                         </div>
                     </template>
                 </TabPane>
@@ -41,7 +41,7 @@
                             <span class="name">{{album.name}}</span>
                             <span class="singer" @click.stop="onSinger(album.singer)">
                                 {{album.singer}}
-                                <img src="@/assets/person.png">
+                                <x-icon name="person" style="width:14px;height:14px;margin-left:5px;"></x-icon>
                             </span>
                         </div>
                     </template>
@@ -66,9 +66,11 @@
     </div>
 </template>
 <script>
+    import xIcon from '@/components/icon.vue'
     import { mapState, mapMutations } from 'vuex'
     export default {
         name: "IndexSearch",
+        components: { xIcon },
         data() {
             return {
                 keyword: '',
@@ -302,11 +304,6 @@
                     font-size: 12px;
                     color: $sub;
                 }
-                >.person {
-                    vertical-align: top;
-                    width: 14px;
-                    height: 14px;
-                }
             }
             .album {
                 display: flex;
@@ -342,12 +339,6 @@
                     display: flex;
                     justify-content: flex-start;
                     align-items: center;
-                    >img {
-                        vertical-align: top;
-                        width: 14px;
-                        height: 14px;
-                        margin-left: 5px;
-                    }
                 }
             }
             .sheet {

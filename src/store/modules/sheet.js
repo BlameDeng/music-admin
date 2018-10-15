@@ -1,4 +1,3 @@
-// import Sheet from '@/helpers/sheet.js'
 import Leancloud from '@/helpers/leancloud.js'
 const Sheet = new Leancloud('Sheet');
 import formatDate from '@/helpers/formatDate.js'
@@ -37,7 +36,6 @@ const actions = {
         let res = await Sheet.create(data);
         return res;
     },
-
     async fetchAllSheets({ commit }) {
         let res = await Sheet.fetchAll();
         let array = [];
@@ -51,7 +49,6 @@ const actions = {
         commit('setAllSheets', array);
         return Promise.resolve(array);
     },
-
     async updateSheet({ commit }, data) {
         let { name, tags, cover, id, createdAt, summary, songs } = data;
         tags = tags.split('/').filter(v => v); //字符串转数组
@@ -62,7 +59,6 @@ const actions = {
         commit('patchSheet', payload);
         return res;
     },
-
     async destroySheet({ commit }, id) {
         let res = await Sheet.destroy(id);
         commit('deleteSheet', id);

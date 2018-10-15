@@ -1,5 +1,4 @@
 import formatDate from '@/helpers/formatDate.js'
-import Vue from 'vue'
 
 let today = new Date();
 let time = today.getTime();
@@ -8,10 +7,9 @@ let str = `${tomorrow.getFullYear()}年${tomorrow.getMonth()+1}月${tomorrow.get
 let yesterday = new Date(time - 1000 * 60 * 60 * 24);
 let messageTime = formatDate(yesterday);
 let messages = [
-    { content: `【系统通知】系统版本号为 0.0.1`, time: messageTime },
+    { content: `【系统通知】系统版本号 0.0.1`, time: messageTime },
     { content: `【系统通知】系统暂只支持MP3格式音乐文件`, time: messageTime },
-    { content: `【系统通知】系统将于${str}凌晨2点到6点进行日常维护`, time: messageTime },
-    { content: `【系统通知】系统将于凌晨2点到6点进行日常维护`, time: messageTime }
+    { content: `【系统通知】系统将于${str}凌晨4点到6点进行日常维护`, time: messageTime }
 ]
 
 const state = {

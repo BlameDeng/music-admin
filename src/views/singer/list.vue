@@ -32,7 +32,7 @@
                     </div>
                     <p class="name">
                         <span>{{singer.name||singer.othernames}}</span>
-                        <img src="@/assets/person.png">
+                        <x-icon name="person" style="width:15px;height:15px;"></x-icon>
                     </p>
                 </div>
             </template>
@@ -40,9 +40,11 @@
     </div>
 </template>
 <script>
+    import xIcon from '@/components/icon.vue'
     import { mapState } from 'vuex'
     export default {
         name: "SingerList",
+        components: { xIcon },
         data() {
             return { letters: "abcdefghijklmnopqrstuvwxyz", filterArray: ['all', 'all', 'all'] };
         },
@@ -179,10 +181,6 @@
                     >span {
                         font-size: 12px;
                         margin: 5px 0;
-                    }
-                    >img {
-                        width: 15px;
-                        height: 15px;
                     }
                 }
             }

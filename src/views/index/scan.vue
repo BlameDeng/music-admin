@@ -16,6 +16,15 @@
                     </div>
                 </div>
             </div>
+            <div class="message">
+                <div class="title">系统消息</div>
+                <template v-if="unread&&unread.length">
+                    <div class="inner" v-for="(item,index) in unread" :key="index" @click="onMessage">
+                        {{item.content}}
+                    </div>
+                </template>
+                <div class="none" v-else>没有未读消息</div>
+            </div>
             <div class="todo">
                 <div class="title">
                     <input type="text" class="todo-input" placeholder="待办事项" v-model.trim="content" @keyup.enter="onCreateTodo">
@@ -40,7 +49,7 @@
         </div>
         <div class="main">
             <div class="inventory">
-                <div class="title">信息总览</div>
+                <div class="title">已收录信息总览</div>
                 <div class="detail">
                     <div class="songs" @click="onTab('song')">
                         <span class="icon-wrapper">
@@ -140,7 +149,8 @@
                 allAlbums: state => state.album.allAlbums,
                 allSheets: state => state.sheet.allSheets,
                 searchResults: state => state.searchResults,
-                allTodos: state => state.todo.allTodos
+                allTodos: state => state.todo.allTodos,
+                unread: state => state.message.unread
             })
         },
         mounted() {
@@ -172,6 +182,9 @@
             },
             onTab(tab) {
                 this.$router.push(`/${tab}/list`);
+            },
+            onMessage(){
+                this.$router.push('/index/message');
             }
         }
     };
@@ -229,6 +242,41 @@
                     }
                 }
             }
+            >.message {
+                width: 30%;
+                height: 100%;
+                padding: 13px;
+                overflow: auto;
+                >.title {
+                    font-size: 12px;
+                    line-height: 1.8em;
+                    color: $sub;
+                    border-bottom: .5px solid $border;
+                    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+                    cursor: default;
+                }
+                >.inner {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 4px 0 4px 1em;
+                    border-bottom: .5px solid $border;
+                    cursor: default;
+                    line-height: 1.4em;
+                    &:hover {
+                        background: $bg;
+                    }
+                }
+                >.none {
+                    font-size: 12px;
+                    color: $sub;
+                    cursor: default;
+                    text-align: center;
+                    line-height: 1.8em;
+                    padding: 4px 0;
+                    border-bottom: .5px solid $border;
+                }
+            }
             >.todo {
                 width: 40%;
                 height: 100%;
@@ -246,6 +294,8 @@
                         border: none;
                         padding-left: 0.5em;
                         width: 100%;
+                        background: $bg;
+                        border-radius: 4px;
                         &:focus {
                             outline: none;
                         }
@@ -268,6 +318,8 @@
                         align-items: center;
                         padding-left: 0.5em;
                         position: relative;
+                        font-size: 12px;
+                        line-height: 1.4em;
                         >.check {
                             display: inline-flex;
                             justify-content: center;

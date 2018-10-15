@@ -41,7 +41,6 @@ const actions = {
         let res = await Song.create(data);
         return res;
     },
-
     async fetchAllSongs({ commit }) {
         let array = [];
         let res = await Song.fetchAll();
@@ -54,7 +53,6 @@ const actions = {
         commit('setAllSongs', array);
         return Promise.resolve(array);
     },
-
     async updateSong({ commit }, data) {
         let { name, singer, url, cover, lrc, id, createdAt } = data;
         let res = await Song.update({ name, singer, url, cover, lrc }, id);
@@ -64,7 +62,6 @@ const actions = {
         commit('patchSong', payload);
         return res;
     },
-
     async destroySong({ commit }, id) {
         let res = await Song.destroy(id);
         commit('deleteSong', id);

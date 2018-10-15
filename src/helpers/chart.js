@@ -68,6 +68,7 @@ const option = {
         }
     }, ]
 };
+
 class Chart {
     constructor(el) {
         if (typeof el === 'string') {
