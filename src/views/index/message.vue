@@ -85,18 +85,14 @@
             },
             readAll() {
                 if (!this.unread || !this.unread.length) { return }
-                console.log(this.unread);
-                
                 this.unread.forEach(item => {
-                    console.log(item);
-                    
-                    this.onMoveToRead(item);
+                    this.moveToRead(item);
                 });
             },
             trashAll() {
                 if (!this.read || !this.read.length) { return }
                 this.read.forEach(item => {
-                    this.onMoveToTrash(item);
+                    this.moveToTrash(item);
                 });
             },
             destroyAll() {
@@ -108,7 +104,7 @@
             backAll() {
                 if (!this.trash || !this.trash.length) { return }
                 this.trash.forEach(item => {
-                    this.onBackToRead(item);
+                    this.backToRead(item);
                 });
             }
         }

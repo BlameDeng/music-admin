@@ -7,10 +7,11 @@ let tomorrow = new Date(time + 1000 * 60 * 60 * 24);
 let str = `${tomorrow.getFullYear()}年${tomorrow.getMonth()+1}月${tomorrow.getDate()}日`;
 let yesterday = new Date(time - 1000 * 60 * 60 * 24);
 let messageTime = formatDate(yesterday);
-const messages = [
+let messages = [
     { content: `【系统通知】系统版本号为 0.0.1`, time: messageTime },
+    { content: `【系统通知】系统暂只支持MP3格式音乐文件`, time: messageTime },
     { content: `【系统通知】系统将于${str}凌晨2点到6点进行日常维护`, time: messageTime },
-    { content: `【系统通知】系统暂只支持MP3格式音乐文件`, time: messageTime }
+    { content: `【系统通知】系统将于凌晨2点到6点进行日常维护`, time: messageTime }
 ]
 
 const state = {
@@ -24,25 +25,21 @@ const getters = {}
 const mutations = {
     moveToRead(state, payload) {
         state.read = state.read || [];
-        let index = state.unread.indexOf(payload);
-        state.unread.splice(index, 1);
+        state.unread = state.unread.filter(item => item.content !== payload.content);
         state.read.push(payload);
     },
     moveToTrash(state, payload) {
         state.trash = state.trash || [];
-        let index = state.read.indexOf(payload);
-        state.read.splice(index, 1);
+        state.read = state.read.filter(item => item.content !== payload.content);
         state.trash.push(payload);
     },
     backToRead(state, payload) {
         state.read = state.read || [];
-        let index = state.trash.indexOf(payload);
-        state.trash.splice(index, 1);
+        state.trash = state.trash.filter(item => item.content !== payload.content);
         state.read.push(payload);
     },
     destroy(state, payload) {
-        let index = state.trash.indexOf(payload);
-        state.trash.splice(index, 1);
+        state.trash = state.trash.filter(item => item.content !== payload.content);
     }
 }
 
